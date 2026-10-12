@@ -1,4 +1,4 @@
-﻿export type AgentStatus = "online" | "building";
+export type AgentStatus = "online" | "building";
 
 export interface AgentMetric {
   label: string;
@@ -29,6 +29,7 @@ export const SITE = {
   system: "SYVIA.SYS",
   title: "Agent 工作台",
   gitee: "https://gitee.com/syvia",
+  github: "https://github.com/yuwangjuan1",
 };
 
 export const AGENTS: AgentProject[] = [
@@ -66,7 +67,7 @@ export const AGENTS: AgentProject[] = [
       { label: "导出格式", value: "4" },
       { label: "批量上限", value: "100" },
     ],
-    links: [{ label: "查看仓库", href: "https://gitee.com/syvia/echo-scribe" }],
+    links: [{ label: "查看仓库", href: "https://github.com/yuwangjuan1/echo_scribes" }],
   },
   {
     id: "AGT-002",
