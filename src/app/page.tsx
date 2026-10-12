@@ -1,4 +1,4 @@
-﻿import BootTerminal from "@/components/boot-terminal";
+import BootTerminal from "@/components/boot-terminal";
 import AgentCard from "@/components/agent-card";
 import { AGENTS, MARQUEE, SITE, STACK_GROUPS } from "@/data/agents";
 
@@ -96,12 +96,12 @@ export default function Page() {
                 浏览项目档案 {"\u2193"}
               </a>
               <a
-                href={SITE.gitee}
+                href={SITE.github}
                 target="_blank"
                 rel="noreferrer"
                 className="border border-linebright px-5 py-3 font-mono text-xs tracking-wider text-mist transition-colors hover:border-phos hover:text-phos"
               >
-                GITEE {"\u2192"}
+                GITHUB {"\u2192"}
               </a>
             </div>
           </div>
@@ -158,16 +158,16 @@ export default function Page() {
           <SectionHead index="03" en="CONTACT" title="建立连接" />
           <div className="mt-8 border border-line bg-panel/60 p-6 sm:p-8">
             <p className="max-w-xl text-[15px] leading-relaxed text-mist">
-              对档案里的项目感兴趣，或想聊聊 Agent 的落地场景？通过 Gitee 找到我。
+              对档案里的项目感兴趣，或想聊聊 Agent 的落地场景？通过 GitHub 找到我。
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href={SITE.gitee}
+                href={SITE.github}
                 target="_blank"
                 rel="noreferrer"
                 className="border border-phos/30 px-4 py-2 font-mono text-xs text-phos transition-colors hover:bg-phos/10"
               >
-                GITEE · @{SITE.owner} {"\u2192"}
+                GITHUB · @{SITE.owner} {"\u2192"}
               </a>
             </div>
             <p className="mt-5 font-mono text-[11px] text-faint">{"//"} 更多联系方式整理中</p>
