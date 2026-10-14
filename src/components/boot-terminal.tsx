@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -7,10 +7,10 @@ const BOOT_LINES = [
   "loading agent registry ............ ok",
   "mounting /workbench ............... ok",
   "[AGT-001] echo-scribe ........... ONLINE",
-  "[AGT-002] memory-palace ......... BUILDING",
+  "[AGT-002] memory-palace ......... ONLINE",
   "[AGT-003] recon-owl ............. BUILDING",
   "runtime: node 24 / python 3.10 / cuda off",
-  "status: 1 online / 2 building -- all systems nominal",
+  "status: 2 online / 1 building -- all systems nominal",
 ];
 
 const LOG_POOL = [
@@ -18,6 +18,9 @@ const LOG_POOL = [
   "[q] 字幕导出 srt ok · t_1f2a",
   "[hc] engine faster-whisper · latency 41ms",
   "[q] 收到新链接 · platform=bilibili",
+  "[q] memory-palace 语义检索 · top1 41ms · dist 0.74",
+  "[q] memory-palace 增量索引 · +3 blocks · mtime sync",
+  "[hc] ollama bge-m3 · dims 1024 · uptime 99.9%",
   "[hc] 全系统状态正常 · uptime 99.9%",
   "[q] 批量任务 x8 入队 · 预计 96s",
 ];
