@@ -1,6 +1,6 @@
 import BootTerminal from "@/components/boot-terminal";
 import AgentCard from "@/components/agent-card";
-import { AGENTS, DEVLOG, MARQUEE, PIPELINE, SITE, STACK_GROUPS } from "@/data/agents";
+import { AGENTS, DEVLOG, MARQUEE, PIPELINE, SITE, SKILLS, STACK_GROUPS } from "@/data/agents";
 
 function Navbar() {
   return (
@@ -21,6 +21,9 @@ function Navbar() {
           </a>
           <a href="#devlog" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             日志
+          </a>
+          <a href="#skills" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
+            出品
           </a>
           <a href="#contact" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             联系
@@ -284,9 +287,62 @@ export default function Page() {
           </div>
         </section>
 
-        <section id="contact" className="mb-24 mt-20 scroll-mt-20">
+        <section id="skills" className="mt-20 scroll-mt-20">
           <SectionHead
             index="06"
+            en="SKILLS"
+            title="技能出品"
+            sub="把方法论封装成技能，上架 WorkBuddy 开放平台——实验室的对外输出。"
+          />
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {SKILLS.map((s) => (
+              <div key={s.name} className="card-glow relative border border-line bg-panel/60 p-6 transition-colors hover:border-violet/60">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-display text-xl font-bold text-paper">{s.name}</h3>
+                  <span
+                    className={`border px-2 py-0.5 font-mono text-[11px] font-medium tracking-[0.18em] ${
+                      s.status === "LISTED"
+                        ? "border-phos/40 bg-phos/10 text-phos"
+                        : s.status === "REVIEW"
+                          ? "border-amber/40 bg-amber/10 text-amber"
+                          : "border-linebright bg-panel2 text-paper/80"
+                    }`}
+                  >
+                    {s.status === "LISTED" ? "已上架" : s.status === "REVIEW" ? "审核中" : "打磨中"}
+                  </span>
+                </div>
+                <p className="mt-1.5 font-mono text-xs text-mist">{s.version}</p>
+                <p className="mt-3 text-[15px] leading-relaxed text-mist">{s.desc}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {s.highlights.map((h) => (
+                    <span key={h} className="border border-linebright/70 bg-panel2/80 px-2 py-0.5 font-mono text-xs text-paper/85">
+                      {h}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
+                >
+                  查看源码 <span aria-hidden>{"\u2192"}</span>
+                </a>
+              </div>
+            ))}
+            <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">
+              <p className="text-sm text-mist">
+                更多技能打磨中
+                <br />
+                <span className="font-mono text-xs text-faint">// 敬请期待</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="mb-24 mt-20 scroll-mt-20">
+          <SectionHead
+            index="07"
             en="CONTACT"
             title="建立连接"
             sub="对哪位 Agent 感兴趣？仓库全部开放，随时来围观代码或聊聊 Agent 落地。"
