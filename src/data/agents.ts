@@ -1,4 +1,5 @@
 export type AgentStatus = "online" | "building";
+export type AgentAccent = "phos" | "violet" | "amber";
 
 export interface AgentMetric {
   label: string;
@@ -15,6 +16,8 @@ export interface AgentProject {
   name: string;
   codename: string;
   status: AgentStatus;
+  /** 主题色：phos 绿（默认/旗舰）· violet 紫 · amber 琥珀 */
+  accent?: AgentAccent;
   tagline: string;
   description: string;
   features: string[];
@@ -112,6 +115,7 @@ export const AGENTS: AgentProject[] = [
     name: "记忆宫殿 Memory Palace",
     codename: "memory-palace",
     status: "online",
+    accent: "violet",
     tagline: "给第二大脑装一个 AI 能读懂的检索层 · MCP 语义记忆服务",
     description:
       "Obsidian 笔记库的本地语义检索 MCP Server：markdown 按标题感知分块，bge-m3 本地向量化后存入 sqlite-vec，AI 提问时毫秒级召回最相关笔记块。四工具协议（search / remember / link / review）即插即用，全链路本地运行，笔记永不出门、零 API 成本。",
@@ -144,6 +148,7 @@ export const AGENTS: AgentProject[] = [
     name: "侦察猫头鹰",
     codename: "recon-owl",
     status: "building",
+    accent: "amber",
     tagline: "行业情报聚合 · 追踪 · 摘要",
     description:
       "研发中的情报分析 Agent：持续追踪指定领域的信息源，自动聚合、去重并生成每日简报。",

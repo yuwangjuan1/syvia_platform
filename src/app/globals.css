@@ -10,6 +10,7 @@
   --mist: #a9bcb0;
   --faint: #76897d;
   --phos: #7ff0a0;
+  --violet: #b993ff;
   --amber: #e6b450;
   --alert: #e57a63;
   --font-body: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC", "Microsoft YaHei", system-ui, sans-serif;
@@ -27,6 +28,7 @@
   --color-mist: var(--mist);
   --color-faint: var(--faint);
   --color-phos: var(--phos);
+  --color-violet: var(--violet);
   --color-amber: var(--amber);
   --color-alert: var(--alert);
   --font-display: var(--font-display);
@@ -81,7 +83,9 @@ body::after {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 90% 70% at 50% 0%, transparent 40%, rgba(4, 6, 5, 0.55) 100%);
+  background:
+    radial-gradient(ellipse 62% 42% at 50% -8%, rgba(127, 240, 160, 0.09), transparent 62%),
+    radial-gradient(ellipse 90% 70% at 50% 0%, transparent 40%, rgba(4, 6, 5, 0.55) 100%);
 }
 
 ::-webkit-scrollbar {
@@ -132,4 +136,107 @@ body::after {
     rgba(0, 0, 0, 0.16) 2px,
     rgba(0, 0, 0, 0.16) 3px
   );
+}
+
+/* ---- 视觉特效工具类 ---- */
+
+/* 霓虹辉光文字 */
+.text-glow {
+  text-shadow:
+    0 0 16px rgba(127, 240, 160, 0.5),
+    0 0 42px rgba(127, 240, 160, 0.22);
+}
+
+.text-glow-soft {
+  text-shadow: 0 0 22px rgba(127, 240, 160, 0.28);
+}
+
+/* 渐变标题字 */
+.gradient-text {
+  background: linear-gradient(115deg, #f2f7f2 25%, #7ff0a0 62%, #e6b450 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 卡片悬停辉光 */
+.card-glow {
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    transform 0.25s;
+}
+.card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(127, 240, 160, 0.18),
+    0 0 44px rgba(127, 240, 160, 0.09),
+    inset 0 0 30px rgba(127, 240, 160, 0.025);
+}
+
+/* 旗舰卡常驻辉光 */
+.flagship-glow {
+  box-shadow:
+    0 0 0 1px rgba(127, 240, 160, 0.22),
+    0 0 54px rgba(127, 240, 160, 0.1),
+    inset 0 0 40px rgba(127, 240, 160, 0.03);
+}
+.flagship-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(127, 240, 160, 0.4),
+    0 0 80px rgba(127, 240, 160, 0.16),
+    inset 0 0 48px rgba(127, 240, 160, 0.05);
+}
+
+/* 呼吸浮动 */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.floaty {
+  animation: floaty 5.5s ease-in-out infinite;
+}
+
+/* 顶部扫描光带 */
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+.sweep-line {
+  position: relative;
+  overflow: hidden;
+}
+.sweep-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(127, 240, 160, 0.14), transparent);
+  animation: sweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 数字翻牌入场 */
+@keyframes popin {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.popin {
+  animation: popin 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

@@ -9,21 +9,21 @@ function Navbar() {
         <a href="#top" className="font-display text-lg tracking-wide text-paper">
           {"\u25ae"} {SITE.system}
         </a>
-        <nav className="flex items-center gap-4 font-mono text-[11px] tracking-wider sm:gap-6">
-          <a href="#agents" className="text-mist transition-colors hover:text-phos">
+        <nav className="flex items-center gap-5 font-mono text-sm font-medium tracking-wide sm:gap-7">
+          <a href="#agents" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             项目
           </a>
-          <a href="#pipeline" className="text-mist transition-colors hover:text-phos">
+          <a href="#pipeline" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             流水线
           </a>
-          <a href="#stack" className="text-mist transition-colors hover:text-phos">
+          <a href="#stack" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             技术
           </a>
-          <a href="#contact" className="text-mist transition-colors hover:text-phos">
+          <a href="#contact" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             联系
           </a>
-          <span className="hidden items-center gap-1.5 border border-phos/25 px-2 py-0.5 text-phos sm:inline-flex">
-            <span className="blinkdot h-1.5 w-1.5 rounded-full bg-phos" />
+          <span className="hidden items-center gap-1.5 border border-phos/40 bg-phos/10 px-2.5 py-1 text-xs font-medium text-phos text-glow-soft sm:inline-flex">
+            <span className="blinkdot h-2 w-2 rounded-full bg-phos" />
             ONLINE
           </span>
         </nav>
@@ -35,12 +35,12 @@ function Navbar() {
 function SectionHead({ index, en, title, sub }: { index: string; en: string; title: string; sub?: string }) {
   return (
     <div className="border-b border-line pb-5">
-      <p className="font-mono text-[11px] tracking-[0.24em] text-phos">
+      <p className="font-mono text-xs font-medium tracking-[0.24em] text-phos text-glow-soft">
         {"//"} {index} {en}
       </p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <h2 className="font-display text-3xl text-paper sm:text-4xl">{title}</h2>
-        {sub && <p className="max-w-md pb-1 text-sm text-mist">{sub}</p>}
+        {sub && <p className="max-w-lg pb-1 text-[15px] leading-relaxed text-mist">{sub}</p>}
       </div>
     </div>
   );
@@ -50,7 +50,7 @@ function Marquee() {
   const row = MARQUEE.map((item) => ` ${item} \u25c6`).join("");
   return (
     <div className="mt-14 overflow-hidden border-y border-line py-3" aria-hidden>
-      <div className="marquee-track flex w-max whitespace-nowrap font-mono text-[11px] tracking-[0.3em] text-faint">
+      <div className="marquee-track flex w-max whitespace-nowrap font-mono text-xs tracking-[0.3em] text-mist">
         <span>{row}</span>
         <span>{row}</span>
       </div>
@@ -92,12 +92,12 @@ export default function Page() {
               {">"} AGENT WORKBENCH · v2026.10
             </p>
             <h1
-              className="rise mt-5 font-display text-5xl leading-[1.15] text-paper sm:text-6xl"
+              className="rise mt-5 font-display text-5xl font-extrabold leading-[1.15] sm:text-6xl"
               style={{ animationDelay: "0.08s" }}
             >
-              我造 Agent，
+              <span className="gradient-text">我造 Agent，</span>
               <br />
-              然后让它们上线。
+              <span className="text-paper text-glow-soft">然后让它们上线。</span>
             </h1>
             <p
               className="rise mt-6 max-w-xl text-base leading-loose text-mist"
@@ -125,7 +125,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="rise" style={{ animationDelay: "0.3s" }}>
+          <div className="rise floaty" style={{ animationDelay: "0.3s" }}>
             <BootTerminal />
           </div>
         </section>
@@ -134,10 +134,10 @@ export default function Page() {
           className="rise mt-14 grid grid-cols-2 divide-x divide-line border-y border-line sm:grid-cols-4"
           style={{ animationDelay: "0.36s" }}
         >
-          {STATS.map((s) => (
-            <div key={s.label} className="px-5 py-5">
-              <div className="font-display text-3xl text-paper">{s.value}</div>
-              <div className="mt-1.5 font-mono text-[10px] tracking-[0.22em] text-faint">
+          {STATS.map((s, i) => (
+            <div key={s.label} className="popin px-5 py-6" style={{ animationDelay: `${0.4 + i * 0.08}s` }}>
+              <div className="text-glow font-display text-4xl font-extrabold text-phos">{s.value}</div>
+              <div className="mt-2 font-mono text-xs font-medium tracking-[0.2em] text-mist">
                 {s.label}
               </div>
             </div>
@@ -169,18 +169,18 @@ export default function Page() {
           />
           <div className="mt-8 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
             {PIPELINE.map((p) => (
-              <div key={p.step} className="group relative bg-panel/80 p-6 transition-colors hover:bg-panel2">
+              <div key={p.step} className="card-glow group relative bg-panel/80 p-6 transition-colors hover:bg-panel2">
                 <div className="flex items-baseline justify-between">
-                  <span className="font-mono text-3xl text-linebright transition-colors group-hover:text-phos">
+                  <span className="text-glow-soft font-mono text-4xl font-bold text-linebright transition-colors group-hover:text-phos">
                     {p.step}
                   </span>
-                  <span className="font-mono text-[10px] tracking-[0.18em] text-faint">
+                  <span className="font-mono text-xs tracking-[0.18em] text-mist">
                     {p.codename}
                   </span>
                 </div>
-                <h3 className="mt-5 font-mono text-sm tracking-wider text-phos">{p.action}</h3>
-                <p className="mt-1.5 font-display text-lg text-paper">{p.agent}</p>
-                <p className="mt-3 text-[13px] leading-relaxed text-mist">{p.detail}</p>
+                <h3 className="text-glow-soft mt-5 font-mono text-base font-bold tracking-wider text-phos">{p.action}</h3>
+                <p className="mt-1.5 font-display text-xl font-bold text-paper">{p.agent}</p>
+                <p className="mt-3 text-sm leading-relaxed text-mist">{p.detail}</p>
               </div>
             ))}
           </div>
@@ -198,11 +198,11 @@ export default function Page() {
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {STACK_GROUPS.map((g) => (
               <div key={g.group} className="border border-line bg-panel/60 p-6">
-                <h3 className="font-mono text-xs tracking-[0.2em] text-phos">{g.group}</h3>
-                <ul className="mt-4 space-y-2.5">
+                <h3 className="font-mono text-sm font-bold tracking-[0.2em] text-phos">{g.group}</h3>
+                <ul className="mt-4 space-y-3">
                   {g.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-sm text-mist">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 bg-linebright" />
+                    <li key={item} className="flex items-start gap-2 text-[15px] text-paper/85">
+                      <span className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-phos/70" />
                       {item}
                     </li>
                   ))}
@@ -221,12 +221,12 @@ export default function Page() {
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {PRINCIPLES.map((p, i) => (
-              <div key={p.title} className="border border-line bg-panel/60 p-6">
-                <span className="font-mono text-[11px] tracking-[0.24em] text-phos">
+              <div key={p.title} className="card-glow border border-line bg-panel/60 p-6 hover:border-linebright">
+                <span className="text-glow-soft font-mono text-2xl font-bold text-phos">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="mt-4 font-display text-xl text-paper">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-mist">{p.detail}</p>
+                <h3 className="mt-4 font-display text-2xl font-bold text-paper">{p.title}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-mist">{p.detail}</p>
               </div>
             ))}
           </div>
