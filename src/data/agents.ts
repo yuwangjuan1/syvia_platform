@@ -170,6 +170,25 @@ export const AGENTS: AgentProject[] = [
   },
 ];
 
+/** 技能出品：WorkBuddy / Claude 技能包 */
+export const SKILLS: Array<{
+  name: string;
+  version: string;
+  desc: string;
+  highlights: string[];
+  href: string;
+  status: "LISTED" | "REVIEW" | "DEV";
+}> = [
+  {
+    name: "第二大脑建造师",
+    version: "v1.0.0",
+    desc: "从零搭建 Obsidian 第二大脑：3 套目录方案、元数据三态生长模型、错题集方法论、领域包 D2 五步流程。",
+    highlights: ["3 套目录方案", "错题集方法论", "领域包 D2 流程"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+];
+
 /** 开发日志：里程碑时间线 */
 export const DEVLOG: Array<{
   date: string;
@@ -193,6 +212,12 @@ export const DEVLOG: Array<{
     date: "2026.10",
     event: "记忆宫殿建成接入",
     detail: "MCP 四工具 · 217 篇笔记 → 3196 语义块 · 20 题检索回归 90% 通过",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "首个技能上架 WorkBuddy 开放平台",
+    detail: "《第二大脑建造师》提交审核 · 源码开源 smart_brain_skills 仓库 · 技能出海第一步",
     tag: "RELEASE",
   },
   {
