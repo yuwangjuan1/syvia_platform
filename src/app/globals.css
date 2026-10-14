@@ -1,20 +1,20 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
-  --ink: #0b0f0d;
-  --panel: #101512;
+  --ink: #0a0e0c;
+  --panel: #111713;
   --panel2: #0d120f;
-  --line: #212c25;
-  --line-bright: #37493d;
-  --paper: #dae3db;
-  --mist: #8fa096;
-  --faint: #5c6a61;
+  --line: #25322a;
+  --line-bright: #3d5244;
+  --paper: #eaf1eb;
+  --mist: #a9bcb0;
+  --faint: #76897d;
   --phos: #7ff0a0;
   --amber: #e6b450;
   --alert: #e57a63;
-  --font-body: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-display: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-mono: Consolas, "Courier New", monospace;
+  --font-body: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
 }
 
 @theme inline {
@@ -41,12 +41,21 @@ body {
   background: var(--ink);
   color: var(--paper);
   font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
 h2,
 h3 {
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 ::selection {

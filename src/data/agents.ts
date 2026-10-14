@@ -24,6 +24,44 @@ export interface AgentProject {
   featured?: boolean;
 }
 
+/** 协同流水线：三个项目连成的个人内容生产闭环 */
+export const PIPELINE: Array<{
+  step: string;
+  agent: string;
+  codename: string;
+  action: string;
+  detail: string;
+}> = [
+  {
+    step: "01",
+    agent: "声稿 EchoScribe",
+    codename: "echo-scribe",
+    action: "采集转写",
+    detail: "批量解析对标账号的财经视频（900+ 平台），本地转写为带时间轴全文，Agent 自动提炼观点与金句",
+  },
+  {
+    step: "02",
+    agent: "第二大脑",
+    codename: "smart_brain",
+    action: "沉淀归档",
+    detail: "拆解结论写入 Obsidian 知识库：对标拆解、错题集、人设线选题，frontmatter 统一元数据",
+  },
+  {
+    step: "03",
+    agent: "记忆宫殿",
+    codename: "memory-palace",
+    action: "语义检索",
+    detail: "增量索引全库笔记为语义块，写作时 AI 按主题毫秒级召回相关积累，随叫随到",
+  },
+  {
+    step: "04",
+    agent: "内容飞轮",
+    codename: "content-flywheel",
+    action: "创作发布",
+    detail: "同一批知识多形态复用：旗舰文人设帖 → 知识卡 → 季度复盘，素材一次沉淀、反复变现",
+  },
+];
+
 export const SITE = {
   owner: "syvia",
   system: "SYVIA.SYS",
