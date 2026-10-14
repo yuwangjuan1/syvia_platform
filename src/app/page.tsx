@@ -62,24 +62,24 @@ function Marquee() {
 }
 
 const STATS = [
-  { value: String(AGENTS.length), label: "AGENT 档案" },
-  { value: String(AGENTS.filter((a) => a.status === "online").length), label: "在线运行" },
-  { value: String(AGENTS.filter((a) => a.status === "building").length), label: "研发中" },
-  { value: "100%", label: "自研自建" },
+  { value: String(AGENTS.length), label: "Agent 在役" },
+  { value: String(AGENTS.filter((a) => a.status === "online").length), label: "已上线服役" },
+  { value: String(AGENTS.filter((a) => a.status === "building").length), label: "训练营打磨中" },
+  { value: "¥0", label: "月度 API 账单" },
 ];
 
 const PRINCIPLES = [
   {
     title: "真实需求驱动",
-    detail: "每个 Agent 都源于自己内容生产中的真实痛点，不做玩具，造完就接入日常工作流。",
+    detail: "不追热点、不做 demo——每个 Agent 都为解决自己的真实痛点而生，造完第一天就投入实战。",
   },
   {
     title: "本地优先",
-    detail: "本地推理 + 本地存储，数据不出门。零 API 成本意味着可以放心高频使用。",
+    detail: "数据不出门，账单不进门。本地推理 + 本地存储，隐私和成本双保险。",
   },
   {
     title: "长期运行",
-    detail: "上线不是终点。增量索引、错误兜底、结构化日志，为持续运行而设计。",
+    detail: "上线才是开始。增量索引、错误兜底、结构化日志，为 7×24 不打烊而设计。",
   },
 ];
 
@@ -104,39 +104,39 @@ export default function Page() {
       <main id="top" className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <section className="grid items-center gap-10 pt-28 sm:pt-36 lg:grid-cols-[1fr_460px]">
           <div>
-            <p className="rise font-mono text-xs tracking-[0.24em] text-phos">
-              {">"} AGENT WORKBENCH · v2026.10
+            <p className="rise font-mono text-xs font-medium tracking-[0.24em] text-phos text-glow-soft">
+              {">"} SYVIA.SYS · 3 AGENTS IN PRODUCTION
             </p>
             <h1
-              className="rise mt-5 font-display text-5xl font-extrabold leading-[1.15] sm:text-6xl"
+              className="rise mt-5 font-display text-5xl font-extrabold leading-[1.18] sm:text-6xl lg:text-[68px]"
               style={{ animationDelay: "0.08s" }}
             >
-              <span className="gradient-text">我造 Agent，</span>
+              <span className="gradient-text">我不加班，</span>
               <br />
-              <span className="text-paper text-glow-soft">然后让它们上线。</span>
+              <span className="text-paper text-glow">因为活都让 Agent 干了。</span>
             </h1>
             <p
-              className="rise mt-6 max-w-xl text-base leading-loose text-mist"
+              className="rise mt-7 max-w-xl text-lg leading-loose text-mist"
               style={{ animationDelay: "0.16s" }}
             >
-              这里是 {SITE.owner} 的 Agent 开发档案馆——每个项目都从真实需求出发，
-              在真实环境里长期运行。档案逐份归档，持续更新。
+              声稿 10 分钟啃完 2 小时视频，记忆宫殿一秒翻遍 217 篇笔记，
+              侦察猫头鹰全天盯着行业动静——这是我的 Agent 军团，每一个都在真实服役。
             </p>
             <div
-              className="rise mt-8 flex flex-wrap items-center gap-3"
+              className="rise mt-9 flex flex-wrap items-center gap-4"
               style={{ animationDelay: "0.24s" }}
             >
               <a
                 href="#agents"
-                className="bg-phos px-5 py-3 font-mono text-xs tracking-wider text-ink transition-colors hover:bg-paper"
+                className="bg-phos px-6 py-3.5 font-mono text-sm font-bold tracking-wider text-ink shadow-[0_0_36px_rgba(127,240,160,0.35)] transition-all hover:bg-paper hover:shadow-[0_0_44px_rgba(234,241,235,0.4)]"
               >
-                浏览项目档案 {"\u2193"}
+                认识我的 Agent {"\u2193"}
               </a>
               <a
                 href="#pipeline"
-                className="border border-linebright px-5 py-3 font-mono text-xs tracking-wider text-mist transition-colors hover:border-phos hover:text-phos"
+                className="border border-linebright px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-paper/90 transition-all hover:border-phos hover:text-phos"
               >
-                协同流水线 {"\u2192"}
+                它们怎么协作 {"\u2192"}
               </a>
             </div>
           </div>
@@ -167,10 +167,10 @@ export default function Page() {
             index="01"
             en="ARCHIVE"
             title="项目档案"
-            sub="从内容采集到知识检索，每个 Agent 独立成档，也可协同成线。"
+            sub="点开任意一份档案，认识一位正在服役的数字员工。"
           />
-          {/* 固定卡宽、一行两张，放不下自动换行（第三张在第二行，不拉伸） */}
-          <div className="mt-8 flex flex-wrap gap-5">
+          {/* 一行一张全宽横卡，纵向排列 */}
+          <div className="mt-8 flex flex-col gap-6">
             {AGENTS.map((agent) => (
               <AgentCard key={agent.id} agent={agent} />
             ))}
@@ -182,7 +182,7 @@ export default function Page() {
             index="02"
             en="PIPELINE"
             title="协同流水线"
-            sub="单个 Agent 是工具，连成线才是系统——这是它们协作的方式。"
+            sub="单个 Agent 是工具，连成线才是系统——从一条视频到一篇爆款，全自动接力。"
           />
           <div className="mt-8 grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
             {PIPELINE.map((p) => (
@@ -234,7 +234,7 @@ export default function Page() {
             index="04"
             en="PRINCIPLES"
             title="构建原则"
-            sub="比技术栈更重要的三条约定。"
+            sub="三条军规，刻在每个 Agent 的骨子里。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {PRINCIPLES.map((p, i) => (
@@ -254,7 +254,7 @@ export default function Page() {
             index="05"
             en="DEV LOG"
             title="开发日志"
-            sub="档案馆持续更新——已完成与计划中的里程碑。"
+            sub="舰队的航海日志——每一次启航与进港，都记录在案。"
           />
           <div className="mt-8 border border-line bg-panel/60">
             {DEVLOG.map((d, i) => (
@@ -286,11 +286,16 @@ export default function Page() {
         </section>
 
         <section id="contact" className="mb-24 mt-20 scroll-mt-20">
-          <SectionHead index="06" en="CONTACT" title="建立连接" />
+          <SectionHead
+            index="06"
+            en="CONTACT"
+            title="建立连接"
+            sub="对哪位 Agent 感兴趣？仓库全部开放，随时来围观代码或聊聊 Agent 落地。"
+          />
           <div className="mt-8 border border-line bg-panel/60 p-6 sm:p-8">
             <p className="max-w-xl text-base leading-loose text-mist">
-              对档案里的项目感兴趣，或想聊聊 Agent 的落地场景？通过 GitHub / Gitee 找到我，
-              仓库均开放，欢迎交流与共建。
+              每一个 Agent 都从真实需求中来，也乐意去解决你的同类问题。
+              通过 GitHub / Gitee 找到我，源码全公开，欢迎交流、共建、提 issue。
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
