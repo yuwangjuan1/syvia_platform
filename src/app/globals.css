@@ -9,9 +9,9 @@
   --paper: #eaf1eb;
   --mist: #a9bcb0;
   --faint: #76897d;
-  --phos: #7ff0a0;
-  --violet: #b993ff;
-  --amber: #e6b450;
+  --phos: #67ff9d;
+  --violet: #c08bff;
+  --amber: #ffbb33;
   --alert: #e57a63;
   --font-body: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC", "Microsoft YaHei", system-ui, sans-serif;
   --font-display: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC", "Microsoft YaHei", system-ui, sans-serif;
@@ -279,8 +279,8 @@ body::after {
 .aurora {
   position: fixed;
   border-radius: 9999px;
-  filter: blur(100px);
-  opacity: 0.16;
+  filter: blur(110px);
+  opacity: 0.24;
   z-index: 0;
   pointer-events: none;
   animation: drift 20s ease-in-out infinite;
