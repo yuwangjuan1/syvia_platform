@@ -111,16 +111,15 @@ export default function Page() {
               className="rise mt-5 font-display text-5xl font-extrabold leading-[1.18] sm:text-6xl lg:text-[68px]"
               style={{ animationDelay: "0.08s" }}
             >
-              <span className="gradient-text">我不加班，</span>
+              <span className="gradient-text">欢迎来到 Syvia 的</span>
               <br />
-              <span className="text-paper text-glow">因为活都让 Agent 干了。</span>
+              <span className="text-paper text-glow">Agent 实验室。</span>
             </h1>
             <p
               className="rise mt-7 max-w-xl text-lg leading-loose text-mist"
               style={{ animationDelay: "0.16s" }}
             >
-              声稿 10 分钟啃完 2 小时视频，记忆宫殿一秒翻遍 217 篇笔记，
-              侦察猫头鹰全天盯着行业动静——这是我的 Agent 军团，每一个都在真实服役。
+              全部自研自建，源码开放，长期运行。想解决什么问题，就造什么样的 Agent。
             </p>
             <div
               className="rise mt-9 flex flex-wrap items-center gap-4"
