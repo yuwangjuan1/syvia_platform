@@ -1,6 +1,6 @@
 import BootTerminal from "@/components/boot-terminal";
 import AgentCard from "@/components/agent-card";
-import { AGENTS, MARQUEE, PIPELINE, SITE, STACK_GROUPS } from "@/data/agents";
+import { AGENTS, DEVLOG, MARQUEE, PIPELINE, SITE, STACK_GROUPS } from "@/data/agents";
 
 function Navbar() {
   return (
@@ -18,6 +18,9 @@ function Navbar() {
           </a>
           <a href="#stack" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             技术
+          </a>
+          <a href="#devlog" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
+            日志
           </a>
           <a href="#contact" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             联系
@@ -84,6 +87,19 @@ export default function Page() {
   return (
     <>
       <Navbar />
+
+      {/* 极光光斑：缓慢漂移的氛围色雾 */}
+      <div className="aurora h-[440px] w-[440px] bg-phos" style={{ top: "-100px", left: "-140px" }} aria-hidden />
+      <div
+        className="aurora h-[400px] w-[400px] bg-violet"
+        style={{ top: "32%", right: "-140px", animationDelay: "-7s" }}
+        aria-hidden
+      />
+      <div
+        className="aurora h-[360px] w-[360px] bg-amber"
+        style={{ bottom: "-80px", left: "32%", animationDelay: "-13s" }}
+        aria-hidden
+      />
 
       <main id="top" className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <section className="grid items-center gap-10 pt-28 sm:pt-36 lg:grid-cols-[1fr_460px]">
@@ -153,7 +169,8 @@ export default function Page() {
             title="项目档案"
             sub="从内容采集到知识检索，每个 Agent 独立成档，也可协同成线。"
           />
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+          {/* 固定卡宽、一行两张，放不下自动换行（第三张在第二行，不拉伸） */}
+          <div className="mt-8 flex flex-wrap gap-5">
             {AGENTS.map((agent) => (
               <AgentCard key={agent.id} agent={agent} />
             ))}
@@ -232,8 +249,44 @@ export default function Page() {
           </div>
         </section>
 
+        <section id="devlog" className="mt-20 scroll-mt-20">
+          <SectionHead
+            index="05"
+            en="DEV LOG"
+            title="开发日志"
+            sub="档案馆持续更新——已完成与计划中的里程碑。"
+          />
+          <div className="mt-8 border border-line bg-panel/60">
+            {DEVLOG.map((d, i) => (
+              <div
+                key={`${d.date}-${d.event}`}
+                className={`grid gap-2 px-6 py-5 sm:grid-cols-[110px_120px_1fr_auto] sm:items-center sm:gap-6 ${
+                  i > 0 ? "border-t border-line" : ""
+                }`}
+              >
+                <span className="font-mono text-sm font-bold text-phos text-glow-soft">
+                  {d.date}
+                </span>
+                <span className="font-display text-lg font-bold text-paper">{d.event}</span>
+                <span className="text-sm leading-relaxed text-mist">{d.detail}</span>
+                <span
+                  className={`justify-self-start border px-2.5 py-0.5 font-mono text-[11px] font-medium tracking-[0.18em] sm:justify-self-end ${
+                    d.tag === "RELEASE"
+                      ? "border-phos/40 bg-phos/10 text-phos"
+                      : d.tag === "INFRA"
+                        ? "border-linebright bg-panel2 text-paper/80"
+                        : "border-amber/40 bg-amber/10 text-amber"
+                  }`}
+                >
+                  {d.tag}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section id="contact" className="mb-24 mt-20 scroll-mt-20">
-          <SectionHead index="05" en="CONTACT" title="建立连接" />
+          <SectionHead index="06" en="CONTACT" title="建立连接" />
           <div className="mt-8 border border-line bg-panel/60 p-6 sm:p-8">
             <p className="max-w-xl text-base leading-loose text-mist">
               对档案里的项目感兴趣，或想聊聊 Agent 的落地场景？通过 GitHub / Gitee 找到我，
@@ -278,11 +331,44 @@ export default function Page() {
       </main>
 
       <footer className="relative z-10 border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 font-mono text-[11px] text-faint sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <span>
-            {"\u00a9"} 2026 {SITE.system} — 手写，无模板
-          </span>
-          <span>BUILT WITH NEXT.JS · REACT · TAILWIND</span>
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+          <div className="grid gap-8 sm:grid-cols-[1fr_auto]">
+            <div>
+              <p className="font-display text-lg font-bold text-paper">
+                {"\u25ae"} {SITE.system}
+              </p>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-mist">
+                声明：本站为个人 Agent 项目的展示档案馆，全部作品自研自建，仅供技术交流与学习参考。
+                视频转写相关功能请遵守各目标平台的服务条款，仅处理有权访问的公开内容；
+                转写与检索产生的文案、笔记内容版权归原权利人所有。
+              </p>
+            </div>
+            <div className="space-y-2.5 font-mono text-xs">
+              <a
+                href={SITE.github}
+                target="_blank"
+                rel="noreferrer"
+                className="block text-mist transition-colors hover:text-phos"
+              >
+                GITHUB {"\u2192"} github.com/yuwangjuan1
+              </a>
+              <a
+                href={SITE.gitee}
+                target="_blank"
+                rel="noreferrer"
+                className="block text-mist transition-colors hover:text-phos"
+              >
+                GITEE {"\u2192"} gitee.com/syvia
+              </a>
+              <p className="text-faint">F:\2026project\smart_brain —— 第二大脑运转中</p>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-col gap-2 border-t border-line pt-5 font-mono text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              {"\u00a9"} 2026 {SITE.system} — 手写，无模板
+            </span>
+            <span>BUILT WITH NEXT.JS · REACT · TAILWIND · DEPLOYED ON GITHUB PAGES</span>
+          </div>
         </div>
       </footer>
     </>
