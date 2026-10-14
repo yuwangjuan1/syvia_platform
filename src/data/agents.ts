@@ -71,16 +71,35 @@ export const AGENTS: AgentProject[] = [
   },
   {
     id: "AGT-002",
-    name: "记忆宫殿",
+    name: "记忆宫殿 Memory Palace",
     codename: "memory-palace",
-    status: "building",
-    tagline: "个人第二大脑 · 捕捉 / 组织 / 回忆知识",
+    status: "online",
+    tagline: "给第二大脑装一个 AI 能读懂的检索层 · MCP 语义记忆服务",
     description:
-      "研发中的个人知识管理 Agent：把碎片信息沉淀为可检索、可联想的结构化记忆。",
-    features: ["多源信息捕捉与自动归档", "语义检索与关联推荐", "每日回顾与遗忘曲线"],
-    stack: ["TypeScript", "Vector Search", "LLM"],
-    metrics: [{ label: "状态", value: "BUILDING" }],
-    links: [],
+      "Obsidian 笔记库的本地语义检索 MCP Server：markdown 按标题感知分块，bge-m3 本地向量化后存入 sqlite-vec，AI 提问时毫秒级召回最相关笔记块。四工具协议（search / remember / link / review）即插即用，全链路本地运行，笔记永不出门、零 API 成本。",
+    features: [
+      "MCP 标准协议，Trae / Claude 等客户端即插即用",
+      "语义检索：问法不同也能命中，实测 20 题回归 90% 通过",
+      "本地 Ollama + bge-m3 向量化，1024 维，隐私零泄露",
+      "四工具：search 检索 · remember 归档 · link 关联 · review 唤醒",
+      "mtime 增量索引，改动秒级同步，无需重建",
+      "217 篇笔记 → 3196 语义块，SQLite 单文件存储",
+    ],
+    stack: [
+      "TypeScript",
+      "MCP",
+      "sqlite-vec",
+      "better-sqlite3",
+      "Ollama",
+      "bge-m3",
+    ],
+    metrics: [
+      { label: "索引笔记", value: "217" },
+      { label: "语义块", value: "3196" },
+      { label: "检索命中率", value: "90%" },
+      { label: "API 成本", value: "0" },
+    ],
+    links: [{ label: "查看仓库", href: "https://github.com/yuwangjuan1/memory-palace" }],
   },
   {
     id: "AGT-003",
@@ -100,8 +119,8 @@ export const AGENTS: AgentProject[] = [
 export const STACK_GROUPS: Array<{ group: string; items: string[] }> = [
   { group: "前端工程", items: ["React 19", "Next.js", "TypeScript", "Tailwind CSS", "响应式适配"] },
   { group: "后端工程", items: ["Node.js", "Express", "REST + SSE", "任务队列", "文件存储"] },
-  { group: "AI 工程", items: ["faster-whisper", "yt-dlp", "提示词工程", "结构化输出"] },
-  { group: "工具链", items: ["Git / Gitee", "Conda", "PowerShell", "静态部署"] },
+  { group: "AI 工程", items: ["faster-whisper", "yt-dlp", "MCP Server", "sqlite-vec 向量检索", "Ollama 本地推理", "结构化输出"] },
+  { group: "工具链", items: ["Git / Gitee", "Conda", "PowerShell", "GitHub Actions", "静态部署"] },
 ];
 
 export const MARQUEE = [
@@ -115,6 +134,9 @@ export const MARQUEE = [
   "FASTER-WHISPER",
   "YT-DLP",
   "SSE",
-  "REST API",
+  "MCP",
+  "SQLITE-VEC",
+  "OLLAMA",
+  "BGE-M3",
   "LOCAL INFERENCE",
 ];
