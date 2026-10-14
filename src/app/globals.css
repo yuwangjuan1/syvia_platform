@@ -240,3 +240,65 @@ body::after {
 .popin {
   animation: popin 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* ---- 炫技层 ---- */
+
+/* 流光边框：颜色由 --c1/--c2 变量注入 */
+@keyframes borderflow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.shimmer-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  background: linear-gradient(
+    120deg,
+    var(--c1),
+    transparent 25%,
+    var(--c2) 50%,
+    transparent 75%,
+    var(--c1)
+  );
+  background-size: 250% 250%;
+  animation: borderflow 7s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 极光光斑：缓慢漂移的彩色雾团 */
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(48px, -36px) scale(1.1); }
+  66% { transform: translate(-36px, 26px) scale(0.94); }
+}
+.aurora {
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(100px);
+  opacity: 0.16;
+  z-index: 0;
+  pointer-events: none;
+  animation: drift 20s ease-in-out infinite;
+}
+
+/* 悬停浮起 */
+.lift {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s, border-color 0.35s;
+}
+.lift:hover {
+  transform: translateY(-7px);
+}
+
+/* 徽章呼吸辉光 */
+@keyframes badgepulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(230, 180, 80, 0.25); }
+  50% { box-shadow: 0 0 22px rgba(230, 180, 80, 0.55); }
+}
+.badge-pulse {
+  animation: badgepulse 2.6s ease-in-out infinite;
+}

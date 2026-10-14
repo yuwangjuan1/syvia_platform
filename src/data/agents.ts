@@ -24,7 +24,10 @@ export interface AgentProject {
   stack: string[];
   metrics: AgentMetric[];
   links: AgentLink[];
-  featured?: boolean;
+  /** 主卡：流光边框 + 悬停浮起 */
+  primary?: boolean;
+  /** 卡片角标：如 ★ FLAGSHIP / ✦ NEW */
+  badge?: string;
 }
 
 /** 协同流水线：三个项目连成的个人内容生产闭环 */
@@ -79,7 +82,8 @@ export const AGENTS: AgentProject[] = [
     name: "声稿 EchoScribe",
     codename: "echo-scribe",
     status: "online",
-    featured: true,
+    badge: "★ FLAGSHIP",
+    primary: true,
     tagline: "视频转文字在线工具 · 粘贴链接，秒出带时间轴的完整文案",
     description:
       "从 0 到 1 的全栈应用：yt-dlp 解析 900+ 平台视频源，faster-whisper 本地推理生成逐句时间轴，自动产出 AI 摘要与话题标签，支持 TXT / SRT / VTT / MD 四种格式导出。前后端分离架构，SSE 实时推送进度，本地推理零 API 成本。",
@@ -116,6 +120,8 @@ export const AGENTS: AgentProject[] = [
     codename: "memory-palace",
     status: "online",
     accent: "violet",
+    badge: "✦ NEW",
+    primary: true,
     tagline: "给第二大脑装一个 AI 能读懂的检索层 · MCP 语义记忆服务",
     description:
       "Obsidian 笔记库的本地语义检索 MCP Server：markdown 按标题感知分块，bge-m3 本地向量化后存入 sqlite-vec，AI 提问时毫秒级召回最相关笔记块。四工具协议（search / remember / link / review）即插即用，全链路本地运行，笔记永不出门、零 API 成本。",
@@ -156,6 +162,45 @@ export const AGENTS: AgentProject[] = [
     stack: ["Node.js", "RSS", "LLM"],
     metrics: [{ label: "状态", value: "BUILDING" }],
     links: [],
+  },
+];
+
+/** 开发日志：里程碑时间线 */
+export const DEVLOG: Array<{
+  date: string;
+  event: string;
+  detail: string;
+  tag: "RELEASE" | "INFRA" | "PLANNED";
+}> = [
+  {
+    date: "2026.09",
+    event: "声稿 EchoScribe 上线",
+    detail: "900+ 平台链接转写 · 本地 Whisper 零成本 · SSE 实时进度 · Agent 分析",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "展示站部署 GitHub Pages",
+    detail: "Next.js 静态构建 · GitHub Actions 自动部署 · 双仓库镜像（Gitee / GitHub）",
+    tag: "INFRA",
+  },
+  {
+    date: "2026.10",
+    event: "记忆宫殿建成接入",
+    detail: "MCP 四工具 · 217 篇笔记 → 3196 语义块 · 20 题检索回归 90% 通过",
+    tag: "RELEASE",
+  },
+  {
+    date: "NEXT",
+    event: "侦察猫头鹰 · 情报 Agent",
+    detail: "信息源订阅轮询 · 内容去重聚类 · 每日简报自动生成",
+    tag: "PLANNED",
+  },
+  {
+    date: "NEXT",
+    event: "EchoScribe → Obsidian 一键归档",
+    detail: "转写成果直写第二大脑，协同流水线的最后一块拼图",
+    tag: "PLANNED",
   },
 ];
 
