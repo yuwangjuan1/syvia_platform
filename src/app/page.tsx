@@ -10,14 +10,14 @@ function Navbar() {
           {"\u25ae"} {SITE.system}
         </a>
         <nav className="flex items-center gap-5 font-mono text-sm font-medium tracking-wide sm:gap-7">
-          <a href="#skills" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
-            出品
-          </a>
           <a href="#agents" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
-            项目
+            Agent
+          </a>
+          <a href="#skills" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
+            Skills
           </a>
           <a href="#pipeline" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
-            流水线
+            协作
           </a>
           <a href="#stack" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             技术
@@ -164,11 +164,26 @@ export default function Page() {
 
         <Marquee />
 
-        <section id="skills" className="mt-20 scroll-mt-20">
+        <section id="agents" className="mt-20 scroll-mt-20">
           <SectionHead
             index="01"
+            en="AGENT ARCHIVE"
+            title="Agent"
+            sub="点开任意一份档案，认识一位正在服役的数字员工。"
+          />
+          {/* 一行一张全宽横卡，纵向排列 */}
+          <div className="mt-8 flex flex-col gap-6">
+            {AGENTS.map((agent) => (
+              <AgentCard key={agent.id} agent={agent} />
+            ))}
+          </div>
+        </section>
+
+        <section id="skills" className="mt-20 scroll-mt-20">
+          <SectionHead
+            index="02"
             en="SKILLS"
-            title="技能出品"
+            title="Skills"
             sub="把方法论封装成技能，上架 WorkBuddy 开放平台——实验室的对外输出。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-2">
@@ -224,21 +239,6 @@ export default function Page() {
                 <span className="font-mono text-xs text-faint">// 敬请期待</span>
               </p>
             </div>
-          </div>
-        </section>
-
-        <section id="agents" className="mt-20 scroll-mt-20">
-          <SectionHead
-            index="02"
-            en="ARCHIVE"
-            title="项目档案"
-            sub="点开任意一份档案，认识一位正在服役的数字员工。"
-          />
-          {/* 一行一张全宽横卡，纵向排列 */}
-          <div className="mt-8 flex flex-col gap-6">
-            {AGENTS.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
           </div>
         </section>
 
@@ -347,59 +347,6 @@ export default function Page() {
                 </span>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section id="skills" className="mt-20 scroll-mt-20">
-          <SectionHead
-            index="06"
-            en="SKILLS"
-            title="技能出品"
-            sub="把方法论封装成技能，上架 WorkBuddy 开放平台——实验室的对外输出。"
-          />
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {SKILLS.map((s) => (
-              <div key={s.name} className="card-glow relative border border-line bg-panel/60 p-6 transition-colors hover:border-violet/60">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="font-display text-xl font-bold text-paper">{s.name}</h3>
-                  <span
-                    className={`border px-2 py-0.5 font-mono text-[11px] font-medium tracking-[0.18em] ${
-                      s.status === "LISTED"
-                        ? "border-phos/40 bg-phos/10 text-phos"
-                        : s.status === "REVIEW"
-                          ? "border-amber/40 bg-amber/10 text-amber"
-                          : "border-linebright bg-panel2 text-paper/80"
-                    }`}
-                  >
-                    {s.status === "LISTED" ? "已上架" : s.status === "REVIEW" ? "审核中" : "打磨中"}
-                  </span>
-                </div>
-                <p className="mt-1.5 font-mono text-xs text-mist">{s.version}</p>
-                <p className="mt-3 text-[15px] leading-relaxed text-mist">{s.desc}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {s.highlights.map((h) => (
-                    <span key={h} className="border border-linebright/70 bg-panel2/80 px-2 py-0.5 font-mono text-xs text-paper/85">
-                      {h}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
-                >
-                  查看源码 <span aria-hidden>{"\u2192"}</span>
-                </a>
-              </div>
-            ))}
-            <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">
-              <p className="text-sm text-mist">
-                更多技能打磨中
-                <br />
-                <span className="font-mono text-xs text-faint">// 敬请期待</span>
-              </p>
-            </div>
           </div>
         </section>
 
