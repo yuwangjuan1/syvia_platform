@@ -182,23 +182,41 @@ export default function Page() {
         <section id="skills" className="mt-20 scroll-mt-20">
           <SectionHead
             index="02"
-            en="SKILLS"
-            title="Skills"
-            sub="把方法论封装成技能，上架 WorkBuddy 开放平台——实验室的对外输出。"
+            en="SKILLS & EXPERTS"
+            title="Skills · 专家"
+            sub="把方法论封装成技能与专家，上架 WorkBuddy 开放平台——实验室的对外输出。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {SKILLS.map((s) => (
+            {SKILLS.map((s) => {
+              const isExpert = s.kind === "expert";
+              return (
               <div
                 key={s.name}
-                style={{ "--c1": "rgba(192,139,255,0.8)", "--c2": "rgba(103,255,157,0.4)" } as React.CSSProperties}
-                className="shimmer-border lift card-glow relative border border-violet/40 bg-gradient-to-br from-panel/90 via-panel/70 to-violet/[0.09] p-7 transition-all duration-300 hover:border-violet hover:shadow-[0_0_60px_rgba(192,139,255,0.18)]"
+                style={{
+                  "--c1": isExpert ? "rgba(230,180,80,0.85)" : "rgba(192,139,255,0.8)",
+                  "--c2": isExpert ? "rgba(192,139,255,0.4)" : "rgba(103,255,157,0.4)",
+                } as React.CSSProperties}
+                className={`shimmer-border lift card-glow relative border p-7 transition-all duration-300 ${
+                  isExpert
+                    ? "border-amber/40 bg-gradient-to-br from-panel/90 via-panel/70 to-amber/[0.09] hover:border-amber hover:shadow-[0_0_60px_rgba(230,180,80,0.2)]"
+                    : "border-violet/40 bg-gradient-to-br from-panel/90 via-panel/70 to-violet/[0.09] hover:border-violet hover:shadow-[0_0_60px_rgba(192,139,255,0.18)]"
+                }`}
               >
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet/90 via-violet/35 to-transparent" aria-hidden />
+                <div
+                  className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${
+                    isExpert ? "from-amber/90 via-amber/35 to-transparent" : "from-violet/90 via-violet/35 to-transparent"
+                  }`}
+                  aria-hidden
+                />
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <h3 className="font-display text-2xl font-extrabold text-paper">{s.name}</h3>
-                    <span className="badge-pulse border border-amber/50 bg-amber/10 px-2 py-0.5 font-mono text-[11px] font-bold tracking-[0.2em] text-amber">
-                      SKILL
+                    <span
+                      className={`badge-pulse border px-2 py-0.5 font-mono text-[11px] font-bold tracking-[0.2em] ${
+                        isExpert ? "border-phos/50 bg-phos/10 text-phos" : "border-amber/50 bg-amber/10 text-amber"
+                      }`}
+                    >
+                      {isExpert ? "EXPERT" : "SKILL"}
                     </span>
                   </div>
                   <span
@@ -213,7 +231,9 @@ export default function Page() {
                     {s.status === "LISTED" ? "已上架" : s.status === "REVIEW" ? "审核中" : "打磨中"}
                   </span>
                 </div>
-                <p className="mt-1.5 font-mono text-xs text-violet">{s.version} · WORKBUDDY OPEN PLATFORM</p>
+                <p className={`mt-1.5 font-mono text-xs ${isExpert ? "text-amber" : "text-violet"}`}>
+                  {s.version} · WORKBUDDY OPEN PLATFORM
+                </p>
                 <p className="mt-4 text-[15px] leading-relaxed text-mist">{s.desc}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {s.highlights.map((h) => (
@@ -231,10 +251,11 @@ export default function Page() {
                   查看源码 <span aria-hidden>{"\u2192"}</span>
                 </a>
               </div>
-            ))}
+              );
+            })}
             <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">
               <p className="text-sm text-mist">
-                更多技能打磨中
+                更多出品打磨中
                 <br />
                 <span className="font-mono text-xs text-faint">// 敬请期待</span>
               </p>
