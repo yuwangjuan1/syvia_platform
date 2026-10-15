@@ -188,7 +188,7 @@ export const SKILLS: Array<{
     desc: "从零搭建 Obsidian 第二大脑：3 套目录方案、元数据三态生长模型、错题集方法论、领域包 D2 五步流程。",
     highlights: ["3 套目录方案", "错题集方法论", "领域包 D2 流程"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
-    status: "REVIEW",
+    status: "LISTED",
   },
   {
     kind: "expert",
@@ -197,7 +197,7 @@ export const SKILLS: Array<{
     desc: "只管心态不管买卖的投资心理教练：复盘情绪化操作，识别损失厌恶、沉没成本与追涨偏差，建立投资纪律。",
     highlights: ["三大偏差诊断", "认知卡教学", "跨轮记忆档案"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
-    status: "REVIEW",
+    status: "LISTED",
   },
 ];
 
@@ -229,13 +229,13 @@ export const DEVLOG: Array<{
   {
     date: "2026.10",
     event: "首个技能上架 WorkBuddy 开放平台",
-    detail: "《第二大脑建造师》提交审核 · 源码开源 smart_brain_skills 仓库 · 技能出海第一步",
+    detail: "《第二大脑建造师》审核通过·正式上架 · 源码开源 smart_brain_skills 仓库 · 技能出海第一步",
     tag: "RELEASE",
   },
   {
     date: "2026.10",
     event: "首个专家上架 WorkBuddy 开放平台",
-    detail: "《青罂·投资心理教练》提交审核 · 金融投教方向 · 只管心态不管买卖",
+    detail: "《青罂·投资心理教练》审核通过·正式上架 · 金融投教方向 · 只管心态不管买卖",
     tag: "RELEASE",
   },
   {
