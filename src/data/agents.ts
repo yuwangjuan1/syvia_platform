@@ -192,10 +192,19 @@ export const SKILLS: Array<{
   },
   {
     kind: "expert",
-    name: "青罂",
+    name: "青黛 · 投资心理专家",
     version: "v1.0.0",
-    desc: "只管心态不管买卖的投资心理教练：复盘情绪化操作，识别损失厌恶、沉没成本与追涨偏差，建立投资纪律。",
+    desc: "只管心态不管买卖的投资心理专家：复盘情绪化操作，识别损失厌恶、沉没成本与追涨偏差，建立投资纪律。",
     highlights: ["三大偏差诊断", "认知卡教学", "跨轮记忆档案"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+  },
+  {
+    kind: "skill",
+    name: "决策技能",
+    version: "v1.0.0",
+    desc: "用「五步决策手术」把纠结的决策拆开：定诊类型、展开选项、事前验尸、偏差解毒，输出决策备忘卡；内置道法术器四层透视。",
+    highlights: ["五步决策手术", "道法术器四层透视", "偏差解毒七查"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
   },
@@ -229,13 +238,19 @@ export const DEVLOG: Array<{
   {
     date: "2026.10",
     event: "首个技能上架 WorkBuddy 开放平台",
-    detail: "《第二大脑建造师》审核通过·正式上架 · 源码开源 smart_brain_skills 仓库 · 技能出海第一步",
+    detail: "《第二大脑建造师》已上架 · 源码开源 smart_brain_skills 仓库 · 技能出海第一步",
     tag: "RELEASE",
   },
   {
     date: "2026.10",
     event: "首个专家上架 WorkBuddy 开放平台",
-    detail: "《青罂·投资心理教练》审核通过·正式上架 · 金融投教方向 · 只管心态不管买卖",
+    detail: "《青黛·投资心理专家》已上架 · 金融投教方向 · 只管心态不管买卖",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "决策技能上架 WorkBuddy 开放平台",
+    detail: "五步决策手术 · 道法术器四层透视 · 偏差解毒七查 · 源码同步开源",
     tag: "RELEASE",
   },
   {
