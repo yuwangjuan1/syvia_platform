@@ -1,6 +1,6 @@
 import BootTerminal from "@/components/boot-terminal";
 import AgentCard from "@/components/agent-card";
-import { AGENTS, DEVLOG, MARQUEE, PIPELINE, SITE, SKILLS, STACK_GROUPS } from "@/data/agents";
+import { AGENTS, DEVLOG, EXPERTS, MARQUEE, PIPELINE, SITE, SKILLS, STACK_GROUPS } from "@/data/agents";
 
 function Navbar() {
   return (
@@ -15,6 +15,9 @@ function Navbar() {
           </a>
           <a href="#skills" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             Skills
+          </a>
+          <a href="#experts" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
+            专家
           </a>
           <a href="#pipeline" className="text-paper/90 transition-colors hover:text-phos hover:text-glow-soft">
             协作
@@ -182,43 +185,26 @@ export default function Page() {
         <section id="skills" className="mt-20 scroll-mt-20">
           <SectionHead
             index="02"
-            en="SKILLS & EXPERTS"
-            title="Skills · 专家"
-            sub="把方法论封装成技能与专家，上架 WorkBuddy 开放平台——实验室的对外输出。"
+            en="SKILLS"
+            title="技能"
+            sub="把方法论封装成可复用的技能，上架 WorkBuddy 开放平台——实验室的对外输出。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {SKILLS.map((s) => {
-              const isExpert = s.kind === "expert";
-              return (
+            {SKILLS.map((s) => (
               <div
                 key={s.name}
                 style={{
-                  "--c1": isExpert ? "rgba(230,180,80,0.85)" : "rgba(192,139,255,0.8)",
-                  "--c2": isExpert ? "rgba(192,139,255,0.4)" : "rgba(103,255,157,0.4)",
+                  "--c1": "rgba(192,139,255,0.8)",
+                  "--c2": "rgba(103,255,157,0.4)",
                 } as React.CSSProperties}
-                className={`shimmer-border lift card-glow relative border p-7 transition-all duration-300 ${
-                  isExpert
-                    ? "border-amber/40 bg-gradient-to-br from-panel/90 via-panel/70 to-amber/[0.09] hover:border-amber hover:shadow-[0_0_60px_rgba(230,180,80,0.2)]"
-                    : "border-violet/40 bg-gradient-to-br from-panel/90 via-panel/70 to-violet/[0.09] hover:border-violet hover:shadow-[0_0_60px_rgba(192,139,255,0.18)]"
-                }`}
+                className="shimmer-border lift card-glow relative border border-violet/40 bg-gradient-to-br from-panel/90 via-panel/70 to-violet/[0.09] p-7 transition-all duration-300 hover:border-violet hover:shadow-[0_0_60px_rgba(192,139,255,0.18)]"
               >
                 <div
-                  className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${
-                    isExpert ? "from-amber/90 via-amber/35 to-transparent" : "from-violet/90 via-violet/35 to-transparent"
-                  }`}
+                  className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet/90 via-violet/35 to-transparent"
                   aria-hidden
                 />
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-display text-2xl font-extrabold text-paper">{s.name}</h3>
-                    <span
-                      className={`badge-pulse border px-2 py-0.5 font-mono text-[11px] font-bold tracking-[0.2em] ${
-                        isExpert ? "border-phos/50 bg-phos/10 text-phos" : "border-amber/50 bg-amber/10 text-amber"
-                      }`}
-                    >
-                      {isExpert ? "EXPERT" : "SKILL"}
-                    </span>
-                  </div>
+                  <h3 className="font-display text-2xl font-extrabold text-paper">{s.name}</h3>
                   <span
                     className={`border px-2 py-0.5 font-mono text-[11px] font-medium tracking-[0.18em] ${
                       s.status === "LISTED"
@@ -231,8 +217,8 @@ export default function Page() {
                     {s.status === "LISTED" ? "已上架" : s.status === "REVIEW" ? "审核中" : "打磨中"}
                   </span>
                 </div>
-                <p className={`mt-1.5 font-mono text-xs ${isExpert ? "text-amber" : "text-violet"}`}>
-                  {s.version} · WORKBUDDY OPEN PLATFORM
+                <p className="mt-1.5 font-mono text-xs text-violet">
+                  {s.version} {"\u00B7"} WORKBUDDY OPEN PLATFORM
                 </p>
                 <p className="mt-4 text-[15px] leading-relaxed text-mist">{s.desc}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -251,11 +237,77 @@ export default function Page() {
                   查看源码 <span aria-hidden>{"\u2192"}</span>
                 </a>
               </div>
-              );
-            })}
+            ))}
             <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">
               <p className="text-sm text-mist">
-                更多出品打磨中
+                更多技能打磨中
+                <br />
+                <span className="font-mono text-xs text-faint">// 敬请期待</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <section id="experts" className="mt-20 scroll-mt-20">
+          <SectionHead
+            index="03"
+            en="EXPERTS"
+            title="专家"
+            sub="人设 + 方法论 + 工具链的角色化封装——不是工具，是一位随叫随到的私人顾问。"
+          />
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {EXPERTS.map((s) => (
+              <div
+                key={s.name}
+                style={{
+                  "--c1": "rgba(230,180,80,0.85)",
+                  "--c2": "rgba(192,139,255,0.4)",
+                } as React.CSSProperties}
+                className="shimmer-border lift card-glow relative border border-amber/40 bg-gradient-to-br from-panel/90 via-panel/70 to-amber/[0.09] p-7 transition-all duration-300 hover:border-amber hover:shadow-[0_0_60px_rgba(230,180,80,0.2)]"
+              >
+                <div
+                  className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber/90 via-amber/35 to-transparent"
+                  aria-hidden
+                />
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-display text-2xl font-extrabold text-paper">{s.name}</h3>
+                  <span
+                    className={`border px-2 py-0.5 font-mono text-[11px] font-medium tracking-[0.18em] ${
+                      s.status === "LISTED"
+                        ? "border-phos/40 bg-phos/10 text-phos"
+                        : s.status === "REVIEW"
+                          ? "border-amber/40 bg-amber/10 text-amber"
+                          : "border-linebright bg-panel2 text-paper/80"
+                    }`}
+                  >
+                    {s.status === "LISTED" ? "已上架" : s.status === "REVIEW" ? "审核中" : "打磨中"}
+                  </span>
+                </div>
+                <p className="mt-1.5 font-mono text-xs text-amber">
+                  {s.version} {"\u00B7"} WORKBUDDY OPEN PLATFORM
+                </p>
+                <p className="mt-4 text-[15px] leading-relaxed text-mist">{s.desc}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {s.highlights.map((h) => (
+                    <span key={h} className="border border-linebright/70 bg-panel2/80 px-2 py-0.5 font-mono text-xs text-paper/85">
+                      {h}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
+                >
+                  查看源码 <span aria-hidden>{"\u2192"}</span>
+                </a>
+              </div>
+            ))}
+            <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">
+              <p className="text-sm text-mist">
+                更多专家打磨中
                 <br />
                 <span className="font-mono text-xs text-faint">// 敬请期待</span>
               </p>
@@ -265,7 +317,7 @@ export default function Page() {
 
         <section id="pipeline" className="mt-20 scroll-mt-20">
           <SectionHead
-            index="03"
+            index="04"
             en="PIPELINE"
             title="协同流水线"
             sub="单个 Agent 是工具，连成线才是系统——从一条视频到一篇爆款，全自动接力。"
@@ -297,7 +349,7 @@ export default function Page() {
         </section>
 
         <section id="stack" className="mt-20 scroll-mt-20">
-          <SectionHead index="04" en="STACK" title="工具箱" />
+          <SectionHead index="05" en="STACK" title="工具箱" />
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {STACK_GROUPS.map((g) => (
               <div key={g.group} className="border border-line bg-panel/60 p-6">
@@ -317,7 +369,7 @@ export default function Page() {
 
         <section className="mt-20 scroll-mt-20">
           <SectionHead
-            index="05"
+            index="06"
             en="PRINCIPLES"
             title="构建原则"
             sub="三条军规，刻在每个 Agent 的骨子里。"
@@ -337,7 +389,7 @@ export default function Page() {
 
         <section id="devlog" className="mt-20 scroll-mt-20">
           <SectionHead
-            index="06"
+            index="07"
             en="DEV LOG"
             title="开发日志"
             sub="舰队的航海日志——每一次启航与进港，都记录在案。"
@@ -373,7 +425,7 @@ export default function Page() {
 
         <section id="contact" className="mb-24 mt-20 scroll-mt-20">
           <SectionHead
-            index="07"
+            index="08"
             en="CONTACT"
             title="建立连接"
             sub="对哪位 Agent 感兴趣？仓库全部开放，随时来围观代码或聊聊 Agent 落地。"
