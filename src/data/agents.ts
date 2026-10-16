@@ -201,7 +201,7 @@ export const SKILLS: Array<{
   },
   {
     kind: "skill",
-    name: "决策技能",
+    name: "利弊决策技能",
     version: "v1.0.0",
     desc: "用「五步决策手术」把纠结的决策拆开：定诊类型、展开选项、事前验尸、偏差解毒，输出决策备忘卡；内置道法术器四层透视。",
     highlights: ["五步决策手术", "道法术器四层透视", "偏差解毒七查"],
@@ -249,7 +249,7 @@ export const DEVLOG: Array<{
   },
   {
     date: "2026.10",
-    event: "决策技能上架 WorkBuddy 开放平台",
+    event: "利弊决策技能上架 WorkBuddy 开放平台",
     detail: "五步决策手术 · 道法术器四层透视 · 偏差解毒七查 · 源码同步开源",
     tag: "RELEASE",
   },
