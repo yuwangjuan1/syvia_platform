@@ -208,6 +208,42 @@ export const SKILLS: Array<{
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
   },
+  {
+    kind: "skill",
+    name: "儿童情绪解读技能",
+    version: "v1.0.0",
+    desc: "把孩子的哭闹、顶嘴、拖延、粘人翻译成情绪信号：先解码行为背后的感受与需求，先接情绪再立规矩，附行为对照密码本。",
+    highlights: ["四步情绪解码", "行为对照密码本", "跨轮解码档案"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+  },
+  {
+    kind: "skill",
+    name: "成长型思维养育技能",
+    version: "v1.0.0",
+    desc: "把「你真聪明」「你看看人家」改造成指向过程与成长的语言：捕捉固定型话术、夸具体策略与进步，附表扬话术改造表与考砸话术。",
+    highlights: ["表扬话术改造表", "贴标签自证预言", "考砸场景话术"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+  },
+  {
+    kind: "skill",
+    name: "亲子沟通技能",
+    version: "v1.0.0",
+    desc: "先接情绪、再处理事情的对话四步：闭嘴听、译感受、接情绪、议事情，替代说教与吼叫，附非暴力沟通亲子版与倾听陷阱清单。",
+    highlights: ["对话四步顺序", "七大倾听陷阱", "对话复盘单"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+  },
+  {
+    kind: "skill",
+    name: "学习习惯养成技能",
+    version: "v1.0.0",
+    desc: "诊断作业大战的真实卡点：启动难、分心、畏难还是真不会；设计提示-程序-奖励的小习惯回路并外置工具，家长五周逐步退出。",
+    highlights: ["四类卡点诊断", "习惯回路设计表", "家长退出计划"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+  },
 ];
 
 /** 开发日志：里程碑时间线 */
@@ -251,6 +287,12 @@ export const DEVLOG: Array<{
     date: "2026.10",
     event: "利弊决策技能上架 WorkBuddy 开放平台",
     detail: "五步决策手术 · 道法术器四层透视 · 偏差解毒七查 · 源码同步开源",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "育儿技能四件套发布",
+    detail: "儿童情绪解读 · 成长型思维养育 · 亲子沟通 · 学习习惯养成，技能工厂批量生产",
     tag: "RELEASE",
   },
   {
