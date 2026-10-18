@@ -246,6 +246,30 @@ export const EXPERTS: Array<{
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
   },
+  {
+    name: "青杏 · 志愿填报策略专家",
+    version: "v1.0.0",
+    desc: "只管策略不管数据的高考志愿教练：等位分定位、冲稳保梯度排布、防滑档防退档终检、平行志愿规则科普。",
+    highlights: ["冲稳保梯度", "防退档终检", "72 小时应急"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+  {
+    name: "青棠 · 专业定位顾问专家",
+    version: "v1.0.0",
+    desc: "用证据选专业的定位顾问：三角定位、专业名称祛魅、培养方案核查、出口前瞻与调剂风险评估。",
+    highlights: ["三角定位法", "十大名称陷阱", "决策矩阵"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+  {
+    name: "青梧 · 家庭志愿调解专家",
+    version: "v1.0.0",
+    desc: "志愿分歧的家庭调解师：立场翻译成需求、目标对齐、交换谈判与家庭志愿会议，产出家庭志愿公约。",
+    highlights: ["需求翻译表", "交换谈判", "家庭志愿公约"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
 ];
 
 /** 开发日志：里程碑时间线 */
@@ -295,6 +319,12 @@ export const DEVLOG: Array<{
     date: "2026.10",
     event: "育儿技能四件套发布",
     detail: "儿童情绪解读 · 成长型思维养育 · 亲子沟通 · 学习习惯养成，技能工厂批量生产",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "高考志愿专家三件套发布",
+    detail: "青杏志愿策略 · 青棠专业定位 · 青梧家庭调解，经典三件套覆盖择校填报全流程",
     tag: "RELEASE",
   },
   {
