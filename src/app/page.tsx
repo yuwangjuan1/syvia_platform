@@ -111,7 +111,7 @@ export default function Page() {
         <section className="grid items-center gap-10 pt-28 sm:pt-36 lg:grid-cols-[1fr_460px]">
           <div>
             <p className="rise font-mono text-xs font-medium tracking-[0.24em] text-phos text-glow-soft">
-              {">"} SYVIA.SYS · 3 AGENTS IN PRODUCTION
+              {">"} SYVIA.SYS · 4 AGENTS IN PRODUCTION
             </p>
             <h1
               className="rise mt-5 font-display text-5xl font-extrabold leading-[1.18] sm:text-6xl lg:text-[68px]"

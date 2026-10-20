@@ -168,6 +168,32 @@ export const AGENTS: AgentProject[] = [
     metrics: [{ label: "状态", value: "打磨中" }],
     links: [],
   },
+  {
+    id: "AGT-004",
+    name: "青选 QingXuan",
+    codename: "qingxuan",
+    status: "building",
+    badge: "✦ NEW",
+    tagline: "不预测分数线，只教你怎么选。高考志愿决策平台，帮家庭把志愿填到全票通过。",
+    description:
+      "大厂的免费 AI 解决「能上哪些学校」，青选解决「该上哪个、怎么一家人达成一致」。院校结构化卡、专业四出口地图、择校交互工具与就业红绿灯，青杏/青棠/青梧三位 AI 顾问（复用 WorkBuddy 专家人设）SSE 流式对话——纯方法论口径，不碰分数线数据，规避数据壁垒与幻觉责任。",
+    features: [
+      "12 所院校结构化卡：学科实力、转专业政策、报考避坑点",
+      "12 个专业四出口地图 + 6 个名称陷阱祛魅标注",
+      "三大交互工具：冲稳保梯度自查、防退档终检、二选一决策矩阵",
+      "就业竞争红绿灯 6 条，定性分析附来源口径",
+      "三位 AI 顾问流式对话，复用专家人设零额外成本",
+      "Next.js 16 + React 19 无数据库架构，Vercel 一键部署",
+    ],
+    stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "SSE", "LLM API"],
+    metrics: [
+      { label: "AI 顾问", value: "3 位" },
+      { label: "院校卡", value: "12" },
+      { label: "专业库", value: "12" },
+      { label: "交互工具", value: "3" },
+    ],
+    links: [{ label: "查看仓库", href: "https://github.com/yuwangjuan1/qingxuan" }],
+  },
 ];
 
 /** 出品：WorkBuddy 开放平台的技能 */
@@ -181,15 +207,15 @@ export const SKILLS: Array<{
 }> = [
   {
     name: "第二大脑建造师",
-    version: "v1.0.0",
-    desc: "从零搭建 Obsidian 第二大脑：3 套目录方案、元数据三态生长模型、错题集方法论、领域包 D2 五步流程。",
+    version: "v1.2.0",
+    desc: "整理与重构 Obsidian 笔记库：目录规范、元数据体系、错题集方法、领域包流程，让知识记得住、找得到。",
     highlights: ["3 套目录方案", "错题集方法论", "领域包 D2 流程"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
   },
   {
     name: "利弊决策技能",
-    version: "v1.0.0",
+    version: "v1.1.0",
     desc: "用「五步决策手术」把纠结的决策拆开：定诊类型、展开选项、事前验尸、偏差解毒，输出决策备忘卡；内置道法术器四层透视。",
     highlights: ["五步决策手术", "道法术器四层透视", "偏差解毒七查"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
@@ -197,7 +223,7 @@ export const SKILLS: Array<{
   },
   {
     name: "儿童情绪解读技能",
-    version: "v1.0.0",
+    version: "v1.1.0",
     desc: "把孩子的哭闹、顶嘴、拖延、粘人翻译成情绪信号：先解码行为背后的感受与需求，先接情绪再立规矩，附行为对照密码本。",
     highlights: ["四步情绪解码", "行为对照密码本", "跨轮解码档案"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
@@ -213,7 +239,7 @@ export const SKILLS: Array<{
   },
   {
     name: "亲子沟通技能",
-    version: "v1.0.0",
+    version: "v1.1.0",
     desc: "先接情绪、再处理事情的对话四步：闭嘴听、译感受、接情绪、议事情，替代说教与吼叫，附非暴力沟通亲子版与倾听陷阱清单。",
     highlights: ["对话四步顺序", "七大倾听陷阱", "对话复盘单"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
@@ -325,6 +351,12 @@ export const DEVLOG: Array<{
     date: "2026.10",
     event: "高考志愿专家三件套发布",
     detail: "青杏志愿策略 · 青棠专业定位 · 青梧家庭调解，经典三件套覆盖择校填报全流程",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "青选高考志愿决策平台 MVP",
+    detail: "院校卡 + 专业祛魅 + 交互工具箱 + 三顾问流式对话，专家人设复用，已开源 github.com/yuwangjuan1/qingxuan",
     tag: "RELEASE",
   },
   {
