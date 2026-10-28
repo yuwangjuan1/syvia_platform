@@ -1,5 +1,6 @@
 import BootTerminal from "@/components/boot-terminal";
 import AgentCard from "@/components/agent-card";
+import ExpertQr from "@/components/expert-qr";
 import { AGENTS, DEVLOG, EXPERTS, MARQUEE, PIPELINE, SITE, SKILLS, STACK_GROUPS } from "@/data/agents";
 
 function Navbar() {
@@ -228,14 +229,17 @@ export default function Page() {
                     </span>
                   ))}
                 </div>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
-                >
-                  查看源码 <span aria-hidden>{"\u2192"}</span>
-                </a>
+                <div className="mt-5 flex flex-wrap items-start gap-3">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
+                  >
+                    查看源码 <span aria-hidden>{"\u2192"}</span>
+                  </a>
+                  {s.qr && <ExpertQr name={s.name} qr={s.qr} tone="violet" />}
+                </div>
               </div>
             ))}
             <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">
@@ -295,14 +299,17 @@ export default function Page() {
                     </span>
                   ))}
                 </div>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
-                >
-                  查看源码 <span aria-hidden>{"\u2192"}</span>
-                </a>
+                <div className="mt-5 flex flex-wrap items-start gap-3">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 border border-phos/40 bg-phos/10 px-4 py-2 font-mono text-sm font-medium text-phos transition-all hover:bg-phos/20 hover:text-glow-soft"
+                  >
+                    查看源码 <span aria-hidden>{"\u2192"}</span>
+                  </a>
+                  {s.qr && <ExpertQr name={s.name} qr={s.qr} tone="amber" />}
+                </div>
               </div>
             ))}
             <div className="flex items-center justify-center border border-dashed border-line p-6 text-center">

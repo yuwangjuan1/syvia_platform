@@ -207,6 +207,8 @@ export const SKILLS: Array<{
   highlights: string[];
   href: string;
   status: "LISTED" | "REVIEW" | "DEV";
+  /** 扫码体验二维码路径（public/qr/ 下），有值才在卡片上渲染 */
+  qr?: string;
 }> = [
   {
     name: "第二大脑建造师",
@@ -223,6 +225,7 @@ export const SKILLS: Array<{
     highlights: ["五步决策手术", "道法术器四层透视", "偏差解毒七查"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
+    qr: "/qr/libi.png",
   },
   {
     name: "儿童情绪解读技能",
@@ -266,6 +269,8 @@ export const EXPERTS: Array<{
   highlights: string[];
   href: string;
   status: "LISTED" | "REVIEW" | "DEV";
+  /** 扫码体验二维码路径（public/qr/ 下），有值才在卡片上渲染 */
+  qr?: string;
 }> = [
   {
     name: "青黛 · 投资心理专家",
@@ -274,6 +279,7 @@ export const EXPERTS: Array<{
     highlights: ["三大偏差诊断", "认知卡教学", "跨轮记忆档案"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
+    qr: "/qr/qingdai.png",
   },
   {
     name: "青杏 · 志愿填报策略专家",
@@ -281,7 +287,8 @@ export const EXPERTS: Array<{
     desc: "只管策略不管数据的高考志愿教练：等位分定位、冲稳保梯度排布、防滑档防退档终检、平行志愿规则科普。",
     highlights: ["冲稳保梯度", "防退档终检", "72 小时应急"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
-    status: "REVIEW",
+    status: "LISTED",
+    qr: "/qr/qingxing.png",
   },
   {
     name: "青棠 · 专业定位顾问专家",
@@ -289,13 +296,64 @@ export const EXPERTS: Array<{
     desc: "用证据选专业的定位顾问：三角定位、专业名称祛魅、培养方案核查、出口前瞻与调剂风险评估。",
     highlights: ["三角定位法", "十大名称陷阱", "决策矩阵"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
-    status: "REVIEW",
+    status: "LISTED",
+    qr: "/qr/qingtang.png",
   },
   {
     name: "青梧 · 家庭志愿调解专家",
     version: "v1.0.0",
     desc: "志愿分歧的家庭调解师：立场翻译成需求、目标对齐、交换谈判与家庭志愿会议，产出家庭志愿公约。",
     highlights: ["需求翻译表", "交换谈判", "家庭志愿公约"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+    qr: "/qr/qingwu.png",
+  },
+  {
+    name: "青芷 · 学习方法专家",
+    version: "v1.0.0",
+    desc: "把「很努力但没结果」诊断成具体的学习病：注意力、记忆、练习设计逐项对症，开一张今晚就能执行的认知科学处方。",
+    highlights: ["学习方法诊断", "对症处方", "复盘改进法"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
+    qr: "/qr/qingzhi.png",
+  },
+  {
+    name: "言井 · 讲道理事务所",
+    version: "v1.0.0",
+    desc: "专接「感觉不对却说不清哪错」的话术悬案：复述立案、拆解断点、重建论证，结案送你一句下次能用的识别扳机，覆盖 15 种常见谬误。",
+    highlights: ["15 种谬误图鉴", "论证断点拆解", "识别扳机一句话"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+  {
+    name: "系统观察站 · 拆局员",
+    version: "v1.0.0",
+    desc: "把越努力越反弹、反复复发的局面画成回路图：存量流量、增强调节、时滞基模逐层定位，给出从规则到心智的杠杆点。",
+    highlights: ["回路图拆局", "基模逐层定位", "规则到心智杠杆"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+  {
+    name: "学习急诊室 · 主诊医生",
+    version: "v1.0.0",
+    desc: "考前全会一考全懵、笔记最全成绩不动？挂号诊断学习病，开一张今晚就能执行的三步处方，用认知科学替代鸡汤。",
+    highlights: ["考前崩溃门诊", "三步处方", "今晚就能执行"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+  {
+    name: "沟通修炼堂 · 接话陪练",
+    version: "v1.0.0",
+    desc: "被催婚、被怼、被绕时话堵嗓子眼？十把剪刀拆穿对方逻辑花招，温和、明确、反问三句话术直接照说，先接情绪再接话。",
+    highlights: ["十把剪刀", "三句话术照说", "先接情绪再接话"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "REVIEW",
+  },
+  {
+    name: "马慢 · 投资认知教练",
+    version: "v1.0.0",
+    desc: "不荐股不预测，只训练按下买卖键之前的思维：六张决策卡过一遍、每日一问考认知，把直觉判断改写成可证伪的复盘句。",
+    highlights: ["六张决策卡", "每日认知一问", "可证伪复盘句"],
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "REVIEW",
   },
@@ -354,6 +412,18 @@ export const DEVLOG: Array<{
     date: "2026.10",
     event: "高考志愿专家三件套发布",
     detail: "青杏志愿策略 · 青棠专业定位 · 青梧家庭调解，经典三件套覆盖择校填报全流程",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "学习方法专家《青芷》上架",
+    detail: "青字辈第四位专家到岗 · 学习方法诊断 + 对症处方 · 五位青字辈专家全部过审在线",
+    tag: "RELEASE",
+  },
+  {
+    date: "2026.10",
+    event: "认知工具箱专家五件套发布",
+    detail: "言井谬误侦探 · 拆局员系统观察 · 学习急诊室 · 接话陪练 · 马慢投资认知，专家工厂批量出品",
     tag: "RELEASE",
   },
   {
