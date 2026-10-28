@@ -4,8 +4,8 @@ import SectionHead from "@/components/section-head";
 import { AGENTS } from "@/data/agents";
 
 export const metadata: Metadata = {
-  title: "Agent 档案 · SYVIA",
-  description: "正在服役的数字员工：声稿 EchoScribe、记忆宫殿、侦察猫头鹰、青选。",
+  title: "Agent 档案 · 浅海鱼",
+  description: "正在服役的数字员工：声稿 EchoScribe、记忆宫殿、青选、侦察猫头鹰。",
 };
 
 export default function AgentsPage() {

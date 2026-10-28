@@ -1,4 +1,4 @@
-export type AgentStatus = "online" | "building";
+﻿export type AgentStatus = "online" | "building";
 export type AgentAccent = "phos" | "violet" | "amber";
 
 export interface AgentMetric {
@@ -71,8 +71,8 @@ export const PIPELINE: Array<{
 ];
 
 export const SITE = {
-  owner: "syvia",
-  system: "SYVIA.SYS",
+  owner: "浅海鱼",
+  system: "浅海鱼",
   title: "Agent 工作台",
   gitee: "https://gitee.com/syvia",
   github: "https://github.com/yuwangjuan1",
@@ -123,7 +123,7 @@ export const AGENTS: AgentProject[] = [
   },
   {
     id: "AGT-002",
-    name: "记忆宫殿 MCP Server",
+    name: "记忆宫殿 MCP\u00A0Server",
     codename: "memory-palace",
     status: "online",
     accent: "violet",
@@ -161,24 +161,6 @@ export const AGENTS: AgentProject[] = [
   },
   {
     id: "AGT-003",
-    name: "侦察猫头鹰",
-    codename: "recon-owl",
-    status: "building",
-    accent: "amber",
-    tagline: "行业动静，它比你先知道。",
-    description:
-      "研发中的情报官：订阅信息源全天轮询，自动去重聚类，每天一份浓缩简报——只看值得看的，把刷信息流的时间还给你。",
-    features: [
-      "多信息源订阅与轮询，全天值守",
-      "内容去重聚类，拒绝信息噪音",
-      "每日简报自动生成，只读精华",
-    ],
-    stack: ["Node.js", "RSS", "LLM"],
-    metrics: [{ label: "状态", value: "打磨中" }],
-    links: [],
-  },
-  {
-    id: "AGT-004",
     name: "青选 QingXuan",
     codename: "qingxuan",
     status: "building",
@@ -206,6 +188,24 @@ export const AGENTS: AgentProject[] = [
       { label: "查看仓库", href: "https://github.com/yuwangjuan1/qingxuan" },
     ],
   },
+  {
+    id: "AGT-004",
+    name: "侦察猫头鹰",
+    codename: "recon-owl",
+    status: "building",
+    accent: "amber",
+    tagline: "行业动静，它比你先知道。",
+    description:
+      "研发中的情报官：订阅信息源全天轮询，自动去重聚类，每天一份浓缩简报——只看值得看的，把刷信息流的时间还给你。",
+    features: [
+      "多信息源订阅与轮询，全天值守",
+      "内容去重聚类，拒绝信息噪音",
+      "每日简报自动生成，只读精华",
+    ],
+    stack: ["Node.js", "RSS", "LLM"],
+    metrics: [{ label: "状态", value: "打磨中" }],
+    links: [],
+  },
 ];
 
 /** 出品：WorkBuddy 开放平台的技能 */
@@ -220,14 +220,6 @@ export const SKILLS: Array<{
   qr?: string;
 }> = [
   {
-    name: "第二大脑建造师",
-    version: "v1.2.0",
-    desc: "整理与重构 Obsidian 笔记库：目录规范、元数据体系、错题集方法、领域包流程，让知识记得住、找得到。",
-    highlights: ["3 套目录方案", "错题集方法论", "领域包 D2 流程"],
-    href: "https://github.com/yuwangjuan1/smart_brain_skills",
-    status: "LISTED",
-  },
-  {
     name: "利弊决策技能",
     version: "v1.1.0",
     desc: "用「五步决策手术」把纠结的决策拆开：定诊类型、展开选项、事前验尸、偏差解毒，输出决策备忘卡；内置道法术器四层透视。",
@@ -235,6 +227,14 @@ export const SKILLS: Array<{
     href: "https://github.com/yuwangjuan1/smart_brain_skills",
     status: "LISTED",
     qr: "/qr/libi.png",
+  },
+  {
+    name: "第二大脑建造师",
+    version: "v1.2.0",
+    desc: "整理与重构 Obsidian 笔记库：目录规范、元数据体系、错题集方法、领域包流程，让知识记得住、找得到。",
+    highlights: ["3 套目录方案", "错题集方法论", "领域包 D2 流程"],
+    href: "https://github.com/yuwangjuan1/smart_brain_skills",
+    status: "LISTED",
   },
   {
     name: "儿童情绪解读技能",

@@ -4,7 +4,7 @@ import SectionHead from "@/components/section-head";
 import { SKILLS } from "@/data/agents";
 
 export const metadata: Metadata = {
-  title: "技能 · SYVIA",
+  title: "技能 · 浅海鱼",
   description: "把方法论封装成可复用的技能，上架 WorkBuddy 开放平台。",
 };
 

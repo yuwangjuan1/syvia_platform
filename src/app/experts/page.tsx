@@ -4,7 +4,7 @@ import SectionHead from "@/components/section-head";
 import { EXPERTS } from "@/data/agents";
 
 export const metadata: Metadata = {
-  title: "专家 · SYVIA",
+  title: "专家 · 浅海鱼",
   description: "WorkBuddy 开放平台的专家：人设 + 方法论 + 工具链的角色化封装。",
 };
 

@@ -3,7 +3,7 @@ import SectionHead from "@/components/section-head";
 import { AGENTS, SITE } from "@/data/agents";
 
 export const metadata: Metadata = {
-  title: "建立连接 · SYVIA",
+  title: "建立连接 · 浅海鱼",
   description: "源码全公开，欢迎交流、共建、提 issue。",
 };
 

@@ -3,14 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 
 const BOOT_LINES = [
-  "$ syvia --init workbench",
+  "$ deepsea --init workbench",
   "loading agent registry ............ ok",
   "mounting /workbench ............... ok",
   "[AGT-001] echo-scribe ........... ONLINE",
   "[AGT-002] memory-palace ......... ONLINE",
-  "[AGT-003] recon-owl ............. BUILDING",
+  "[AGT-003] qingxuan .............. BUILDING",
+  "[AGT-004] recon-owl ............. BUILDING",
   "runtime: node 24 / python 3.10 / cuda off",
-  "status: 2 online / 1 building -- all systems nominal",
+  "status: 2 online / 2 building -- all systems nominal",
 ];
 
 const LOG_POOL = [
@@ -84,7 +85,7 @@ export default function BootTerminal() {
   return (
     <div className="border border-line bg-panel2/90 text-left shadow-[0_0_60px_rgba(127,240,160,0.05)]">
       <div className="flex items-center justify-between border-b border-line px-4 py-2">
-        <span className="font-mono text-[11px] text-mist">syvia@workbench: ~/agents</span>
+        <span className="font-mono text-[11px] text-mist">deepsea@workbench: ~/agents</span>
         <span className="font-mono text-[11px] text-faint">TTY-01</span>
       </div>
       <div

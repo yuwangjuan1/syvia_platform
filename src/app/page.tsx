@@ -1,7 +1,7 @@
 import Link from "next/link";
 import BootTerminal from "@/components/boot-terminal";
 import SectionHead from "@/components/section-head";
-import { AGENTS, DEVLOG, MARQUEE, PIPELINE, STACK_GROUPS } from "@/data/agents";
+import { AGENTS, DEVLOG, MARQUEE, PIPELINE, SITE, STACK_GROUPS } from "@/data/agents";
 
 function Marquee() {
   const row = MARQUEE.map((item) => ` ${item} \u25c6`).join("");
@@ -117,13 +117,13 @@ export default function Page() {
       <section className="grid items-center gap-10 pt-28 sm:pt-36 lg:grid-cols-[1fr_460px]">
         <div>
           <p className="rise font-mono text-xs font-medium tracking-[0.24em] text-phos text-glow-soft">
-            {">"} SYVIA.SYS · 4 AGENTS IN PRODUCTION
+            {">"} {SITE.system} · 4 AGENTS IN PRODUCTION
           </p>
           <h1
             className="rise mt-5 font-display text-5xl font-extrabold leading-[1.18] sm:text-6xl lg:text-[68px]"
             style={{ animationDelay: "0.08s" }}
           >
-            <span className="gradient-text">欢迎来到 Syvia 的</span>
+            <span className="gradient-text">欢迎来到浅海鱼的</span>
             <br />
             <span className="text-paper text-glow">Agent 实验室。</span>
           </h1>

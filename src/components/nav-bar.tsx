@@ -7,8 +7,8 @@ import { SITE } from "@/data/agents";
 
 const NAV = [
   { href: "/agents", label: "Agent" },
-  { href: "/skills", label: "Skills" },
   { href: "/experts", label: "专家" },
+  { href: "/skills", label: "Skills" },
   { href: "/contact", label: "联系" },
 ];
 

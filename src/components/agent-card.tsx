@@ -128,7 +128,7 @@ export default function AgentCard({ agent }: { agent: AgentProject }) {
             )}
             <StatusBadge status={agent.status} />
           </div>
-          <h3 className="mt-5 font-display text-4xl font-extrabold leading-tight text-paper">
+          <h3 className="mt-5 font-display text-3xl font-extrabold leading-tight text-paper sm:text-4xl lg:text-3xl sm:whitespace-nowrap">
             {agent.name}
           </h3>
           <p className="mt-1.5 font-mono text-sm text-mist">{agent.codename}</p>

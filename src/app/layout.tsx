@@ -5,8 +5,8 @@ import { SITE } from "@/data/agents";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SYVIA · Agent 工作台",
-  description: "syvia 的 Agent 开发档案：全部自研 Agent 项目的展示、技术栈与在线入口。",
+  title: "浅海鱼 · Agent 工作台",
+  description: "浅海鱼（deepsea-coder）的 Agent 开发档案：全部自研 Agent 项目的展示、技术栈与在线入口。",
 };
 
 function Footer() {
