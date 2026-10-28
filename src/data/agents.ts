@@ -113,7 +113,10 @@ export const AGENTS: AgentProject[] = [
       { label: "导出格式", value: "4" },
       { label: "批量上限", value: "100" },
     ],
-    links: [{ label: "查看仓库", href: "https://github.com/yuwangjuan1/echo_scribes" }],
+    links: [
+      { label: "在线体验", href: "https://echoscribes.netlify.app/" },
+      { label: "查看仓库", href: "https://github.com/yuwangjuan1/echo_scribes" },
+    ],
   },
   {
     id: "AGT-002",
