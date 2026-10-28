@@ -24,6 +24,8 @@ export interface AgentProject {
   stack: string[];
   metrics: AgentMetric[];
   links: AgentLink[];
+  /** 卡片底部小字备注（如：后端未部署，敬请期待） */
+  note?: string;
   /** 主卡：流光边框 + 悬停浮起 */
   primary?: boolean;
   /** 卡片角标：如 ★ FLAGSHIP / ✦ NEW */
@@ -117,14 +119,15 @@ export const AGENTS: AgentProject[] = [
       { label: "在线体验", href: "https://echoscribes.netlify.app/" },
       { label: "查看仓库", href: "https://github.com/yuwangjuan1/echo_scribes" },
     ],
+    note: "转写后端暂未部署：落地页 / 定价 / 文档可正常浏览，转写服务敬请期待",
   },
   {
     id: "AGT-002",
-    name: "记忆宫殿 Memory Palace",
+    name: "记忆宫殿 MCP Server",
     codename: "memory-palace",
     status: "online",
     accent: "violet",
-    badge: "✦ NEW",
+    badge: "✦ MCP",
     primary: true,
     tagline: "217 篇笔记，毫秒级检索。你的第二大脑，AI 终于读得懂了。",
     description:
@@ -151,7 +154,10 @@ export const AGENTS: AgentProject[] = [
       { label: "检索命中", value: "90%" },
       { label: "检索延迟", value: "41ms" },
     ],
-    links: [{ label: "查看仓库", href: "https://github.com/yuwangjuan1/memory-palace" }],
+    links: [
+      { label: "安装指南", href: "https://github.com/yuwangjuan1/memory-palace#快速开始" },
+      { label: "查看仓库", href: "https://github.com/yuwangjuan1/memory-palace" },
+    ],
   },
   {
     id: "AGT-003",

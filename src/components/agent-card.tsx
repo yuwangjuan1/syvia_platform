@@ -204,6 +204,11 @@ export default function AgentCard({ agent }: { agent: AgentProject }) {
               ))
             )}
           </div>
+          {agent.note && (
+            <p className="mt-3 font-mono text-xs leading-relaxed text-mist">
+              （{agent.note}）
+            </p>
+          )}
         </div>
       </div>
     </article>
