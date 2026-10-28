@@ -178,21 +178,24 @@ export const AGENTS: AgentProject[] = [
     description:
       "大厂的免费 AI 解决「能上哪些学校」，青选解决「该上哪个、怎么一家人达成一致」。院校结构化卡、专业四出口地图、择校交互工具与就业红绿灯，青杏/青棠/青梧三位 AI 顾问（复用 WorkBuddy 专家人设）SSE 流式对话——纯方法论口径，不碰分数线数据，规避数据壁垒与幻觉责任。",
     features: [
-      "12 所院校结构化卡：学科实力、转专业政策、报考避坑点",
-      "12 个专业四出口地图 + 6 个名称陷阱祛魅标注",
-      "三大交互工具：冲稳保梯度自查、防退档终检、二选一决策矩阵",
-      "就业竞争红绿灯 6 条，定性分析附来源口径",
+      "34 所院校结构化卡：学科实力、转专业政策、报考避坑点",
+      "24 个专业四出口地图 + 名称陷阱祛魅标注",
+      "五大交互工具：定位计算器、梯度自查、防退档终检、志愿清单导出打印、二选一决策矩阵",
+      "行业竞争红绿灯 12 条，定性分析附来源口径",
       "三位 AI 顾问流式对话，复用专家人设零额外成本",
       "Next.js 16 + React 19 无数据库架构，Vercel 一键部署",
     ],
     stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "SSE", "LLM API"],
     metrics: [
       { label: "AI 顾问", value: "3 位" },
-      { label: "院校卡", value: "12" },
-      { label: "专业库", value: "12" },
-      { label: "交互工具", value: "3" },
+      { label: "院校卡", value: "34" },
+      { label: "专业库", value: "24" },
+      { label: "交互工具", value: "5" },
     ],
-    links: [{ label: "查看仓库", href: "https://github.com/yuwangjuan1/qingxuan" }],
+    links: [
+      { label: "在线体验", href: "https://qingxuangaokao.netlify.app/" },
+      { label: "查看仓库", href: "https://github.com/yuwangjuan1/qingxuan" },
+    ],
   },
 ];
 
