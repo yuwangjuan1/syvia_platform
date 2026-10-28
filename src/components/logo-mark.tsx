@@ -1,4 +1,4 @@
-/** 浅海鱼站标：像素眼小鱼（棱角尾 + 背鳍），currentColor 随父级文字颜色 */
+/** 浅海鱼站标：圆徽 + 波浪 + 小渔，currentColor 随父级文字颜色 */
 export default function LogoMark({ className = "h-6 w-6" }: { className?: string }) {
   return (
     <svg
@@ -8,19 +8,23 @@ export default function LogoMark({ className = "h-6 w-6" }: { className?: string
       className={className}
       style={{ filter: "drop-shadow(0 0 5px rgba(103,255,157,0.5))" }}
     >
-      {/* 鱼尾 */}
-      <path d="M11 16 4.5 11v10L11 16Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-      {/* 鱼身 */}
+      {/* 圆徽 */}
+      <circle cx="16" cy="16" r="12.5" stroke="currentColor" strokeWidth="2" />
+      {/* 小渔：身体 + 尾 */}
       <path
-        d="M10.8 16c1.6-4 5-6.5 9-6.5 4.6 0 8.1 2.7 9.4 6.5-1.3 3.8-4.8 6.5-9.4 6.5-4 0-7.4-2.5-9-6.5Z"
+        d="M13.2 12.8c1.7-2.2 4.9-2.2 6.6 0-1.7 2.2-4.9 2.2-6.6 0Z"
+        fill="currentColor"
+      />
+      <path d="M13.2 12.8l-2.5-1.7v3.4Z" fill="currentColor" />
+      {/* 渔眼 */}
+      <circle cx="18.3" cy="12.3" r=".9" fill="#0a0e0c" />
+      {/* 浅海波浪 */}
+      <path
+        d="M7 19.2q3-2.8 6 0t6 0t6 0"
         stroke="currentColor"
         strokeWidth="2"
-        strokeLinejoin="round"
+        strokeLinecap="round"
       />
-      {/* 背鳍 */}
-      <path d="M16.8 9.9l2.4-4.1 3 3.8" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-      {/* 像素眼 */}
-      <rect x="22.4" y="13.6" width="3.2" height="3.2" fill="currentColor" />
     </svg>
   );
 }
