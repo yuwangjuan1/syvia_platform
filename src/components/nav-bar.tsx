@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LogoMark from "@/components/logo-mark";
 import { SITE } from "@/data/agents";
 
 const NAV = [
@@ -16,8 +17,9 @@ export default function NavBar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 pt-[17px] pb-[12px] sm:px-6">
-        <Link href="/" className="font-display text-lg tracking-wide text-paper">
-          {"\u25ae"} {SITE.system}
+        <Link href="/" className="flex items-center gap-2 font-display text-lg tracking-wide text-paper">
+          <LogoMark className="h-[22px] w-[22px] shrink-0 text-phos" />
+          {SITE.system}
         </Link>
         <nav className="flex items-center gap-5 font-mono text-sm font-medium tracking-wide sm:gap-7">
           {NAV.map((item) => {

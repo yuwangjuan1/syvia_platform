@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LogoMark from "@/components/logo-mark";
 import NavBar from "@/components/nav-bar";
 import { SITE } from "@/data/agents";
 import "./globals.css";
@@ -14,8 +15,9 @@ function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="grid gap-8 sm:grid-cols-[1fr_auto]">
           <div>
-            <p className="font-display text-lg font-bold text-paper">
-              {"\u25ae"} {SITE.system}
+            <p className="flex items-center gap-2 font-display text-lg font-bold text-paper">
+              <LogoMark className="h-[22px] w-[22px] shrink-0 text-phos" />
+              {SITE.system}
             </p>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-mist">
               声明：本站为个人 Agent 项目的展示档案馆，全部作品自研自建，仅供技术交流与学习参考。
