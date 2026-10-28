@@ -12,7 +12,7 @@ export default function ContactPage() {
     <main className="relative z-10 mx-auto min-h-[70vh] max-w-6xl px-4 pb-24 pt-28 sm:px-6 sm:pt-32">
       <section id="contact">
         <SectionHead
-          index="08"
+          index="06"
           en="CONTACT"
           title="建立连接"
           sub="对哪位 Agent 感兴趣？仓库全部开放，随时来围观代码或聊聊 Agent 落地。"

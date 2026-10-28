@@ -8,9 +8,6 @@ const NAV = [
   { href: "/agents", label: "Agent" },
   { href: "/skills", label: "Skills" },
   { href: "/experts", label: "专家" },
-  { href: "/pipeline", label: "协作" },
-  { href: "/stack", label: "技术" },
-  { href: "/devlog", label: "日志" },
   { href: "/contact", label: "联系" },
 ];
 

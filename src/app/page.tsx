@@ -1,7 +1,7 @@
 import Link from "next/link";
 import BootTerminal from "@/components/boot-terminal";
 import SectionHead from "@/components/section-head";
-import { AGENTS, MARQUEE } from "@/data/agents";
+import { AGENTS, DEVLOG, MARQUEE, PIPELINE, STACK_GROUPS } from "@/data/agents";
 
 function Marquee() {
   const row = MARQUEE.map((item) => ` ${item} \u25c6`).join("");
@@ -37,6 +37,80 @@ const PRINCIPLES = [
   },
 ];
 
+function LabNotes() {
+  return (
+    <section id="lab-notes" className="mt-20">
+      <SectionHead
+        index="05"
+        en="LAB NOTES"
+        title="实验室底账"
+        sub="怎么协作、用什么造、走过哪些里程碑——一屏看完，不占地方。"
+      />
+
+      {/* 协作流水线：一行流 */}
+      <div className="mt-8 border border-line bg-panel/60 px-6 py-5">
+        <p className="font-mono text-xs font-medium tracking-[0.2em] text-phos">{"//"} PIPELINE</p>
+        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2.5">
+          {PIPELINE.map((p, i) => (
+            <span key={p.step} className="flex items-center gap-3">
+              {i > 0 && <span className="text-linebright" aria-hidden>{"\u2192"}</span>}
+              <span className="text-sm text-paper/90">
+                <span className="mr-1.5 font-mono text-xs font-bold text-phos">{p.step}</span>
+                {p.action}
+                <span className="ml-1.5 text-xs text-faint">{p.agent}</span>
+              </span>
+            </span>
+          ))}
+          <span className="flex items-center gap-3">
+            <span className="text-linebright" aria-hidden>{"\u2192"}</span>
+            <span className="text-sm text-mist">数据反哺下一轮选题，飞轮闭环</span>
+          </span>
+        </div>
+      </div>
+
+      {/* 工具箱：分组一行一项 */}
+      <div className="mt-4 border border-line bg-panel/60 px-6 py-5">
+        <p className="font-mono text-xs font-medium tracking-[0.2em] text-phos">{"//"} STACK</p>
+        <div className="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+          {STACK_GROUPS.map((g) => (
+            <p key={g.group} className="text-sm leading-relaxed">
+              <span className="mr-3 font-mono text-xs font-bold tracking-wider text-mist">
+                {g.group}
+              </span>
+              <span className="text-paper/85">{g.items.join(" \u00b7 ")}</span>
+            </p>
+          ))}
+        </div>
+      </div>
+
+      {/* 开发日志：压缩行 */}
+      <div className="mt-4 border border-line bg-panel/60 px-6 py-5">
+        <p className="font-mono text-xs font-medium tracking-[0.2em] text-phos">{"//"} DEV LOG</p>
+        <div className="mt-2 divide-y divide-line/60">
+          {DEVLOG.map((d) => (
+            <p key={`${d.date}-${d.event}`} className="flex flex-wrap items-baseline gap-x-4 py-2.5 text-sm">
+              <span className="font-mono text-xs font-bold text-phos text-glow-soft">{d.date}</span>
+              <span className="font-medium text-paper/90">{d.event}</span>
+              <span className="text-mist">{d.detail}</span>
+              <span
+                className={`ml-auto border px-1.5 py-0.5 font-mono text-[10px] tracking-[0.15em] ${
+                  d.tag === "RELEASE"
+                    ? "border-phos/40 bg-phos/10 text-phos"
+                    : d.tag === "INFRA"
+                      ? "border-linebright bg-panel2 text-paper/80"
+                      : "border-amber/40 bg-amber/10 text-amber"
+                }`}
+              >
+                {d.tag}
+              </span>
+            </p>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Page() {
   return (
     <main id="top" className="relative z-10 mx-auto max-w-6xl px-4 pb-24 sm:px-6">
@@ -69,12 +143,12 @@ export default function Page() {
             >
               认识我的 Agent {"\u2192"}
             </Link>
-            <Link
-              href="/pipeline"
+            <a
+              href="#lab-notes"
               className="border border-linebright px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-paper/90 transition-all hover:border-phos hover:text-phos"
             >
-              它们怎么协作 {"\u2192"}
-            </Link>
+              它们怎么协作 {"\u2193"}
+            </a>
           </div>
         </div>
 
@@ -101,7 +175,7 @@ export default function Page() {
 
       <section className="mt-20">
         <SectionHead
-          index="06"
+          index="04"
           en="PRINCIPLES"
           title="构建原则"
           sub="三条军规，刻在每个 Agent 的骨子里。"
@@ -118,6 +192,8 @@ export default function Page() {
           ))}
         </div>
       </section>
+
+      <LabNotes />
     </main>
   );
 }
