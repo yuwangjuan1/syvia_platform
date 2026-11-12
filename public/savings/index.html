@@ -502,7 +502,7 @@
   </section>
 
   <footer>
-    <button class="btn install" id="installBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>安装到桌面</button>
+    <button class="btn install" id="installBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span id="installTxt">安装到桌面</span></button>
     <button class="btn" id="fileBtn">连接数据文件</button>
     <button class="btn" id="exp">导出 CSV</button>
     <button class="btn" id="impBtn">导入备份</button>
@@ -1405,13 +1405,31 @@
 
   // 安装到桌面 / Service Worker
   const installBtn=document.getElementById('installBtn');
+  const installTxt=document.getElementById('installTxt');
   let deferPrompt=null;
-  window.addEventListener('beforeinstallprompt',e=>{
-    e.preventDefault();deferPrompt=e;installBtn.hidden=false;
-  });
-  const isiOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||
+  const ua=navigator.userAgent;
+  const isAndroid=/Android/i.test(ua);
+  const isiOS=/iPad|iPhone|iPod/.test(ua)||
     (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+
+  // 各浏览器「添加到桌面」入口位置不同，给出对应指引
+  function browserHint(){
+    if(/MicroMessenger/i.test(ua))return '微信内无法安装：点右上角「···」→ 在浏览器打开';
+    if(/MQQBrowser|QQBrowser/i.test(ua))return '点右下角「菜单」→ 添加到桌面';
+    if(/UCBrowser/i.test(ua))return '点底部「菜单」→ 添加到桌面';
+    if(/Quark/i.test(ua))return '点右下角「菜单」→ 添加到桌面';
+    if(/HuaweiBrowser/i.test(ua))return '点底部「菜单」→ 添加到桌面';
+    if(/MiuiBrowser/i.test(ua))return '点底部「菜单」→ 添加到桌面';
+    if(/baidubrowser|BIDUBrowser/i.test(ua))return '点底部「菜单」→ 添加到桌面';
+    if(/Firefox/i.test(ua))return '点右上角「⋮」→ 添加到主屏幕';
+    return '点浏览器菜单 → 添加到桌面 / 安装应用';
+  }
+
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();deferPrompt=e;
+    installTxt.textContent='安装到桌面';installBtn.hidden=false;
+  });
   installBtn.onclick=async()=>{
     if(deferPrompt){
       deferPrompt.prompt();
@@ -1420,10 +1438,16 @@
     }else if(isiOS){
       toast('点底部「分享」⬆️ → 向下滑动列表 → 选「添加到主屏幕」');
     }else{
-      toast('点右上角菜单 → 安装应用 / 添加到主屏幕');
+      toast(browserHint());
     }
   };
-  if(isiOS&&!isStandalone)installBtn.hidden=false;
+  if(isiOS&&!isStandalone){installTxt.textContent='安装到桌面';installBtn.hidden=false;}
+  // 安卓非 Chromium 浏览器拿不到安装事件，2.5 秒后降级为「添加到桌面」引导
+  if(isAndroid&&!isStandalone){
+    setTimeout(()=>{
+      if(!deferPrompt){installTxt.textContent='添加到桌面';installBtn.hidden=false;}
+    },2500);
+  }
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
   }
