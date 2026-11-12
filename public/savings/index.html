@@ -217,6 +217,22 @@
   .form select:focus,.form input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,116,245,.12)}
   .btn:hover{background:var(--blue-l);color:var(--blue);border-color:#c3d4f2}
 
+  /* 安装到桌面：主按钮样式，避免被当成普通次要按钮 */
+  .btn.install{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    background:var(--blue);border-color:var(--blue);color:#fff;font-weight:650;
+    padding:8px 15px;box-shadow:0 2px 10px rgba(24,116,245,.30);
+    animation:installPulse 2.4s ease-in-out infinite;
+  }
+  .btn.install:hover{background:var(--blue-d);border-color:var(--blue-d);color:#fff}
+  .btn.install svg{width:15px;height:15px;flex:none}
+  .btn.install[hidden]{display:none}
+  @keyframes installPulse{
+    0%,100%{box-shadow:0 2px 10px rgba(24,116,245,.30)}
+    50%{box-shadow:0 2px 16px rgba(24,116,245,.55)}
+  }
+  @media(prefers-reduced-motion:reduce){.btn.install{animation:none}}
+
   .grp{background:#f6f9fe;color:var(--ink3)}
   th{background:#f6f9fe}
   .row .amt:hover{background:var(--blue-l)}
@@ -486,7 +502,7 @@
   </section>
 
   <footer>
-    <button class="btn" id="installBtn" hidden>安装到桌面</button>
+    <button class="btn install" id="installBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>安装到桌面</button>
     <button class="btn" id="fileBtn">连接数据文件</button>
     <button class="btn" id="exp">导出 CSV</button>
     <button class="btn" id="impBtn">导入备份</button>
@@ -1393,18 +1409,20 @@
   window.addEventListener('beforeinstallprompt',e=>{
     e.preventDefault();deferPrompt=e;installBtn.hidden=false;
   });
+  const isiOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||
+    (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
   installBtn.onclick=async()=>{
     if(deferPrompt){
       deferPrompt.prompt();
       try{await deferPrompt.userChoice}catch(err){}
       deferPrompt=null;installBtn.hidden=true;
+    }else if(isiOS){
+      toast('点底部「分享」⬆️ → 向下滑动列表 → 选「添加到主屏幕」');
     }else{
-      toast('在浏览器菜单里选「添加到主屏幕」');
+      toast('点右上角菜单 → 安装应用 / 添加到主屏幕');
     }
   };
-  const isiOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||
-    (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
   if(isiOS&&!isStandalone)installBtn.hidden=false;
   if('serviceWorker' in navigator&&location.protocol!=='file:'){
     window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
