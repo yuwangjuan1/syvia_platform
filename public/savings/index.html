@@ -168,7 +168,7 @@
     .grp{padding:13px 13px 7px}
     .bars{gap:3px;height:112px}
     .g .lb{font-size:9px}
-    #totalTable{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    #totalTable,#netTable{overflow-x:auto;-webkit-overflow-scrolling:touch}
     th,td{padding:9px 8px;font-size:12px}
     .months{width:100%;justify-content:space-between}
     .months .cur{flex:1}
@@ -455,6 +455,11 @@
         <button id="acAdd">添加</button>
       </div>
       <div id="acList"></div>
+    </div>
+
+    <div class="card sec">
+      <div class="sec-h"><h2>净资产月度变化</h2><span class="hint">每月自动汇总，可逐月对比</span></div>
+      <div id="netTable"></div>
     </div>
   </section>
 
@@ -864,6 +869,7 @@
     document.getElementById('a-liab').textContent=money(liab);
     document.getElementById('a-count').textContent=acc.length;
     document.getElementById('a-net-sub').textContent='资产 ¥'+money(asset)+' − 负债 ¥'+money(liab);
+    renderNet();
 
     const box=document.getElementById('acList');
     if(!acc.length){
@@ -894,12 +900,69 @@
       if(el){el.focus();el.select();
         el.addEventListener('blur',e=>{
           const v=parseFloat(e.target.value), a=acc.find(x=>x.id===editing);
-          if(a&&isFinite(v)){a.amount=v;save()}
+          if(a&&isFinite(v)){
+            const diff=r2(v-a.amount);
+            if(diff){const m=thisMonth();a.h=a.h||{};a.h[m]=r2((a.h[m]||0)+diff)}
+            a.amount=v;save()
+          }
           editing=null;renderAcct();
         });
         el.addEventListener('keydown',e=>{if(e.key==='Enter')el.blur();if(e.key==='Escape'){editing=null;renderAcct()}});
       }
     }
+  }
+
+  /* ───────── 净资产月度变化 ───────── */
+  // 某账户在月末 m 的余额：当前余额减去 m 之后的所有变动
+  function acctAt(a,m){
+    if(a.c&&m<a.c)return 0;
+    const h=a.h||{};
+    let v=a.amount;
+    Object.keys(h).forEach(k=>{if(k>m)v-=h[k]});
+    return v;
+  }
+  // 每月打开页面时，自动把当月资产/负债存成一条月度记录
+  function snapMonth(){
+    const acc=db.accounts||[];if(!acc.length)return;
+    const a=r2(acc.filter(x=>!x.liab).reduce((s,x)=>s+x.amount,0));
+    const l=r2(acc.filter(x=>x.liab).reduce((s,x)=>s+x.amount,0));
+    db.snap=db.snap||{};
+    const m=thisMonth(),cur=db.snap[m];
+    if(!cur||cur.a!==a||cur.l!==l){db.snap[m]={a:a,l:l};save()}
+  }
+  function renderNet(){
+    const box=document.getElementById('netTable');if(!box)return;
+    const acc=db.accounts||[];
+    if(!acc.length){box.innerHTML='<div class="empty">还没有账户，先在上面添加一个。</div>';return}
+    snapMonth();
+    const ms={};
+    acc.forEach(a=>Object.keys(a.h||{}).forEach(k=>ms[k]=1));
+    Object.keys(db.snap||{}).forEach(k=>ms[k]=1);
+    ms[thisMonth()]=1;
+    const all=Object.keys(ms).sort();
+    let prev=null;
+    const rows=all.map(k=>{
+      const s=(db.snap||{})[k];
+      let a=0,l=0;
+      if(s){a=s.a;l=s.l}
+      else{acc.forEach(x=>{const v=acctAt(x,k);if(x.liab)l+=v;else a+=v})}
+      const n=r2(a-l),chg=prev===null?null:r2(n-prev);
+      prev=n;
+      return {k:k,a:r2(a),l:r2(l),n:n,chg:chg};
+    });
+    box.innerHTML='<table><thead><tr><th>月份</th><th>资产</th><th>负债</th><th>净资产</th><th>较上月</th></tr></thead><tbody>'+
+      rows.slice(-12).reverse().map(r=>
+        '<tr><td>'+label(r.k)+'</td>'+
+        '<td>'+money(r.a)+'</td>'+
+        '<td>'+money(r.l)+'</td>'+
+        '<td>'+money(r.n)+'</td>'+
+        '<td class="'+(r.chg>0?'c-in':r.chg<0?'c-ex':'')+'">'+((r.chg===null||r.chg===0)?'—':((r.chg>0?'+':'')+money(r.chg)))+'</td>'+
+        '</tr>').join('')+
+      '</tbody></table>'+
+      '<div class="empty" style="padding:14px 18px;text-align:left;line-height:1.8">'+
+      '每月打开一次，系统会把当月的资产、负债自动汇总成一条记录，之后就能逐月对比。'+
+      (rows.length<2?'<br>目前只有本月一条。':'')+
+      '</div>';
   }
 
   /* ───────── 借条 ───────── */
@@ -1243,7 +1306,7 @@
     if(!name){document.getElementById('acName').focus();return}
     if(!isFinite(amt)||amt<0){document.getElementById('acAmt').focus();return}
     const liab=LCATS.some(c=>c.k===cat);
-    (db.accounts=db.accounts||[]).push({id:uid(),name:name,cat:cat,amount:amt,liab:liab});
+    (db.accounts=db.accounts||[]).push({id:uid(),name:name,cat:cat,amount:amt,liab:liab,c:thisMonth(),h:{}});
     save();
     document.getElementById('acName').value='';document.getElementById('acAmt').value='';
     document.getElementById('acName').focus();
