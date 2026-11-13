@@ -1,0 +1,1979 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8fc6ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="小耳朵">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/jpeg" sizes="192x192" href="icons/icon-192.jpg">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<title>小耳朵 · 故事与英语</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{
+    --cream:#fdf8f1; --card:#fff;
+    --ink:#2a2739; --ink2:#6a6680; --ink3:#9d9aae;
+    --sky:#3f9bfd; --sky-l:#e7f2ff; --sky-d:#1a76e0;
+    --mint:#33c9a0; --mint-l:#e2faf2;
+    --sun:#ffb440; --sun-l:#fff3dd;
+    --coral:#ff7f68; --coral-l:#ffeeea;
+    --grape:#8b7cf6; --grape-l:#efecff;
+    --line:#eee9f4;
+    --shadow:0 14px 30px rgba(96,110,160,.10);
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:
+      radial-gradient(900px 480px at 8% -8%, #dceeff 0%, rgba(220,238,255,0) 62%),
+      radial-gradient(760px 420px at 104% 2%, #ffeede 0%, rgba(255,238,222,0) 58%),
+      radial-gradient(680px 420px at 50% 108%, #eae6ff 0%, rgba(234,230,255,0) 60%),
+      var(--cream);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:calc(16px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom));
+    min-height:100vh;
+  }
+  .wrap{max-width:560px;margin:0 auto}
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+  /* 通用 */
+  .view{display:none}
+  .view.on{display:block;animation:fade .22s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* 插画卡：纯本地绘制（渐变 + 光斑 + 小圆点 + 主图形），不依赖网络图片 */
+  .ph{position:relative;overflow:hidden;isolation:isolate;
+    background:linear-gradient(158deg,var(--c1,#e7f2ff) 0%,var(--c2,#fdf0e3) 100%)}
+  .ph .glow{position:absolute;left:-28%;top:-46%;width:92%;height:118%;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.72),rgba(255,255,255,0));z-index:0}
+  .ph .hl{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);z-index:1}
+  .ph .hl.a{bottom:-22%;left:-16%;width:78%;height:50%}
+  .ph .hl.b{bottom:-30%;right:-20%;width:86%;height:58%;background:rgba(255,255,255,.34)}
+  .ph .dt{position:absolute;border-radius:50%;background:rgba(255,255,255,.8);z-index:2}
+  .ph .dt.p1{width:6px;height:6px;left:15%;top:20%}
+  .ph .dt.p2{width:9px;height:9px;left:30%;top:11%;opacity:.85}
+  .ph .dt.p3{width:5px;height:5px;right:18%;top:16%;opacity:.7}
+  .ph .dt.p4{width:4px;height:4px;right:28%;top:34%;opacity:.6}
+  .ph .f{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);z-index:3;
+    font-size:var(--fs,44px);line-height:1;filter:drop-shadow(0 8px 14px rgba(60,70,120,.22))}
+  .ph .lt{position:absolute;z-index:2;font-weight:900;color:rgba(255,255,255,.8);
+    font-family:Georgia,'Times New Roman',serif}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .topbar h2{font-size:19px;font-weight:800;letter-spacing:-.3px;flex:1}
+  .back{width:40px;height:40px;border-radius:14px;background:#fff;box-shadow:0 4px 12px rgba(96,110,160,.12);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .back svg{width:18px;height:18px;stroke:var(--ink);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .pillbtn{height:40px;padding:0 15px;border-radius:14px;background:#fff;box-shadow:0 4px 12px rgba(96,110,160,.12);
+    font-size:12.5px;font-weight:700;color:var(--sky-d);display:flex;align-items:center;gap:5px}
+  .sec-h{display:flex;align-items:center;gap:8px;margin:22px 2px 11px}
+  .sec-h b{font-size:15.5px;font-weight:800;letter-spacing:-.2px}
+  .sec-h i{font-style:normal;font-size:15px}
+  .sec-h em{font-style:normal;font-size:11.5px;color:var(--ink3);margin-left:auto}
+  .note{font-size:11.5px;color:var(--ink3);line-height:1.8;margin:12px 4px 0}
+
+  /* 首页 */
+  .hero{position:relative;border-radius:30px;padding:20px 20px 18px;overflow:hidden;
+    background:linear-gradient(135deg,#d9ecff 0%,#eee7ff 52%,#ffeade 100%);
+    box-shadow:0 16px 36px rgba(96,120,190,.14)}
+  .hero:after{content:'';position:absolute;width:180px;height:180px;right:-60px;top:-70px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.85),rgba(255,255,255,0))}
+  .hero-row{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+  .hero-art{width:78px;height:78px;border-radius:26px;overflow:hidden;flex:none;box-shadow:0 10px 22px rgba(80,110,190,.22);background:#fff}
+  .hero-art img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero h1{font-size:27px;font-weight:850;letter-spacing:-1px;line-height:1.1}
+  .hero p{font-size:12.5px;color:#5f6684;margin-top:6px;font-weight:600}
+  .hero-tags{display:flex;gap:7px;margin-top:14px;position:relative;z-index:1;flex-wrap:wrap}
+  .tag{font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,.72);color:#5a5f7a}
+
+  .entry{position:relative;display:block;width:100%;text-align:left;border-radius:26px;overflow:hidden;
+    margin-bottom:13px;box-shadow:var(--shadow);transition:.18s;background:#fff}
+  .entry:active{transform:scale(.985)}
+  .entry .ph{height:132px}
+  .entry .ph .f{left:auto;right:8%;top:50%;transform:translateY(-50%);font-size:56px}
+  .entry.story .ph{--c1:#3c4a86;--c2:#8b64b8}
+  .entry.story .ph .hl{background:rgba(255,255,255,.13)}
+  .entry.story .ph .hl.b{background:rgba(255,255,255,.09)}
+  .entry.story .ph .dt{background:#fff;box-shadow:0 0 8px rgba(255,255,255,.85)}
+  .entry.en .ph{--c1:#ffa968;--c2:#ffd98f}
+  .entry.en .ph .hl{background:rgba(255,255,255,.4)}
+  .entry.en .ph .hl.b{background:rgba(255,255,255,.26)}
+  .entry.en .ph .lt{color:rgba(255,255,255,.9);text-shadow:0 2px 8px rgba(180,90,20,.2)}
+  .entry .mask{position:absolute;inset:0;background:linear-gradient(100deg,rgba(12,26,48,.62) 6%,rgba(12,26,48,.18) 58%,rgba(12,26,48,0) 92%)}
+  .entry.en .mask{background:linear-gradient(100deg,rgba(52,30,10,.58) 6%,rgba(52,30,10,.16) 58%,rgba(52,30,10,0) 92%)}
+  .entry .txt{position:absolute;left:18px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;color:#fff;max-width:74%}
+  .entry .txt b{font-size:20px;font-weight:850;letter-spacing:-.4px;text-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .entry .txt span{font-size:12px;opacity:.92;margin-top:6px;text-shadow:0 1px 6px rgba(0,0,0,.3);line-height:1.5}
+  .entry .go{position:absolute;right:14px;bottom:14px;width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 16px rgba(0,0,0,.18)}
+  .entry .go svg{width:16px;height:16px;stroke:#3a3d52;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  .today{border-radius:24px;background:#fff;padding:16px;box-shadow:var(--shadow)}
+  .td-hd{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--ink2)}
+  .td-hd em{font-style:normal;font-size:11.5px;color:var(--ink3);font-weight:600}
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .chip{border-radius:16px;padding:12px 12px 11px;background:#fbf9fe;border:1.5px solid #f1edf8;display:flex;align-items:center;gap:9px}
+  .chip .dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;background:#f1edf8;flex:none}
+  .chip b{display:block;font-size:12.5px;font-weight:800}
+  .chip em{font-style:normal;display:block;font-size:10.5px;color:var(--ink3);margin-top:2px}
+  .chip.ok{background:var(--mint-l);border-color:#bdeedd}
+  .chip.ok .dot{background:#c8f4e6}
+  .chip.ok em{color:#12a37b;font-weight:700}
+  .tip{font-size:11.5px;color:var(--ink3);line-height:1.8;margin-top:12px;padding-top:12px;border-top:1.5px dashed var(--line)}
+  .foot{font-size:11px;color:var(--ink3);text-align:center;margin-top:20px;line-height:1.8}
+
+  /* 故事网格 */
+  .sg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sc{border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 10px 22px rgba(96,110,160,.10);
+    text-align:left;width:100%;transition:.16s;position:relative}
+  .sc:active{transform:scale(.97)}
+  .sc .ph{aspect-ratio:4/3}
+  .sc .sc-tag{position:absolute;left:8px;top:8px;font-size:9.5px;font-weight:800;padding:4px 8px;border-radius:20px;
+    background:rgba(255,255,255,.9);color:#4b4f68;letter-spacing:.2px}
+  .sc .sc-tag.ser{background:linear-gradient(120deg,#ffb440,#ff7f68);color:#fff;
+    box-shadow:0 4px 10px rgba(255,127,104,.32)}
+  .sc .sc-tx{padding:9px 11px 11px}
+  .sc .sc-tx b{display:block;font-size:13.5px;font-weight:800;letter-spacing:-.2px}
+  .sc .sc-tx span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px}
+  .sc.playing{outline:3px solid rgba(63,155,253,.35);outline-offset:2px}
+
+  /* 分类筛选 */
+  .colsline{display:flex;gap:8px;overflow-x:auto;padding:0 2px 12px;margin:0 -16px;padding-left:16px;padding-right:16px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .colsline::-webkit-scrollbar{display:none}
+  .cbtn{flex:none;height:34px;padding:0 14px;border-radius:12px;background:#fff;
+    box-shadow:0 4px 12px rgba(96,110,160,.10);font-size:12.5px;font-weight:750;color:var(--ink2);
+    white-space:nowrap;transition:.16s}
+  .cbtn.on{background:var(--ink);color:#fff;box-shadow:0 8px 18px rgba(42,39,57,.24)}
+  .cbtn:active{transform:scale(.96)}
+
+  .item{display:flex;align-items:center;gap:12px;padding:12px 13px;background:#fff;border-radius:18px;margin-bottom:8px;
+    box-shadow:0 6px 16px rgba(96,110,160,.08)}
+  .item .pl{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    background:var(--sky);padding-left:2px}
+  .item .pl svg{width:15px;height:15px;fill:#fff}
+  .item .nm{flex:1;min-width:0}
+  .item .nm b{display:block;font-size:13.5px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .nm span{display:block;font-size:11px;color:var(--ink3);margin-top:3px}
+  .item .del{width:32px;height:32px;border-radius:11px;color:#c9c6d6;font-size:14px;flex:none}
+  .empty{padding:26px 18px;text-align:center;color:var(--ink3);font-size:12px;line-height:1.9;
+    background:#fff;border-radius:20px;border:1.5px dashed #eae5f3}
+  .empty b{display:block;font-size:13px;color:var(--ink2);margin-bottom:5px}
+
+  /* 英语 */
+  .enhero{border-radius:26px;overflow:hidden;position:relative;box-shadow:var(--shadow)}
+  .enhero .ph{height:150px;--c1:#e4f3ff;--c2:#fff0d8}
+  .enhero .ph .f{left:auto;right:18%;top:44%;transform:translateY(-50%);font-size:66px}
+  .enhero .ph .lt{color:rgba(120,146,226,.5)}
+  .enhero .mask{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.96) 88%)}
+  .enhero .body{position:absolute;left:0;right:0;bottom:0;padding:0 16px 14px}
+  .enhero .body b{font-size:17px;font-weight:850;letter-spacing:-.3px}
+  .enhero .body span{display:block;font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .btn-primary{width:100%;height:52px;border-radius:18px;background:linear-gradient(135deg,#59b0ff,#3f7bfd);
+    color:#fff;font-size:16px;font-weight:800;letter-spacing:.3px;margin-top:13px;
+    box-shadow:0 12px 24px rgba(63,123,253,.28);display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn-primary:active{transform:scale(.985)}
+  .btn-primary svg{width:17px;height:17px;fill:#fff}
+  .stat-row{display:flex;gap:9px;margin-top:12px}
+  .stat{flex:1;background:#fff;border-radius:16px;padding:11px 12px;box-shadow:0 6px 16px rgba(96,110,160,.07);text-align:center}
+  .stat b{display:block;font-size:17px;font-weight:850;letter-spacing:-.5px}
+  .stat em{font-style:normal;font-size:10.5px;color:var(--ink3)}
+
+  .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .wcell{border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 6px 14px rgba(96,110,160,.08);position:relative}
+  .wcell .ph{aspect-ratio:1}
+  .wcell .ph .f{--fs:34px}
+  .wcell .ph .hl.a{height:44%}
+  .wcell .ph .hl.b{height:52%}
+  .wcell b{display:block;font-size:11px;font-weight:750;text-align:center;padding:6px 4px 7px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* 词卡 */
+  .wcard{border-radius:30px;background:#fff;padding:16px;box-shadow:0 18px 40px rgba(96,110,160,.16);text-align:center}
+  .wcard .ph{width:100%;aspect-ratio:1;border-radius:24px}
+  .wcard .ph .f{--fs:92px}
+  .wd-en{font-size:42px;font-weight:850;letter-spacing:-1.2px;line-height:1.1;margin-top:16px;color:var(--ink)}
+  .wd-zh{font-size:15px;color:var(--ink3);margin-top:7px;opacity:0;transition:.25s;font-weight:600}
+  .wd-zh.on{opacity:1}
+  .wd-bar{height:6px;border-radius:3px;background:#f1edf8;margin-top:16px;overflow:hidden}
+  .wd-bar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#6cc6ff,#3f7bfd);transition:width .3s}
+  .btn-ghost{width:100%;height:48px;border-radius:16px;background:#fff;color:var(--ink2);font-size:14px;font-weight:700;
+    margin-top:12px;box-shadow:0 6px 16px rgba(96,110,160,.09)}
+  .done-card{border-radius:28px;background:#fff;padding:30px 22px;text-align:center;box-shadow:var(--shadow)}
+  .done-card .em{font-size:46px}
+  .done-card h3{font-size:18px;margin-top:12px;font-weight:850}
+  .done-card p{font-size:12.5px;color:var(--ink3);margin-top:9px;line-height:1.8}
+
+  /* 播放器 */
+  .player{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;
+    background:linear-gradient(168deg,#2b2b57 0%,#1b1b3a 52%,#12122a 100%);color:#fff;
+    padding:calc(16px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom))}
+  .player.on{display:flex;animation:up .26s ease}
+  @keyframes up{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+  .p-top{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:#a3a3c4;flex:none}
+  .p-exit{border:1px solid rgba(255,255,255,.2);color:#c9c9e0;border-radius:20px;padding:8px 15px;font-size:11.5px;
+    position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;flex:none;
+    touch-action:none;-webkit-touch-callout:none}
+  .p-exit:before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;
+    background:rgba(255,255,255,.3);pointer-events:none;z-index:0}
+  .p-exit.holding:before{width:100%;transition:width .8s linear}
+  .p-exit.holding{color:#fff}
+  .p-cover{flex:none;margin:14px auto 0;width:min(62vw,240px);aspect-ratio:1;border-radius:30px;overflow:hidden;
+    box-shadow:0 22px 50px rgba(0,0,0,.36);background:rgba(255,255,255,.08)}
+  .p-cover .ph{width:100%;height:100%;--fs:96px}
+  .p-name{font-size:19px;font-weight:800;text-align:center;margin-top:16px;letter-spacing:-.3px;flex:none}
+  .p-text{flex:1;min-height:0;overflow:auto;font-size:15px;line-height:1.95;color:#d3d3e8;text-align:center;
+    padding:12px 6px;letter-spacing:.2px}
+  .p-prog{margin-top:6px;flex:none}
+  .p-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.16);overflow:hidden}
+  .p-bar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#8fd3ff,#6f8cff);transition:width .3s}
+  .p-time{display:flex;justify-content:space-between;font-size:11px;color:#9090b4;margin-top:8px;font-variant-numeric:tabular-nums}
+  .p-ctrl{display:flex;align-items:center;justify-content:center;gap:30px;margin-top:14px;flex:none}
+  .p-ctrl button{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .p-ctrl button svg{width:22px;height:22px;fill:#c9c9e0}
+  .p-play{width:72px!important;height:72px!important;background:#fff!important;box-shadow:0 12px 28px rgba(120,150,255,.35)}
+  .p-play svg{width:26px!important;height:26px!important;fill:#1b1b3a!important}
+  .p-timer{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:14px;font-size:11px;color:#9090b4;flex:none}
+  .p-timer button{border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:6px 12px;font-size:11px;color:#c3c3dc}
+  .p-timer button.on{background:#8fd3ff;border-color:#8fd3ff;color:#141430;font-weight:800}
+
+  /* 设置 */
+  .sheet{position:fixed;inset:0;z-index:60;display:none;background:rgba(22,20,40,.45);padding:14px;align-items:flex-end}
+  .sheet.on{display:flex}
+  .sheet-in{background:#fff;border-radius:26px 26px 20px 20px;padding:16px 16px 20px;width:100%;max-width:560px;margin:0 auto;animation:up .2s ease}
+  .row-lab{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 2px;
+    border-bottom:1.5px solid #f5f2fa;font-size:13.5px;font-weight:600;color:var(--ink2)}
+  .row-lab input[type=range]{width:150px;accent-color:var(--sky)}
+  .danger{width:100%;height:46px;border-radius:15px;background:#fff2f0;color:#e0523c;font-size:13.5px;font-weight:700;margin-top:16px}
+
+  .toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(12px);
+    background:rgba(34,30,54,.94);color:#fff;font-size:12.5px;padding:11px 18px;border-radius:22px;
+    opacity:0;pointer-events:none;transition:.22s;z-index:99;max-width:88vw;text-align:center;line-height:1.5}
+  .toast.on{opacity:1;transform:translateX(-50%)}
+
+  @media(min-width:600px){
+    body{padding-top:30px}
+    .entry .ph{height:150px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+
+  <!-- 首页 -->
+  <section class="view on" id="v-home">
+    <div class="hero">
+      <div class="hero-row">
+        <div class="hero-art"><img src="icons/icon-192.jpg" alt="小耳朵"></div>
+        <div><h1>小耳朵</h1><p>今晚想听点什么呀？</p></div>
+      </div>
+      <div class="hero-tags">
+        <span class="tag" id="tag-story">📚 12 个经典故事</span>
+        <span class="tag" id="tag-en">🔤 英语每天 10 分钟</span>
+        <button class="tag" id="open-set">⚙️ 设置</button>
+      </div>
+    </div>
+
+    <button class="entry story" id="go-story">
+      <div class="ph">
+        <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
+        <span class="dt p1"></span><span class="dt p2"></span><span class="dt p3"></span><span class="dt p4"></span>
+        <span class="f">🌙</span>
+      </div>
+      <div class="mask"></div>
+      <div class="txt"><b>听故事</b><span id="st-story">格林童话 · 寓言故事</span></div>
+      <div class="go"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </button>
+
+    <button class="entry en" id="go-en">
+      <div class="ph">
+        <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
+        <span class="lt" style="left:44%;top:16%;font-size:15px;transform:rotate(-10deg)">A</span>
+        <span class="lt" style="left:56%;top:64%;font-size:19px;transform:rotate(8deg)">B</span>
+        <span class="lt" style="left:48%;top:40%;font-size:12px;transform:rotate(4deg);opacity:.55">c</span>
+        <span class="f">🎧</span>
+      </div>
+      <div class="mask"></div>
+      <div class="txt"><b>英语磨耳朵</b><span id="st-en">每天 10 分钟，5 个词</span></div>
+      <div class="go"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
+    </button>
+
+    <div class="today">
+      <div class="td-hd"><span>今天的小耳朵</span><em id="td-date"></em></div>
+      <div class="chips">
+        <div class="chip" id="bd-story"><div class="dot">🌙</div><div><b>故事</b><em>还没听</em></div></div>
+        <div class="chip" id="bd-en"><div class="dot">🎧</div><div><b>英语</b><em>还没读</em></div></div>
+      </div>
+      <p class="tip">故事放睡前，定时 15–30 分钟；英语放早上或饭后，家长陪着听、跟着念一遍最管用。</p>
+    </div>
+
+    <p class="foot">故事与学习记录只存在这台设备里<br>断网也能用，不上传任何内容</p>
+  </section>
+
+  <!-- 故事 -->
+  <section class="view" id="v-story">
+    <div class="topbar">
+      <button class="back" data-back aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <h2>听故事</h2>
+      <button class="pillbtn" id="imp-story">＋ 导入</button>
+    </div>
+
+    <div class="sec-h"><i>🌙</i><b>经典故事库</b><em id="st-count">点开就开始读</em></div>
+    <div class="colsline" id="st-cols"></div>
+    <div class="sg" id="sg"></div>
+
+    <div class="sec-h"><i>📁</i><b>我导入的音频</b><em>可锁屏播放</em></div>
+    <div id="story-list"></div>
+
+    <p class="note">内置故事由手机自带朗读功能念出来，朗读时会自动保持屏幕常亮；手一按息屏，系统就会停下朗读。想熄屏后接着听，把 mp3 导入进来更稳。</p>
+  </section>
+
+  <!-- 英语 -->
+  <section class="view" id="v-en">
+    <div class="topbar">
+      <button class="back" data-back aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <h2>英语磨耳朵</h2>
+      <button class="pillbtn" id="imp-en">＋ 课文</button>
+    </div>
+
+    <div class="enhero">
+      <div class="ph">
+        <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
+        <span class="lt" style="left:34%;top:14%;font-size:20px;transform:rotate(-8deg)">A</span>
+        <span class="lt" style="left:46%;top:70%;font-size:15px;transform:rotate(10deg)">B</span>
+        <span class="lt" style="left:70%;top:20%;font-size:13px;transform:rotate(6deg)">C</span>
+        <span class="dt p1"></span><span class="dt p2"></span><span class="dt p3"></span>
+        <span class="f">🎧</span>
+      </div>
+      <div class="mask"></div>
+      <div class="body"><b>今日 10 分钟</b><span id="en-sub">3 个复习 + 2 个新词</span></div>
+    </div>
+
+    <button class="btn-primary" id="start-sess">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>开始今天的 10 分钟
+    </button>
+
+    <div class="stat-row">
+      <div class="stat"><b id="st-learned">0</b><em>已学单词</em></div>
+      <div class="stat"><b id="st-days">0</b><em>坚持天数</em></div>
+      <div class="stat"><b id="st-today">—</b><em>今日状态</em></div>
+    </div>
+
+    <div class="sec-h"><i>🖼️</i><b>单词图鉴</b><em id="wgrid-n"></em></div>
+    <div class="wgrid" id="wgrid"></div>
+
+    <div class="sec-h"><i>🎵</i><b>课文音频</b><em>可选</em></div>
+    <div id="en-list"></div>
+
+    <p class="note">单词由手机自带朗读合成，配上卡通图片，边看边听。导入教材音频后，也可以在这里单独播放。</p>
+  </section>
+
+  <!-- 词卡 -->
+  <section class="view" id="v-sess">
+    <div class="topbar">
+      <button class="back" id="sess-exit" aria-label="结束"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <h2>今天 10 分钟</h2>
+      <span class="pillbtn" id="sess-count">1 / 5</span>
+    </div>
+
+    <div class="wcard">
+      <div class="ph" id="wd-pic">
+        <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
+        <span class="dt p1"></span><span class="dt p2"></span><span class="dt p3"></span>
+        <span class="f" id="wd-emoji">🍎</span>
+      </div>
+      <div class="wd-en" id="wd-en">ready</div>
+      <div class="wd-zh" id="wd-zh">准备好</div>
+      <div class="wd-bar"><i id="wd-bar"></i></div>
+    </div>
+
+    <button class="btn-ghost" id="sess-repeat">再听一遍</button>
+    <p class="note">听两遍，跟着读一遍。看完这一组，今天的英语就完成啦。</p>
+  </section>
+
+  <!-- 完成 -->
+  <section class="view" id="v-done">
+    <div class="done-card">
+      <div class="em">🎉</div>
+      <h3>今天的英语完成啦</h3>
+      <p id="done-tx">学了 5 个词</p>
+      <button class="btn-primary" id="done-home">回到首页</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- 播放器 -->
+<div class="player" id="player">
+  <div class="p-top">
+    <button class="p-exit" id="p-exit">按住退出</button>
+    <span id="p-kind">故事</span>
+  </div>
+  <div class="p-cover"><div class="ph" id="p-cover">
+    <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
+    <span class="dt p1"></span><span class="dt p2"></span><span class="dt p3"></span>
+    <span class="f" id="p-emoji">🎧</span>
+  </div></div>
+  <div class="p-name" id="p-name">—</div>
+  <div class="p-text" id="p-text"></div>
+  <div class="p-prog">
+    <div class="p-bar"><i id="p-fill"></i></div>
+    <div class="p-time" id="p-time"><span id="p-cur">0:00</span><span id="p-dur">0:00</span></div>
+  </div>
+  <div class="p-ctrl">
+    <button id="p-prev" aria-label="上一个"><svg viewBox="0 0 24 24"><path d="M6 5h2.2v14H6zM20 5v14L8.5 12z"/></svg></button>
+    <button class="p-play" id="p-play" aria-label="播放"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+    <button id="p-next" aria-label="下一个"><svg viewBox="0 0 24 24"><path d="M15.8 5H18v14h-2.2zM4 5l11.5 7L4 19z"/></svg></button>
+  </div>
+  <div class="p-timer">
+    <span>定时关闭</span>
+    <button data-min="0" class="on">关</button>
+    <button data-min="15">15</button>
+    <button data-min="30">30</button>
+    <button data-min="45">45</button>
+  </div>
+</div>
+
+<!-- 设置 -->
+<div class="sheet" id="sheet">
+  <div class="sheet-in">
+    <div class="topbar">
+      <button class="back" id="sheet-close" aria-label="关闭"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <h2>设置</h2>
+    </div>
+    <label class="row-lab">中文故事语速<input type="range" id="set-zh" min="0.6" max="1.1" step="0.05"></label>
+    <label class="row-lab">英文单词语速<input type="range" id="set-rate" min="0.5" max="1.1" step="0.05"></label>
+    <div class="row-lab"><span>已用空间</span><b id="set-usage">—</b></div>
+    <button class="danger" id="set-reset">清空全部数据</button>
+    <p class="note">会删除导入的音频和学习记录，不可恢复。</p>
+  </div>
+</div>
+
+<input type="file" id="picker" accept="audio/*" multiple style="display:none">
+<audio id="au" preload="metadata"></audio>
+<div class="toast" id="toast"></div>
+<script>
+/* ═════════ 基础 ═════════ */
+const $ = s => document.querySelector(s);
+const LS = 'kids-audio-v1';
+const pad = n => String(n).padStart(2, '0');
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const addDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const fmt = s => { if (!isFinite(s) || s < 0) s = 0; const m = Math.floor(s / 60), x = Math.floor(s % 60); return m + ':' + pad(x); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('on'), 2200);
+}
+
+/* ═════════ 插画配色（本地渐变绘制，不依赖网络） ═════════ */
+const PAL = [
+  ['#ffe3ea', '#fff6dc'], ['#e3f0ff', '#f4e6ff'], ['#ffe9d6', '#e8fff4'],
+  ['#ffe0d9', '#fff3c9'], ['#dff5e8', '#e6f0ff'], ['#e6f0ff', '#fff0dc'],
+  ['#e2f4ff', '#fdf0e0'], ['#f4e6ff', '#ffe9e2'], ['#e8f0ff', '#e6fbf3'],
+  ['#fff0dc', '#e6f6ff'], ['#e6fbf3', '#fff6dc'], ['#e4f4ff', '#f0e8ff']
+];
+const pal = i => PAL[Math.abs(i) % PAL.length];
+const ph = (c1, c2, em, fs) =>
+  '<div class="ph" style="--c1:' + c1 + ';--c2:' + c2 + '">' +
+    '<span class="glow"></span><span class="hl a"></span><span class="hl b"></span>' +
+    '<span class="dt p1"></span><span class="dt p2"></span><span class="dt p3"></span>' +
+    '<span class="f"' + (fs ? ' style="--fs:' + fs + 'px"' : '') + '>' + em + '</span>' +
+  '</div>';
+
+/* ═════════ 内置故事 ═════════ */
+const STORIES = [
+  { id: 's01', t: '小红帽', tag: '格林童话', em: '🔴',
+    ps: [
+      '小红帽挎着小篮子，蹦蹦跳跳地走。篮子里是刚烤好的蛋糕，还热乎着。',
+      '出门前妈妈说：走大路，别拐弯，别跟不认识的人说话。她点点头，答应得可快了。',
+      '树后面闪出一只狼，笑眯眯地问：小姑娘，这么早去哪儿呀？',
+      '小红帽想都没想：去看奶奶，她病了。话一出口，她才想起妈妈的话。',
+      '狼一转身就没影了。它跑得飞快，先到了奶奶家。咚咚咚——',
+      '谁呀？奶奶在屋里问。是我，小红帽。狼捏着嗓子，把声音压得又细又软。',
+      '等小红帽推开门，奶奶躺在床上，被子盖到下巴，屋里静得吓人。',
+      '奶奶，你的耳朵怎么这么大？——好听你说话呀。那你的嘴，怎么这么大？——好一口吃掉你呀！',
+      '狼一下蹦起来。小红帽尖叫着往门口跑。正好一个猎人经过，举起斧头冲了进来。'
+    ] },
+  { id: 's02', t: '狼和七只小羊', tag: '格林童话', em: '🐐',
+    ps: [
+      '羊妈妈要出门，把七只小羊叫到跟前：谁敲门也别开。大灰狼的声音粗，爪子黑，记牢了。',
+      '咚咚咚。妈妈回来了，快开门。门外声音又粗又哑。小羊们挤在门后喊：不开不开，你声音太粗！',
+      '狼跑下山，吞了一大口粉笔，嗓子一下子变细了。它又用面粉把爪子涂白。',
+      '咚咚咚。妈妈回来了。这次声音细细的，爪子白白的。门闩一抽——',
+      '七只小羊撒腿就跑，钻桌底、跳窗台、躲床下。可狼还是一只一只找了出来。',
+      '最小的一只钻进了大钟里，捂住嘴，一声都不敢出。',
+      '羊妈妈回来，家里空空的，只有那口钟在滴滴答答。她顺着脚印找到树下，狼正呼呼大睡。',
+      '一把剪刀，咔嚓，咔嚓。六只小羊一只接一只跳出来，毛上还沾着草。'
+    ] },
+  { id: 's03', t: '白雪公主', tag: '格林童话', em: '🍎',
+    ps: [
+      '冬天，雪花一片一片往下落。王后的小女儿出生了，皮肤白得像雪，嘴唇红得像樱桃。',
+      '王后走了以后，国王娶了新的王后。她有一面镜子，每天都要问：镜子镜子，谁是世界上最美的人？',
+      '镜子说：白雪公主。新王后的脸一下子沉了下来。',
+      '她叫来猎人：把她带到森林里去。猎人看着白雪公主，怎么也下不了手，摆摆手：快跑，别回头。',
+      '白雪公主跑啊跑，跑到一间小房子前。七张小床，七只小碗，桌上落了一层灰。',
+      '她把屋子擦得干干净净，然后蜷在一张小床上睡着了。',
+      '七个小矮人扛着镐子回来，看见床上的姑娘，谁也没舍得叫醒她。',
+      '新王后从镜子里知道了，捏着一个红苹果，变成一个老婆婆，颤巍巍地来了。',
+      '咬一口吧，甜着呢。白雪公主咬下去——咕咚，倒在了地上。'
+    ] },
+  { id: 's04', t: '三只小猪', tag: '经典童话', em: '🐷',
+    ps: [
+      '猪妈妈把三个孩子送到门口：房子自己盖，盖好了我来看。',
+      '老大抱来一捆稻草，刷刷刷，半天就盖好了。他躺进去，打起了呼噜。',
+      '老二锯木头，叮叮当当，两天也盖好了。',
+      '老三一块一块搬砖，手上磨出了泡。哥哥们笑他：傻不傻呀。',
+      '大灰狼来了，站在草房子前：小猪小猪，让我进去。不开不开。那我就吹——呼！',
+      '草房子散了一地。老大一路跑到老二家。呼——木头房子也倒了。',
+      '两只小猪挤进老三的砖房。狼吹得脸都红了，房子一动也不动。',
+      '狼爬上屋顶，要从烟囱钻。老三早烧开了一锅水，锅底的火苗噼啪作响。'
+    ] },
+  { id: 's05', t: '龟兔赛跑', tag: '伊索寓言', em: '🐢',
+    ps: [
+      '兔子翘着腿，看乌龟慢慢爬：你这速度，走一天也到不了山那头。',
+      '乌龟抬起头：那就比比看。',
+      '哨声一响，兔子嗖地窜出去，一眨眼就没影了。乌龟抬起腿，一步一步往前挪。',
+      '跑到半路，兔子回头望望，连乌龟的影子都看不见。它打了个哈欠：睡一觉都来得及。',
+      '太阳晒得暖烘烘的，兔子往树下一躺。呼——呼——',
+      '乌龟没停。一步，一步，汗顺着壳往下淌。',
+      '等兔子睁开眼，前面尘土扬起，乌龟正慢慢爬过终点线。'
+    ] },
+  { id: 's06', t: '狼来了', tag: '伊索寓言', em: '🐺',
+    ps: [
+      '山坡上，放羊的孩子把鞭子甩得啪啪响。羊低头吃草，白云一朵一朵飘过去。',
+      '他忽然扯着嗓子喊：狼来了！狼来了——',
+      '村里人扛着锄头跑上山，气喘吁吁：狼呢？孩子捂着肚子笑：骗你们的。',
+      '第二天，他又喊。人们跑上山，又扑了个空。有人摇摇头，走了。',
+      '第三天，草丛里真的钻出一只狼，绿眼睛，一步一步靠近。',
+      '孩子拼命地喊，喊得嗓子都破了。山下的门一扇一扇关着，没有人上来。'
+    ] },
+  { id: 's07', t: '乌鸦喝水', tag: '伊索寓言', em: '🐦',
+    ps: [
+      '乌鸦飞了半天，嗓子干得冒烟。',
+      '地上有个玻璃瓶，瓶底亮晶晶一层水。它把嘴伸进去——够不着。',
+      '瓶口那么小，水那么浅。乌鸦绕着瓶子走了两圈。',
+      '它叼起一颗小石子，丢进去。咚。又一颗，咚。',
+      '石子一颗一颗沉下去，水面一格一格往上爬。',
+      '乌鸦低下头，咕咚，咕咚，喝了个饱。'
+    ] },
+  { id: 's08', t: '狐狸和葡萄', tag: '伊索寓言', em: '🦊',
+    ps: [
+      '葡萄架上，一串一串紫葡萄挂着。风一吹，轻轻晃。',
+      '狐狸停在架下，仰着头，口水都要滴下来了。',
+      '它退后两步，猛地一蹿——爪子擦着葡萄过去了。',
+      '再蹿。再蹿。摔得四脚朝天，尾巴上全是土。',
+      '狐狸拍拍身上的灰，哼了一声：这种葡萄，酸得很。',
+      '它走远了。葡萄还在架上，晃啊晃。'
+    ] },
+  { id: 's09', t: '农夫与蛇', tag: '伊索寓言', em: '🐍',
+    ps: [
+      '雪地里躺着一条蛇，硬邦邦的，像根冻住的绳子。',
+      '农夫蹲下来，搓了搓它：还有一口气。',
+      '他解开棉袄，把蛇揣进怀里，捂得严严实实。',
+      '走了一段路，怀里动了动。蛇醒了，抬起三角形的头。',
+      '吭哧一口，咬在农夫胸口。',
+      '农夫倒在雪地上，看着蛇慢慢游走，一句话也说不出来。'
+    ] },
+  { id: 's10', t: '守株待兔', tag: '中国寓言', em: '🐰',
+    ps: [
+      '锄头举起来，落下。农夫擦擦汗，又举起锄头。',
+      '忽然，草丛里一阵响。一只兔子窜出来，咚地撞在树桩上，腿一蹬，不动了。',
+      '农夫拎起兔子掂了掂：真沉。晚上炖了一锅。',
+      '第二天，锄头靠在墙边。他搬了个小板凳，坐在树桩旁边。',
+      '太阳升起来，又落下去。树桩还是那个树桩。',
+      '草长高了，地荒了。兔子一只也没有再来。'
+    ] },
+  { id: 's11', t: '亡羊补牢', tag: '中国寓言', em: '🐑',
+    ps: [
+      '天刚亮，牧羊人推开羊圈门，数了一遍，又数一遍：少了一只。',
+      '木栏上破了个大洞，边上还挂着几撮狼毛。',
+      '邻居探头进来：快把洞补上吧。他摆摆手：羊都丢了，补它还有什么用。',
+      '半夜，风声里夹着一声羊叫。等他趿着鞋跑出去——又少了一只。',
+      '第二天一早，他抱来木板，叮叮当当敲了半天，把洞堵得严严实实。',
+      '从那以后，他每晚都数一遍羊。一只也没再少。'
+    ] },
+  { id: 's12', t: '井底之蛙', tag: '中国寓言', em: '🐸',
+    ps: [
+      '井底住着一只青蛙。抬头是一片圆天，低头是一汪浅水。',
+      '它跳上跳下，呱呱地叫：这日子，多快活呀。',
+      '一只海龟从井边经过，探头往里看。青蛙招呼：进来坐坐？',
+      '海龟的脚刚伸进去，就被井口卡住了。它退回来，笑了。',
+      '你见过海吗？一眼望不到边，浪一层压着一层。青蛙张了张嘴，没说出话。',
+      '天还是那么圆，井还是那么深。'
+    ] },
+  { id: 's13', t: '青蛙王子', tag: '格林童话', em: '🐸',
+    ps: [
+      '井边，小公主把金球抛得高高的，啪地接住，笑得眼睛弯成月牙。',
+      '抛得太高了一点。金球在空中一偏，咕咚一声，沉进了井里。',
+      '她趴在井沿上哭。井底传来一个声音：哭什么呀，我帮你捞。',
+      '一只青蛙浮上来，鼓着眼睛：捞可以，但你得让我做你的朋友，跟你一张桌子吃饭。',
+      '行行行。公主一口答应。球一捞上来，她抱着就跑，裙角都没回头看一眼。',
+      '第二天，咚咚咚，有敲门声。公主一开门，脸都白了。',
+      '国王放下刀叉：答应过的事，就要做到。',
+      '公主只好让青蛙坐上桌。它刚碰到桌布——啪，一团烟雾散了，站着一位王子。'
+    ] },
+  { id: 's14', t: '睡美人', tag: '格林童话', em: '😴',
+    ps: [
+      '小公主满月那天，十二位仙女来了，一人送一句祝福：漂亮、聪明、唱歌好听。',
+      '第十三位仙女站在门口，声音冷冷的：十五岁那年，她会被纺锤扎到，一睡不醒。',
+      '国王下令，全国的纺锤都收进地窖。公主一天天长大。',
+      '十五岁生日，她一个人爬上旧塔。塔顶坐着个老婆婆，手里转着一根纺锤。',
+      '来，试试。公主伸出手指——啊。',
+      '她倒下了。城堡里的钟停了，面包师的手停在半空，连火苗都不动了。',
+      '一百年后，王子的靴子踩过荆棘。他推开塔门，看见床上睡着的姑娘。',
+      '他低下头。公主睁开眼，窗外的玫瑰正好开了。'
+    ] },
+  { id: 's15', t: '灰姑娘', tag: '格林童话', em: '👠',
+    ps: [
+      '灰姑娘每天劈柴、挑水、擦地板。两个姐姐坐在火边，把瓜子壳往她脚边扔。',
+      '王宫要开舞会那天，姐姐们穿上新裙子出门，临走还回头笑：你在家好好干活。',
+      '门关上了。灰姑娘坐在灶边，眼泪掉进灰里。',
+      '别哭了。仙女教母站在院子里。南瓜一滚，变成马车；破衣服一抖，变成裙子。',
+      '记住，十二点以前一定回来。教母说完，把一双水晶鞋放在她脚边。',
+      '舞会上，王子谁也没看，只看她。钟声一下一下地近了。',
+      '十二点。她提着裙角跑，台阶上落下一只鞋。',
+      '王子拿着鞋走遍全国。姐姐们抢着试，脚怎么都塞不进去。',
+      '灰姑娘伸出脚，鞋一穿，刚刚好。'
+    ] },
+  { id: 's16', t: '不来梅的音乐家', tag: '格林童话', em: '🐴',
+    ps: [
+      '老驴拉不动磨了，主人拿着绳子走过来。它挣开缰绳，往不来梅去了。',
+      '路上遇见老狗。狗说：我牙掉了，主人要赶我走。驴说：跟我走，我们去当音乐家。',
+      '老猫蹲在路边，公鸡站在篱笆上。四个伙伴凑齐了，一起上路。',
+      '天黑了，树林里有一间小木屋，窗子里亮着灯。',
+      '驴把前腿搭上窗台，狗跳上驴背，猫跳上狗背，公鸡踩在最上面。',
+      '一、二、三——咴！汪！喵！喔喔喔！',
+      '屋里的强盗跳起来，连碗都摔了，一路逃进黑树林。',
+      '四个伙伴吃了桌上的面包，挤在火边睡了。谁也没再赶它们走。'
+    ] },
+  { id: 's17', t: '汉赛尔与格莱特', tag: '格林童话', em: '🍪',
+    ps: [
+      '家里只剩半个面包了。继母对父亲说：把孩子丢进森林吧。',
+      '门后，汉赛尔听见了。他悄悄溜出去，把口袋塞满了白色小石子。',
+      '第二天走进森林，他走一步，往身后丢一颗。',
+      '月亮升起来，石子在地上亮晶晶的，像撒了一路星星。',
+      '第二次，他撒的是面包屑。小鸟飞下来，一啄，一啄，全吃光了。',
+      '天黑了，兄妹俩在森林里转圈。前面忽然透出一点光。',
+      '是糖做的屋子。墙上抹着奶油，窗框是巧克力。',
+      '门开了，一个老婆婆笑呵呵地招手：进来吧，孩子，进来吧。'
+    ] },
+  { id: 's18', t: '丑小鸭', tag: '安徒生童话', em: '🦆',
+    ps: [
+      '鸭妈妈蹲在窝里，一天，两天。蛋壳一颗一颗裂开，小鸭探出头来。',
+      '最后一只蛋最大，滚出来一只灰扑扑的小鸭，脖子长长的，走路还歪。',
+      '你看看它。鸭子们笑。连哥哥姐姐都躲着它。',
+      '丑小鸭游到了池塘另一边。秋天，叶子黄了；冬天，水面结了冰。',
+      '它趴在冰边，冷得发抖。一个农夫把它抱进屋，它却吓得到处乱飞。',
+      '春天，河面化了。几只白天鹅落下来，羽毛白得发亮。',
+      '丑小鸭低下头。水里映着的，也是一只白天鹅。'
+    ] },
+  { id: 's19', t: '卖火柴的小女孩', tag: '安徒生童话', em: '🔥',
+    ps: [
+      '雪下得很大，街上的人都回家了。小女孩抱着一把火柴，缩在墙角。',
+      '她的鞋跑丢了一只，脚趾冻得发紫。',
+      '一整天，没人买她一根火柴。',
+      '她擦亮一根。啪。火苗小小的，暖烘烘的，像一只小火炉。',
+      '又一根。火光里，桌上摆着烤鹅，肚子里塞着苹果。',
+      '第三根。奶奶站在光里，笑着向她伸出手。',
+      '奶奶，带我走。她把剩下的火柴全擦亮了，一根接一根。',
+      '天亮的时候，她靠在墙角，脸上还带着笑。'
+    ] },
+  { id: 's20', t: '拇指姑娘', tag: '安徒生童话', em: '🌸',
+    ps: [
+      '女人种下一粒种子，花开了。花心里坐着一个小姑娘，才拇指那么大。',
+      '她用花瓣当被子，用树叶当小船，在水盆里划来划去。',
+      '一只癞蛤蟆跳进来，把她抱走了：给我儿子当媳妇。',
+      '小鱼咬断荷叶的梗，小船漂走了。',
+      '金龟子把她带到树上，又嫌她太瘦，摇摇头，把她丢在草地上。',
+      '整个冬天，她住在地洞里，给一只受伤的燕子喂水。',
+      '春天，燕子好了。飞呀飞，飞过田野，飞到一个开满花的地方。',
+      '每一朵花心都住着一个小小的孩子。最高的那朵，站着一位小王子。'
+    ] },
+  { id: 's21', t: '皇帝的新装', tag: '安徒生童话', em: '👑',
+    ps: [
+      '两个外地人进了宫，说他们会织一种布，只有聪明人才看得见。',
+      '皇帝眼睛一亮：穿上它，谁笨谁聪明，一看就知道。',
+      '织布机空转着。咔哒，咔哒。其实一根线也没有。',
+      '派去的大臣睁大了眼——空空的。他咽了口口水：好看，真是好看。',
+      '皇帝亲自去看，也什么都没看见。他点点头：好，真好。',
+      '游行那天，皇帝光着身子走在最前面，身后两个侍从托着空气。',
+      '街上的人都说：新衣服真漂亮。谁也不敢做那个笨人。',
+      '爸爸，他什么都没穿呀。一个小孩仰着头喊。',
+      '话一传开，街上的人一个接一个笑了出来。皇帝还是挺着胸，一步一步往前走。'
+    ] },
+  { id: 's22', t: '小锡兵', tag: '安徒生童话', em: '🪖',
+    ps: [
+      '锡勺子化了，铸出二十五个小兵。最后一个锡不够了，他只有一条腿。',
+      '可他站得笔直，枪扛在肩上，眼睛望着桌上的纸城堡。',
+      '城堡门口站着一位纸做的舞蹈家，亮片裙，一条腿抬起来，像在跳舞。',
+      '夜里，盒子里跳出一个小妖：喂，别盯着她看。',
+      '第二天，小锡兵从窗口掉了下去。下雨了，他被冲进下水道。',
+      '一条鱼把他吞了。鱼被捞上来，卖到了那户人家——他又回到了这张桌子上。',
+      '后来，他掉进了火炉。纸舞蹈家被风吹起来，也落进火里。',
+      '第二天，女仆清炉灰，发现一颗小小的锡心，和一片烧黑的亮片。'
+    ] },
+  { id: 's23', t: '豌豆公主', tag: '安徒生童话', em: '🛏️',
+    ps: [
+      '王子跑了很多地方，想找一位真正的公主。可总也认不出来。',
+      '一个雷雨的晚上，门被敲得咚咚响。',
+      '门外站着个姑娘，头发滴着水，裙子贴着腿：我是公主。',
+      '王后没说话，走进客房，在床上放了一颗豌豆。',
+      '豌豆上面，铺了二十床被子。',
+      '第二天早上，姑娘揉着腰：我一夜没睡，床上有个硬东西硌得我疼。',
+      '王后笑了。大家点点头：是真的。'
+    ] },
+  { id: 's24', t: '北风与太阳', tag: '伊索寓言', em: '☀️',
+    ps: [
+      '北风拍着胸口：我力气最大。太阳笑了笑：那我们比一比。',
+      '路上走来一个人，裹着厚大衣。谁先让他脱下来，谁就赢。',
+      '北风先来。呼——呼——，树都弯了腰。',
+      '那人把领口一紧，帽子压低，走得更快了。',
+      '北风吹得直喘气，只好停下。太阳慢慢探出云来。',
+      '暖烘烘的。那人解开扣子，抹了把汗，把大衣搭在胳膊上。'
+    ] },
+  { id: 's25', t: '蚂蚁和蚱蜢', tag: '伊索寓言', em: '🐜',
+    ps: [
+      '夏天的日头毒得很。蚂蚁排成一队，一只扛一粒米，往洞里搬。',
+      '蚱蜢躺在草叶上，腿一翘一翘：这么热，歇会儿吧。',
+      '蚂蚁没抬头：冬天来的时候，就没得搬了。',
+      '蚱蜢唱了一整个夏天。',
+      '第一场雪落下来，草都枯了。蚱蜢饿得肚子咕咕叫。',
+      '它敲开蚂蚁的门。蚂蚁正在数粮食。',
+      '夏天你在做什么？蚱蜢低下头，说不出话。'
+    ] },
+  { id: 's26', t: '狮子和老鼠', tag: '伊索寓言', em: '🦁',
+    ps: [
+      '狮子在树荫下打盹。一只小老鼠从它鼻子上跑过去。',
+      '啪。一只大爪子压下来。',
+      '放了我吧。老鼠抖着胡子：以后我一定报答你。',
+      '狮子被逗笑了，爪子一松：走吧走吧。',
+      '过了些天，树林里传来吼声。狮子被网罩住了，越挣越紧。',
+      '老鼠跑过来，咔哧，咔哧，一根一根咬断绳子。',
+      '狮子站起来，抖了抖毛，低头看了看脚边那只小小的老鼠。'
+    ] },
+  { id: 's27', t: '狐狸和乌鸦', tag: '伊索寓言', em: '🦊',
+    ps: [
+      '乌鸦叼着一块肉，停在树枝上，肉还冒着热气。',
+      '狐狸在树下绕圈，尾巴一摇一摇。',
+      '乌鸦姐姐，你今天真好看。羽毛亮得像缎子。',
+      '乌鸦歪了歪头。',
+      '你的嗓子一定也好，唱一句给我听听？',
+      '乌鸦一张嘴——啊。肉掉了下来。',
+      '狐狸叼起肉，头也不回地钻进草丛。'
+    ] },
+  { id: 's28', t: '拔苗助长', tag: '中国寓言', em: '🌱',
+    ps: [
+      '禾苗才冒出一点点绿。农夫蹲在田埂上，越看越急。',
+      '怎么就不长呢？他伸手把一棵苗往上提了提。',
+      '嘿，高了一点。他来了劲，一棵一棵往上拔。',
+      '从早上拔到太阳下山，腰都直不起来，可心里高兴。',
+      '今天可累坏我了，苗都长高了。他回家就往床上一躺。',
+      '第二天，儿子跑到田里，蹲下去一看——苗全蔫了，叶子卷成一条。'
+    ] },
+  { id: 's29', t: '画蛇添足', tag: '中国寓言', em: '🐍',
+    ps: [
+      '地上摆着一壶酒，几个人围着，谁先画完一条蛇，谁喝。',
+      '一个书生手快，刷刷几笔，蛇头蛇身都齐了。',
+      '他端起酒壶，看了看别人：我还早呢。',
+      '他蘸了蘸墨，给蛇添上四只脚。',
+      '另一个人的笔一放：我画完了。',
+      '你画的不是蛇。蛇哪有脚？',
+      '酒壶到了那人手里。书生举着笔，愣在那儿。'
+    ] },
+  { id: 's30', t: '自相矛盾', tag: '中国寓言', em: '🗡️',
+    ps: [
+      '集市上，一个汉子把盾往地上一立：我的盾，什么也扎不透！',
+      '他又举起一支矛，在头顶上晃：我的矛，什么都能扎透！',
+      '围的人越来越多，有人叫好。',
+      '人群里挤出一个人，慢悠悠地问：那用你的矛，扎你的盾呢？',
+      '汉子张着嘴，矛举在半空，盾还立在地上。',
+      '周围的人哄地笑了。'
+    ] },
+  { id: 's31', t: '掩耳盗铃', tag: '中国寓言', em: '🔔',
+    ps: [
+      '有户人家的大门上，挂着一只铜铃铛。风一吹，叮当，叮当。',
+      '一个人从门口走过，站住不走了。他盯着那只铃铛，眼珠子跟着晃。',
+      '好看是好看，可一碰就响。他一拍脑门：把耳朵堵上，不就听不见了？',
+      '他撕了两团棉花，塞进耳朵，塞得死死的。',
+      '四下里一下子没了声音。他满意地点点头，伸手去摘——',
+      '叮当！叮当叮当叮当！',
+      '院里的灯一下子亮了。门吱呀一声开了。',
+      '铃铛还攥在他手里，晃个不停。他站在那儿，什么也听不见。'
+    ] },
+  { id: 's32', t: '刻舟求剑', tag: '中国寓言', em: '⛵',
+    ps: [
+      '江上一条小船，晃晃悠悠地往前走。',
+      '一个人站在船帮上，腰里别着一把剑，看得正起劲。',
+      '哗——风一吹，船一晃，剑掉进了水里。',
+      '啊呀！他趴在船边往下看。江水一晃一晃，剑早没影了。',
+      '他不慌不忙，摸出小刀，在船帮上刻了一道：就这儿，我的剑从这儿掉下去的。',
+      '船继续往前走，岸上的树一棵一棵往后跑。',
+      '到了岸边，他顺着那道记号，扑通一声跳下去。',
+      '他在水里摸呀摸，摸了半天，摸上来一把水草。'
+    ] },
+  { id: 's33', t: '狐假虎威', tag: '中国寓言', em: '🐯',
+    ps: [
+      '老虎抓住了一只狐狸，大爪子按在狐狸背上。',
+      '狐狸脖子一挺：你敢吃我？天帝派我来管百兽。',
+      '老虎愣住了，爪子松了松。',
+      '狐狸甩甩尾巴：不信？你跟着我走一趟，看谁见了我不跑。',
+      '狐狸走在前面，一步一晃，尾巴翘得高高的。老虎跟在后面，眼睛一眨不眨。',
+      '小鹿看见了，掉头就跑。兔子看见了，一头钻进草丛。野猪看见了，吭哧吭哧往林子里冲。',
+      '老虎停下脚，往后缩了缩。',
+      '狐狸回过头，眯起眼睛笑了一下。'
+    ] },
+  { id: 's34', t: '孔融让梨', tag: '中国故事', em: '🍐',
+    ps: [
+      '一盘梨端上桌，黄澄澄的，大的大，小的小。',
+      '父亲说：融儿，你先挑。',
+      '孔融才四岁，踮着脚够到盘子，拿了一个最小的。',
+      '父亲奇怪了：怎么不拿大的？',
+      '孔融捧着梨：我小，吃小的。大的留给哥哥。',
+      '哥哥在旁边愣了愣，伸手拿了一个中等的。',
+      '一桌子人都笑了。梨的甜味，飘了满屋。'
+    ] },
+  { id: 's35', t: '司马光砸缸', tag: '中国故事', em: '🪣',
+    ps: [
+      '院子里有一口大水缸，比小孩还高，装得满满的。',
+      '几个孩子在院子里追着跑。一个孩子爬上缸沿，想看看水里有什么。',
+      '脚下一滑——扑通！',
+      '水花溅得老高。缸里咕嘟咕嘟冒泡，一只手在水面上抓了两下。',
+      '孩子们吓坏了，尖叫着往门外跑。',
+      '司马光没跑。他四下看，一眼看见墙角那块石头。',
+      '他抱起石头，冲到缸边，用尽全身力气一砸——',
+      '哐！缸裂开一道口子。哗——水冲出来，淌了一地。',
+      '那个孩子坐在地上，咳着水，睁开了眼睛。'
+    ] },
+  { id: 's36', t: '曹冲称象', tag: '中国故事', em: '🐘',
+    ps: [
+      '一头大象站在院子里，腿比柱子还粗，耳朵一扇一扇。',
+      '曹操绕着它走了一圈：谁能称称，它有多重？',
+      '大臣们你看我，我看你。这么大的秤，上哪儿找去？',
+      '七岁的曹冲从人缝里挤出来：我有办法。',
+      '他让人把大象牵到河边的大船上。船往下一沉，水漫上来。',
+      '他蹲在船帮上，齐着水面，画了一道线。',
+      '大象牵走了，船又慢慢浮起来。',
+      '一筐一筐的石头往船上搬。搬一筐，船沉一点，再搬一筐。',
+      '水面又到那道线了。曹冲拍拍手：行了，称石头吧。'
+    ] },
+  { id: 's37', t: '愚公移山', tag: '中国故事', em: '⛰️',
+    ps: [
+      '愚公家门口，两座大山堵着。出门得绕好大一圈。',
+      '九十岁的愚公扛起锄头，站在门口：挖。',
+      '儿子挑着扁担来了，孙子也来了。一筐土，一筐石头，往渤海边送。',
+      '邻居看见了，笑得直不起腰：你都这把年纪了，挖得完吗？',
+      '愚公抹了把汗：我挖不完，我儿子挖。儿子挖不完，孙子挖。',
+      '他往手心吐了口唾沫：山又不会长高，挖一点，少一点。',
+      '山脚下那堆土，一天一天矮下去。',
+      '后来，天帝派了两个大力神下来，一手一座，把山背走了。'
+    ] },
+  { id: 's38', t: '三个和尚', tag: '中国故事', em: '🛕',
+    ps: [
+      '山上的小庙里，住着一个和尚。他每天挑一担水，够喝一天。',
+      '后来来了个瘦和尚。两个人抬水，你一头我一头，也还够。',
+      '再后来，又来了个胖和尚。',
+      '水缸空了。瘦和尚看看胖和尚，胖和尚看看小和尚。谁也不动。',
+      '一天，两天。三个人坐在庙里，嗓子干得冒烟。',
+      '夜里，胖和尚打翻了蜡烛。火苗舔上幔帐，呼地一下蹿起来。',
+      '着火啦！三个人全跳起来，抓起水桶往山下冲。',
+      '一桶，两桶，一担，两担。火灭了。三个人满头黑灰，坐在地上喘气。',
+      '第二天天没亮，庙门口那根扁担，已经有人扛上了肩。'
+    ] },
+  { id: 's39', t: '猴子捞月', tag: '中国故事', em: '🐒',
+    ps: [
+      '月亮升起来了。井边静悄悄的。',
+      '一只小猴扒着井沿往下一看——咦？井里也有一个月亮。',
+      '它回头就喊：不好了！月亮掉井里了！',
+      '呼啦啦，一群猴子全跑来了，脑袋挤成一圈，往井里看。',
+      '真的是月亮。圆圆的，白白净净。',
+      '老猴子说：搭起来，把月亮捞上来。',
+      '一只抓着树杈，一只抓着它的尾巴，一只再抓一只……长长的一串，垂到井口。',
+      '最下面的小猴伸出手，往水里一捞——',
+      '哗啦。月亮碎了，碎成一片一片，晃呀晃。',
+      '小猴愣住了，抬头一看。月亮好好的，正挂在天上。'
+    ] },
+  { id: 's40', t: '拔萝卜', tag: '经典童话', em: '🥕',
+    ps: [
+      '老爷爷种了一个萝卜。萝卜越长越大，半边露在土外面，红通通的。',
+      '老爷爷两手攥住萝卜缨子，嘿哟，嘿哟。',
+      '拔不动。',
+      '老奶奶，快来！老奶奶抓住老爷爷的腰。嘿哟，嘿哟。',
+      '还是拔不动。',
+      '小孙女，快来！小孙女抓住老奶奶。嘿哟，嘿哟。',
+      '小狗，快来！小狗咬住小孙女的衣角。嘿哟，嘿哟。',
+      '小猫，快来！小猫抱住小狗的尾巴。嘿哟，嘿哟。',
+      '最后，小老鼠也跑来了，咬住小猫的尾巴尖。',
+      '嘿哟——噗！萝卜出来了。几个人一屁股摔成一堆。'
+    ] },
+  { id: 's41', t: '金发姑娘和三只熊', tag: '经典童话', em: '🐻',
+    ps: [
+      '森林里有一座小木屋。屋里住着熊爸爸、熊妈妈和小熊。',
+      '早上，三碗粥刚盛好，太烫了。三只熊出门散步，门虚掩着。',
+      '一个金头发的小姑娘路过，闻见香味，推门进来了。',
+      '她尝熊爸爸的粥——太烫。尝熊妈妈的——太凉。尝小熊的——刚刚好。',
+      '她一口一口，吃了个精光。',
+      '再试椅子。熊爸爸的太硬，熊妈妈的太软，小熊的正合适——咔嚓，椅子散了。',
+      '她打了个哈欠，上楼躺在床上，睡着了。',
+      '三只熊回来了。熊爸爸嗓子粗粗的：谁动过我的粥？',
+      '熊妈妈声音软软的：谁坐过我的椅子？',
+      '小熊尖着嗓子喊：谁睡过我的床！还在那儿呢！',
+      '小姑娘一下子醒了。她跳下床，冲出小木屋，一直跑回家里。',
+      '小熊站在门口，抱着那个空碗，看着她的背影。'
+    ] },
+  { id: 's42', t: '姜饼人', tag: '经典童话', em: '🍪',
+    ps: [
+      '老奶奶烤了一个姜饼人。圆脑袋，小纽扣，还画了个笑脸。',
+      '炉门一开——姜饼人跳出来，撒腿就跑。',
+      '站住！老奶奶追出去。',
+      '跑呀跑，你追不上我，我是姜饼人！他一边跑一边唱。',
+      '老爷爷追，追不上。小狗追，追不上。奶牛追，也追不上。',
+      '前面一条河。姜饼人刹住脚，在岸边转圈。',
+      '一只狐狸踱过来：上来吧，我驮你过去。',
+      '姜饼人跳上狐狸的背。水漫到狐狸的肚子，又漫到脖子。',
+      '狐狸说：往前挪挪，别湿了你。',
+      '姜饼人往前挪，挪到狐狸的鼻尖上。',
+      '狐狸把嘴一张——咔嚓。',
+      '河面上，几粒姜饼渣慢慢漂走了。'
+    ] },
+  { id: 's43', t: '小红母鸡', tag: '经典童话', em: '🐔',
+    ps: [
+      '小红母鸡在院子里刨土，刨出几粒麦子。',
+      '谁来帮我种？她问。',
+      '不是我。小猫舔舔爪子。不是我。小狗摇摇尾巴。',
+      '小红母鸡自己刨坑，自己埋，自己浇水。',
+      '麦子长高了，变黄了。谁来帮我收？',
+      '不是我。小猫翻了个身。不是我。小狗打了个哈欠。',
+      '小红母鸡自己割，自己磨，自己和面，自己烤。',
+      '面包出炉了，香得满院子都是。',
+      '谁来帮我吃？小红母鸡问。',
+      '我！我！小猫和小狗一起跳起来。',
+      '小红母鸡把面包往怀里一抱：不。这是我的。',
+      '她坐在台阶上，一口一口，把面包吃完了。'
+    ] },
+  { id: 's44', t: '杰克与豌豆', tag: '经典童话', em: '🌱',
+    ps: [
+      '杰克家里只剩一头奶牛。妈妈让他牵到集上去卖。',
+      '路上，一个老头拦住他：这几颗豆子，换你的牛，怎么样？',
+      '杰克揣着豆子回了家。妈妈一看，气得把豆子甩出窗外：睡觉！',
+      '第二天早上，杰克推开窗——',
+      '一棵豆茎，粗得像树干，一直长到云里。',
+      '他爬呀爬，爬得手心发烫，爬到了云上。',
+      '云上有一座大房子。桌上摆着金币，笼子里关着一只下金蛋的母鸡。',
+      '咚，咚，咚。地板震得直晃。巨人回来了！',
+      '杰克抱起母鸡，顺着豆茎往下滑。',
+      '巨人在后面追，豆茎一晃一晃。',
+      '杰克跳到地上，抓起斧头，咔嚓，咔嚓。',
+      '豆茎断了。云上面传来一声长长的喊叫，越来越远。'
+    ] },
+  { id: 's45', t: '渔夫和金鱼', tag: '经典童话', em: '🐟',
+    ps: [
+      '老渔夫撒下网，拉上来一条金鱼。金鱼在他手里扑腾：放了我吧，你要什么，我都给。',
+      '老渔夫什么也没要，把它放回了大海。',
+      '回家一说，老太婆把木盆一摔：去，要一只新木盆！',
+      '老渔夫走到海边。海水有点浑。金鱼冒出头：你要什么？',
+      '新木盆有了。第二天，老太婆又要新房子。',
+      '新房子有了。没过几天，她要做贵妇人，穿金戴银，还要人伺候。',
+      '再后来，她要当海上的女皇，让金鱼来给她使唤。',
+      '老渔夫又走到海边。风呜呜地刮，海水黑得像墨。',
+      '他喊了一声。金鱼浮上来，看了他一眼，尾巴一摆，沉下去了。',
+      '老渔夫回到家。门口还是那只破木盆，屋里还是那间旧屋子。',
+      '老太婆坐在门槛上，低着头补渔网。'
+    ] },
+  { id: 's46', t: '阿拉丁与神灯', tag: '一千零一夜', em: '🪔',
+    ps: [
+      '街上，一个外地人拉住阿拉丁：走，我带你去找宝贝。',
+      '他们走到一座山下。外地人念了几句咒语，石头轰隆一声裂开，露出一道台阶。',
+      '下去，把里面那盏旧油灯拿出来。别的都不许碰。',
+      '阿拉丁摸黑走下去。满洞的金子银子他都没看，只抱起了那盏灯。',
+      '上来的时候，他伸手要人拉。外地人却先要灯：先把灯给我。',
+      '阿拉丁不肯。石头轰隆一声合上了。',
+      '洞里黑得伸手不见五指。阿拉丁急得直搓手，搓到了手指上那枚戒指。',
+      '轰——一个神仙冒出来：主人，你要什么？',
+      '我要回家。一眨眼，他就站在了自家门口。',
+      '后来他擦亮那盏灯。灯神也出来了：主人，你要什么？'
+    ] },
+  { id: 's47', t: '阿里巴巴和四十大盗', tag: '一千零一夜', em: '🗝️',
+    ps: [
+      '阿里巴巴在山上砍柴，忽然听见马蹄声。他赶紧躲到一块大石头后面。',
+      '四十个强盗跳下马，把袋子往地上一扔。',
+      '其中一个冲着石头喊：芝麻，开门！',
+      '轰隆——石头裂开，里面金光闪闪，全是财宝。',
+      '强盗走了。阿里巴巴也喊了一声：芝麻，开门！',
+      '他进去装了一袋金币，跑回了家。',
+      '强盗发现少了东西，一路找到他家，在门上画了个白记号。',
+      '女仆马尔基娜看见了。趁着天黑，她在整条街每家门上，都画了一个。',
+      '第二天强盗来了，站在街口一家一家看，看花了眼。',
+      '后来强盗装成卖油的，把同伙藏在油罐里。马尔基娜烧开一锅油，一罐一罐浇下去。',
+      '天亮了。阿里巴巴推开门，街上安安静静的。'
+    ] },
+  { id: 's48', t: '渔夫和魔鬼', tag: '一千零一夜', em: '🧞',
+    ps: [
+      '老渔夫撒了一网，拉上来一只铜瓶，瓶口封着锡。',
+      '他好奇，把锡一撬——',
+      '呼——一股黑烟冒出来，越冒越粗，直冲上天。',
+      '烟散了，站着一个魔鬼，脑袋顶到云里。',
+      '渔夫，你选个死法吧。魔鬼低下头看他。',
+      '老渔夫不慌不忙：这么大的身子，怎么塞进这么小的瓶子？我不信。',
+      '魔鬼哼了一声：看着。',
+      '他化成一股烟，一缕一缕往瓶口里钻，钻得干干净净。',
+      '渔夫一把抓起锡盖，啪，封死了。',
+      '瓶子里嗡嗡直响：放我出去，放我出去！',
+      '渔夫把瓶子往腰里一别，扛起渔网，往家走。'
+    ] },
+  { id: 's49', t: '小兔子乖乖', tag: '童谣古诗', em: '🐰',
+    ps: [
+      '小兔子乖乖，把门儿开开。',
+      '快点儿开开，我要进来。',
+      '不开不开，我不开，妈妈没回来，谁来也不开。',
+      '小兔子乖乖，把门儿开开。',
+      '快点儿开开，我要进来。',
+      '就开就开，我就开，妈妈回来了，这就把门开。'
+    ] },
+  { id: 's50', t: '小老鼠上灯台', tag: '童谣古诗', em: '🐭',
+    ps: [
+      '小老鼠，上灯台，偷油吃，下不来。',
+      '喵喵喵，猫来了，叽里咕噜滚下来。'
+    ] },
+  { id: 's51', t: '咏鹅', tag: '童谣古诗', em: '🦢',
+    ps: [
+      '鹅，鹅，鹅，曲项向天歌。',
+      '白毛浮绿水，红掌拨清波。'
+    ] },
+  { id: 's52', t: '静夜思', tag: '童谣古诗', em: '🌕',
+    ps: [
+      '床前明月光，疑是地上霜。',
+      '举头望明月，低头思故乡。'
+    ] },
+  { id: 's53', t: '春晓', tag: '童谣古诗', em: '🌸',
+    ps: [
+      '春眠不觉晓，处处闻啼鸟。',
+      '夜来风雨声，花落知多少。'
+    ] },
+  { id: 's54', t: '悯农', tag: '童谣古诗', em: '🌾',
+    ps: [
+      '锄禾日当午，汗滴禾下土。',
+      '谁知盘中餐，粒粒皆辛苦。'
+    ] },
+
+  /* ─────── 连载 · 西游记（每集结尾留个钩子） ─────── */
+  { id: 'x1', t: '石猴出世', ser: '西游记', ep: 1, tag: '连载故事', em: '🐒',
+    ps: [
+      '大海边上，有一座花果山。山顶上立着一块大石头。',
+      '这块石头，天天晒太阳，夜夜喝露水，晒了三百年。',
+      '一天早上，山上安安静静的。忽然——咔嚓。',
+      '石头裂开一道缝。缝里滚出一个圆滚滚的石球，落地就变成了猴子。',
+      '石猴睁开眼睛，站起来，伸了个懒腰。两道金光从他眼里射出去，直冲天上。',
+      '天上的玉帝正坐在殿里，手一顿：这是哪儿来的光？',
+      '石猴什么也不知道。他蹦蹦跳跳下了山，一头扎进猴子堆里。',
+      '山涧的水哗哗地流。一群猴子在洗澡，指着上游喊：谁敢钻进去，看看里面是什么？',
+      '猴子们你看看我，我看看你，谁也不敢动。',
+      '我进去！石猴一喊，扑通一声跳进了水帘。',
+      '里面没有水，是一座石桥。桥边有石桌、石凳、石碗、石床。',
+      '石猴跳出来，浑身是水：里面能住人！',
+      '猴子们欢呼起来，一齐跪下：大王！大王！',
+      '从这天起，他有了名字，叫美猴王。',
+      '很多年以后的一个下午，一只老猴子坐在石头上，闭上了眼睛，再也没睁开。美猴王蹲在旁边，第一次笑不出来了。'
+    ] },
+  { id: 'x2', t: '拜师学艺', ser: '西游记', ep: 2, tag: '连载故事', em: '🧙',
+    ps: [
+      '美猴王睡不着。他问山里的猴子：人能不能不死？',
+      '一只老猴说：听说西边有神仙，能教人长生不老。',
+      '第二天，他扎了一个木筏，扛上一根竹竿，漂下了大海。',
+      '风大，浪也大。木筏一颠一颠，他趴在筏子上，饿了吃野果，渴了喝雨水。',
+      '漂了很多天，漂到了岸上。他光着脚走呀走，走进一片松树林。',
+      '林子里有人在砍柴。砍柴的人说：灵台方寸山，斜月三星洞，那儿有位菩提祖师。',
+      '他找到了那个洞。洞口站着一个童子：师父让我出来接你。',
+      '菩提祖师坐在蒲团上，看了他半天：你姓什么？',
+      '我没有姓。猴子挠挠头。',
+      '祖师就给他起了个名字：孙悟空。',
+      '从那天起，他天天扫地、挑水、听讲。',
+      '有一天，祖师在他耳边说了几句话。悟空一晚上学会了七十二变，一个筋斗翻出去，十万八千里。',
+      '师兄弟们围过来：变一个看看！',
+      '悟空一晃身，变成了一棵松树，枝子还晃了两晃。',
+      '院子里一下子吵起来。祖师走出来，看了他一眼：你走吧。',
+      '悟空哭了。祖师背过身去，一句话也不说。等他再回过头，山门、石阶、松树林，全都不见了，只剩一片白雾。'
+    ] },
+  { id: 'x3', t: '偷吃蟠桃', ser: '西游记', ep: 3, tag: '连载故事', em: '🍑',
+    ps: [
+      '一个筋斗翻回花果山，悟空还没落地，就听见哭声。',
+      '猴子们围上来：大王，有个妖怪抢了我们的东西，还打伤了人。',
+      '悟空眼睛一瞪，腾空而起，一棒子把妖怪打翻在地上。',
+      '猴子们又笑又跳：大王有本事了！',
+      '可是没有一件趁手的兵器。他一路走到东海龙宫。',
+      '龙王搬出一杆大刀，悟空一掂：轻。',
+      '又搬出九股叉、方天戟，悟空都摇头：还是轻。',
+      '龙王领他到海底下，指着一根大柱子：这是定海神针，一万三千五百斤，谁也拿不动。',
+      '悟空两手一抱，往上一提——海水分开，柱子出来了。',
+      '他掂了掂：正好。柱子缩成一根金箍棒，两头金箍，中间乌黑。',
+      '玉帝听说了，派人来招安，封他做弼马温。',
+      '悟空高高兴兴去了，后来才知道，这是养马的官。',
+      '他把官帽往地上一摔，回山了。',
+      '玉帝又封他齐天大圣，派他看守蟠桃园。',
+      '园子里的桃子，一颗一颗，红得发亮。悟空摘下一颗，咬了一口，甜得眼睛都眯起来。',
+      '一个下午，他吃饱了，躺在树杈上打盹。树下有人走过，说着明天开蟠桃会的事。悟空竖起耳朵——请的名单里，没有他。'
+    ] },
+  { id: 'x4', t: '大战天兵', ser: '西游记', ep: 4, tag: '连载故事', em: '⚡',
+    ps: [
+      '悟空从树杈上跳下来，拦住七仙女：蟠桃会请了谁？',
+      '七仙女一个一个数，数到最后，没有齐天大圣。',
+      '悟空火气上来了。他念了个定身法，把七仙女定在树下，自己往会场走。',
+      '会场里酒香扑鼻。他咕咚咕咚喝了一坛，又晃晃悠悠去了太上老君的丹房，把金丹倒出来，像嚼豆子一样嚼了。',
+      '玉帝拍案而起：派十万天兵！',
+      '天兵压下来，黑压压一片。托塔李天王举着塔，哪吒三头六臂，六件兵器一起往悟空身上招呼。',
+      '乒乒乓乓，打了半天。悟空一根金箍棒，左挡右挡，愣是没退一步。',
+      '二郎神来了，也提着三尖两刃刀。两个人从天上打到地上。',
+      '悟空一变，变成麻雀。二郎神一变，变成老鹰。',
+      '悟空变成鱼，钻进水里。二郎神变成鱼鹰，在水面上盘旋。',
+      '悟空变成土地庙，尾巴没处放，就竖在庙后面当旗杆。二郎神笑了：哪有旗杆竖在庙后的？',
+      '悟空一急，现出原形。这时候，太上老君在天上，把手一松——',
+      '一个金刚套，直直砸了下来。',
+      '咚。悟空眼前一黑。',
+      '刀砍，砍不动。火烧，烧不着。太上老君把他推进八卦炉，炼了七七四十九天。',
+      '炉门一开，悟空跳出来。他两眼通红，眼睫毛烧成了金色。从此，谁在变，他一眼就能看穿。',
+      '他一脚踢翻八卦炉，金箍棒往天上一指，直奔凌霄殿。'
+    ] },
+  { id: 'x5', t: '压在五行山下', ser: '西游记', ep: 5, tag: '连载故事', em: '🗻',
+    ps: [
+      '凌霄殿外，天兵天将拦了一层又一层。',
+      '悟空一路打过去，金箍棒抡得呼呼响，谁拦谁倒。',
+      '玉帝坐在殿里，额头上一层汗：快去请如来。',
+      '如来来了，一步一步，慢慢走到悟空面前。',
+      '你就是齐天大圣？如来伸出手掌：你翻个跟头给我看看。',
+      '悟空笑了：一个跟头十万八千里，你这一只手掌？',
+      '他往手心一站，纵身一跃，翻出十万八千里。',
+      '眼前出现五根柱子，顶天立地，白生生的，像玉一样。',
+      '悟空拔下一根毫毛，吹口气，变成一支笔。他在中间那根柱子上，写了一行字：齐天大圣到此一游。',
+      '写完了，他翻回来，落在如来掌心：我去了，还留了记号。',
+      '如来抬起手：你看看。',
+      '五根手指上，清清楚楚写着：齐天大圣到此一游。',
+      '悟空一愣，转身还要再翻。',
+      '如来把手掌一翻。',
+      '轰——五根手指变成五座山，连在一起，压了下来。',
+      '山底下，只露出一颗脑袋，两只手。',
+      '五百年。头上长出了青草，下巴上结了青苔。',
+      '有一个放牛的孩子，路过这里，扔给他一个桃子。',
+      '五百年后的一个早上，山下传来脚步声，还有一个和尚念经的声音。'
+    ] },
+  { id: 'x6', t: '三打白骨精（一）', ser: '西游记', ep: 6, tag: '连载故事', em: '💀',
+    ps: [
+      '五行山下，那个和尚走过来，揭下了山顶上的封条。',
+      '山裂开了。悟空跳出来，跪下磕头：师父。',
+      '和尚给他起了个名字，叫孙行者。他骑白马，悟空挑担，后来又收了八戒和沙僧。',
+      '四人和一匹马，往西走。',
+      '这天走到一座山。山上云雾很重，看不见路。',
+      '悟空说：师父，我去摘几个果子。一个筋斗，人就没影了。',
+      '山里的洞里，住着一个白骨精。她闻到生人的气味，伸出舌头舔了舔嘴唇。',
+      '她摇身一变，变成一个姑娘，提着个篮子，篮子里是白米饭和馒头，从山路上走下来。',
+      '八戒的鼻子动了动：哎哟，好香。',
+      '姑娘笑着说：几位师父，去庙里上香吧，我给你们带路。',
+      '唐僧刚要开口，风一吹，悟空回来了。',
+      '他脚还没落地，眼睛已经红了——火眼金睛，一眼看穿。',
+      '妖精！他一棒打下去。',
+      '姑娘倒在地上，变成一堆白骨头，骨头里冒出一股青烟，飘走了。',
+      '唐僧站在那儿，脸都白了：你……你怎么能打死人？',
+      '悟空指着地上：师父你看，是白骨。',
+      '唐僧摇头：我明明看见一个姑娘。'
+    ] },
+  { id: 'x7', t: '三打白骨精（二）', ser: '西游记', ep: 7, tag: '连载故事', em: '😤',
+    ps: [
+      '白骨精跑回洞里，咬着牙：这个猴子，眼睛太毒。',
+      '她变了个老太太，拄着拐杖，一步一步往山下走，嘴里喊着：女儿——我的女儿——',
+      '悟空一看，又是她。',
+      '他一棒下去。老太太倒了，还是白骨。',
+      '唐僧退了半步，手都在抖：你又打死一个！',
+      '他盘腿坐下，闭上眼睛，念起了紧箍咒。',
+      '悟空头上的金箍一圈一圈收紧。他抱着头在地上打滚：师父！别念了！别念了！',
+      '唐僧停下来，喘着气：再有一次，你就走。',
+      '白骨精第三次来了，变成一个白胡子老头，拄着拐杖，问他们有没有见过自己的老伴和女儿。',
+      '这一次，悟空没有马上动手。他把土地和山神叫出来，指给他们看：都看清楚了。',
+      '然后他才扬起棒子。',
+      '一棒。老头倒下，白骨散了一地，这回再也冒不出青烟。',
+      '唐僧看着那堆骨头，看了很久。',
+      '然后他从包袱里拿出纸笔，写了一行字：从此以后，你不是我的徒弟。',
+      '他把纸递过去：你走吧。',
+      '悟空跪下来，磕了三个头，站起来，转身走了。',
+      '走了十几步，他回过头。'
+    ] },
+  { id: 'x8', t: '三打白骨精（三）', ser: '西游记', ep: 8, tag: '连载故事', em: '🐴',
+    ps: [
+      '唐僧把脸转开，不看他。',
+      '悟空站在云头上，看着师父、八戒、沙僧，还有那匹白马，一点一点走进山里。',
+      '他叹了口气，一个筋斗，回了花果山。',
+      '花果山的桃子熟了。猴子们围上来，他只摆摆手，坐在石头上，半天没说话。',
+      '唐僧三人往前走。走进了一片黑松林，树挨着树，一点光也透不进来。',
+      '八戒说：师父，我去化斋。',
+      '他走了没多远，往树下一躺，睡着了。',
+      '唐僧等得口渴，让沙僧去取水。',
+      '松林里只剩下他一个人，和一匹马。',
+      '忽然起了一阵风。风里带着腥味。',
+      '一个黄袍怪从树后走出来，袖子一甩。',
+      '哗——唐僧不见了。地上只剩一只鞋。',
+      '八戒醒来，回到原处，只剩下白马和摊开的行李。',
+      '他把钉耙一放：散了吧，各走各的。',
+      '白马忽然咬住他的衣角，使劲往后拽。',
+      '八戒愣了愣，抬头看向东边。',
+      '花果山那棵最大的桃树下，悟空正枕着金箍棒睡觉，一根桃枝垂下来，在他脸上晃。'
+    ] }
+];
+
+/* ═════════ 英语词库 ═════════ */
+const BANK = [
+  ['apple','苹果'],['banana','香蕉'],['orange','橙子'],['pear','梨'],['milk','牛奶'],
+  ['water','水'],['bread','面包'],['cake','蛋糕'],['egg','鸡蛋'],['rice','米饭'],
+  ['cat','猫'],['dog','狗'],['bird','鸟'],['fish','鱼'],['rabbit','兔子'],
+  ['panda','熊猫'],['monkey','猴子'],['tiger','老虎'],['duck','鸭子'],['pig','猪'],
+  ['red','红色'],['blue','蓝色'],['green','绿色'],['yellow','黄色'],['black','黑色'],['white','白色'],
+  ['book','书'],['pen','钢笔'],['pencil','铅笔'],['bag','书包'],['ruler','尺子'],
+  ['desk','课桌'],['chair','椅子'],['school','学校'],['teacher','老师'],['friend','朋友'],
+  ['mother','妈妈'],['father','爸爸'],['sister','姐妹'],['brother','兄弟'],['family','家庭'],
+  ['head','头'],['eye','眼睛'],['ear','耳朵'],['nose','鼻子'],['mouth','嘴巴'],
+  ['hand','手'],['foot','脚'],['happy','开心的'],['sad','难过的'],['big','大的'],
+  ['small','小的'],['hot','热的'],['cold','冷的'],['run','跑'],['jump','跳'],
+  ['sing','唱歌'],['dance','跳舞'],['read','读'],['draw','画画'],['car','小汽车'],
+  ['bus','公共汽车'],['bike','自行车'],['ball','球'],['toy','玩具'],['hat','帽子'],['shoe','鞋子']
+];
+
+const GAPS = [1, 2, 4, 7, 15, 30];
+
+/* ═════════ 数据 ═════════ */
+const DEF = () => ({
+  v: 2,
+  set: { zh: 0.9, rate: 0.8 },
+  items: [],       // 导入的音频 {id,name,kind,dur,added}
+  prog: {},        // 音频续播位置
+  last: '',
+  lastStory: '',
+  en: { words: {}, log: {} },
+  days: {}         // 'YYYY-MM-DD' -> {story:1,en:1}
+});
+
+function norm(d) {
+  d.set = d.set || {}; if (!d.set.rate) d.set.rate = 0.8; if (!d.set.zh) d.set.zh = 0.9;
+  d.items = d.items || []; d.prog = d.prog || {}; d.last = d.last || ''; d.lastStory = d.lastStory || '';
+  d.en = d.en || {}; d.en.words = d.en.words || {}; d.en.log = d.en.log || {};
+  d.days = d.days || {};
+  return d;
+}
+
+let db;
+try { db = norm(JSON.parse(localStorage.getItem(LS)) || DEF()); }
+catch (e) { db = DEF(); }
+
+function save() {
+  try { localStorage.setItem(LS, JSON.stringify(db)); }
+  catch (e) { toast('保存失败：浏览器空间不足'); }
+}
+
+/* ═════════ IndexedDB（存音频） ═════════ */
+let _idb = null;
+function idb() {
+  if (_idb) return Promise.resolve(_idb);
+  return new Promise((res, rej) => {
+    const r = indexedDB.open('kids-audio', 1);
+    r.onupgradeneeded = () => { if (!r.result.objectStoreNames.contains('files')) r.result.createObjectStore('files'); };
+    r.onsuccess = () => { _idb = r.result; res(_idb); };
+    r.onerror = () => rej(r.error);
+  });
+}
+async function putFile(id, blob) {
+  const d = await idb();
+  return new Promise((res, rej) => {
+    const t = d.transaction('files', 'readwrite');
+    t.objectStore('files').put(blob, id);
+    t.oncomplete = () => res(); t.onerror = () => rej(t.error);
+  });
+}
+async function getFile(id) {
+  const d = await idb();
+  return new Promise((res, rej) => {
+    const t = d.transaction('files', 'readonly'), q = t.objectStore('files').get(id);
+    q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error);
+  });
+}
+async function delFile(id) {
+  const d = await idb();
+  return new Promise((res) => {
+    const t = d.transaction('files', 'readwrite');
+    t.objectStore('files').delete(id);
+    t.oncomplete = () => res();
+  });
+}
+</script><script>
+/* ═════════ 视图 ═════════ */
+const VIEWS = { home: 'v-home', story: 'v-story', en: 'v-en', sess: 'v-sess', done: 'v-done' };
+let curView = 'home';
+
+function go(name) {
+  Object.keys(VIEWS).forEach(k => $('#' + VIEWS[k]).classList.toggle('on', k === name));
+  curView = name;
+  $('#player').classList.remove('on');
+  $('#sheet').classList.remove('on');
+  window.scrollTo(0, 0);
+  if (name === 'home') renderHome();
+  if (name === 'story') { renderStories(); renderList('story'); }
+  if (name === 'en') { renderEn(); renderList('en'); }
+}
+
+function markDay(kind) {
+  const t = today();
+  db.days[t] = db.days[t] || {};
+  db.days[t][kind] = 1;
+  save();
+}
+
+/* ═════════ 首页 ═════════ */
+function renderHome() {
+  const imported = db.items.filter(x => x.kind === 'story').length;
+  $('#st-story').textContent = STORIES.length + ' 个经典故事' + (imported ? ' · 我的 ' + imported + ' 段' : '');
+  $('#tag-story').textContent = '📚 ' + STORIES.length + ' 个经典故事';
+
+  const d = db.days[today()] || {};
+  const n = Object.keys(db.en.words).length;
+
+  const bs = $('#bd-story');
+  bs.classList.toggle('ok', !!d.story);
+  bs.querySelector('em').textContent = d.story ? '今天听过啦' : '还没听';
+
+  const be = $('#bd-en');
+  be.classList.toggle('ok', !!d.en);
+  be.querySelector('em').textContent = d.en ? '今天读完啦' : (n ? '已学 ' + n + ' 个词' : '还没读');
+
+  $('#st-en').textContent = n ? '已学 ' + n + ' 个词 · 今天 5 个' : '每天 10 分钟，5 个词';
+  const now = new Date();
+  $('#td-date').textContent = (now.getMonth() + 1) + ' 月 ' + now.getDate() + ' 日';
+}
+
+/* ═════════ 故事列表 ═════════ */
+const COLS = ['全部', '连载故事', '格林童话', '安徒生童话', '伊索寓言', '中国寓言', '中国故事', '经典童话', '一千零一夜', '童谣古诗'];
+let storyCol = '全部';
+
+function renderStories() {
+  const list = STORIES.map((s, i) => ({ s, i })).filter(x => storyCol === '全部' || x.s.tag === storyCol);
+
+  $('#st-cols').innerHTML = COLS.map(c => {
+    const n = c === '全部' ? STORIES.length : STORIES.filter(s => s.tag === c).length;
+    if (!n) return '';
+    return '<button class="cbtn' + (c === storyCol ? ' on' : '') + '" data-col="' + c + '">' +
+      (c === '全部' ? '全部 ' + n : c) + '</button>';
+  }).join('');
+
+  $('#sg').innerHTML = list.map(({ s, i }) => {
+    const min = Math.max(2, Math.round(s.ps.join('').length / 150));
+    const p = pal(i);
+    const badge = s.ser
+      ? s.ser + ' ' + s.ep + '/' + STORIES.filter(x => x.ser === s.ser).length
+      : s.tag;
+    return '<button class="sc" data-story="' + i + '">' +
+      ph(p[0], p[1], s.em) +
+      '<span class="sc-tag' + (s.ser ? ' ser' : '') + '">' + badge + '</span>' +
+      '<div class="sc-tx"><b>' + esc(s.t) + '</b><span>' + (s.ser ? '第 ' + s.ep + ' 集 · ' : '') + s.ps.length + ' 段 · 约 ' + min + ' 分钟</span></div>' +
+    '</button>';
+  }).join('');
+
+  $('#st-count').textContent = storyCol === '全部'
+    ? '共 ' + STORIES.length + ' 个'
+    : list.length + ' 个 · 共 ' + STORIES.length + ' 个';
+}
+
+function setCover(em, i) {
+  const p = pal(i);
+  const el = $('#p-cover');
+  el.style.setProperty('--c1', p[0]);
+  el.style.setProperty('--c2', p[1]);
+  $('#p-emoji').textContent = em;
+}
+
+function renderList(kind) {
+  const box = kind === 'en' ? $('#en-list') : $('#story-list');
+  const list = db.items.filter(x => x.kind === kind);
+  if (!list.length) {
+    box.innerHTML = '<div class="empty"><b>还没有导入' + (kind === 'en' ? '课文' : '故事') + '音频</b>' +
+      '点右上角「＋」，选手机里的 mp3，会存进这台设备。</div>';
+    return;
+  }
+  box.innerHTML = list.map(it =>
+    '<div class="item">' +
+      '<button class="pl" data-play="' + it.id + '" data-kind="' + kind + '" aria-label="播放">' +
+        '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>' +
+      '<div class="nm"><b>' + esc(it.name) + '</b><span>' + (it.dur ? fmt(it.dur) : '时长未知') +
+        (db.prog[it.id] ? ' · 上次听到 ' + fmt(db.prog[it.id]) : '') + '</span></div>' +
+      '<button class="del" data-del="' + it.id + '" aria-label="删除">✕</button>' +
+    '</div>').join('');
+}
+
+async function delItem(id) {
+  const it = db.items.find(x => x.id === id);
+  if (!it) return;
+  if (!confirm('删除「' + it.name + '」？')) return;
+  await delFile(id);
+  db.items = db.items.filter(x => x.id !== id);
+  delete db.prog[id];
+  save();
+  renderList(it.kind);
+  renderHome();
+  toast('已删除');
+}
+
+/* ═════════ 播放器：公共 ═════════ */
+const au = $('#au');
+let mode = 'audio';           // audio | tts
+let queue = [], qi = 0, curURL = '', curId = '', lastSaveAt = 0;
+let sleepTimer = null, sleepMin = 0;
+
+function setPlayIcon() {
+  let playing;
+  if (mode === 'tts') {
+    playing = ('speechSynthesis' in window) && speechSynthesis.speaking && !speechSynthesis.paused;
+  } else {
+    playing = !au.paused && !au.ended;
+  }
+  $('#p-play').innerHTML = playing
+    ? '<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+}
+
+function setSleep(min) {
+  clearTimeout(sleepTimer);
+  sleepMin = min;
+  document.querySelectorAll('.p-timer button').forEach(b => b.classList.toggle('on', +b.dataset.min === min));
+  if (!min) return;
+  sleepTimer = setTimeout(() => {
+    if (mode === 'tts') { ttsSig++; try { speechSynthesis.cancel(); } catch (e) {} }
+    else au.pause();
+    toast(min + ' 分钟到啦，自动停止');
+    setPlayIcon();
+  }, min * 60000);
+  toast(min + ' 分钟后自动停止');
+}
+
+/* ═════════ 播放器：导入的音频 ═════════ */
+async function openPlayer(list, index) {
+  if (!list.length) return;
+  mode = 'audio';
+  ttsSig++;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  queue = list.slice();
+  qi = Math.max(0, Math.min(index < 0 ? 0 : index, queue.length - 1));
+  $('#p-text').style.display = 'none';
+  $('#p-time').style.display = 'flex';
+  $('#player').classList.add('on');
+  await loadCurrent();
+}
+
+async function loadCurrent() {
+  const it = queue[qi];
+  if (!it) return;
+  curId = it.id;
+  setCover(it.kind === 'en' ? '🎧' : '📖', it.kind === 'en' ? 1 : 6);
+  $('#p-name').textContent = it.name;
+  $('#p-kind').textContent = it.kind === 'en' ? '课文' : '故事';
+  $('#p-cur').textContent = '0:00';
+  $('#p-fill').style.width = '0%';
+
+  let blob;
+  try { blob = await getFile(it.id); } catch (e) { blob = null; }
+  if (!blob) { toast('音频文件丢了，请重新导入'); return; }
+
+  if (curURL) URL.revokeObjectURL(curURL);
+  curURL = URL.createObjectURL(blob);
+  const pos = db.prog[it.id] || 0;
+
+  au.onloadedmetadata = () => {
+    if (pos > 2 && pos < au.duration - 3) au.currentTime = pos;
+    $('#p-dur').textContent = fmt(au.duration);
+    if (au.duration) { it.dur = au.duration; save(); }
+  };
+  au.src = curURL;
+  au.load();
+  au.play().catch(() => toast('点一下播放键开始'));
+
+  db.last = it.id;
+  markDay(it.kind === 'en' ? 'en' : 'story');
+  save();
+  mediaMeta(it);
+  setPlayIcon();
+}
+
+au.addEventListener('timeupdate', () => {
+  if (mode !== 'audio' || !au.duration) return;
+  $('#p-cur').textContent = fmt(au.currentTime);
+  $('#p-fill').style.width = (au.currentTime / au.duration * 100) + '%';
+  if (Date.now() - lastSaveAt > 4000) {
+    lastSaveAt = Date.now();
+    db.prog[curId] = au.currentTime;
+    save();
+  }
+});
+au.addEventListener('play', setPlayIcon);
+au.addEventListener('pause', setPlayIcon);
+au.addEventListener('ended', () => {
+  if (qi < queue.length - 1) { qi++; loadCurrent(); }
+  else { setPlayIcon(); toast('这一段听完啦'); }
+});
+
+function mediaMeta(it) {
+  if (!('mediaSession' in navigator)) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: it.name,
+      artist: it.kind === 'en' ? '英语课文' : '睡前故事',
+      album: '小耳朵',
+      artwork: [{ src: 'icons/icon-512.jpg', sizes: '512x512', type: 'image/jpeg' }]
+    });
+    const h = navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
+    h('play', () => au.play().catch(() => {}));
+    h('pause', () => au.pause());
+    h('previoustrack', () => { if (qi > 0) { qi--; loadCurrent(); } });
+    h('nexttrack', () => { if (qi < queue.length - 1) { qi++; loadCurrent(); } });
+  } catch (e) {}
+}
+
+/* ═════════ 播放器：朗读故事 ═════════ */
+let storyIdx = 0, paraIdx = 0, ttsSig = 0;
+
+/* 每集开头的一句招呼 */
+function introLine(st) {
+  const name = st.ser ? st.ser + '第 ' + st.ep + ' 集，' + st.t : st.t;
+  return '大家好，我是小鱼姐姐，下面给宝贝讲的故事是：' + name + '。';
+}
+
+/* 朗读期间让屏幕常亮：手机息屏时系统会中断朗读 */
+let wakeLock = null;
+async function keepAwake() {
+  if (!('wakeLock' in navigator) || wakeLock) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch (e) { wakeLock = null; }
+}
+function releaseAwake() {
+  try { if (wakeLock) wakeLock.release(); } catch (e) {}
+  wakeLock = null;
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible') return;
+  if (mode === 'tts' ? speechSynthesis.speaking : !au.paused) keepAwake();
+});
+
+function speakZh(text, sig) {
+  return new Promise(res => {
+    if (!('speechSynthesis' in window) || ttsSig !== sig) return res();
+    let done = false;
+    const fin = () => { if (!done) { done = true; res(); } };
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-CN';
+    u.rate = db.set.zh || 0.9;
+    u.pitch = 1.02;
+    u.onend = fin;
+    u.onerror = fin;
+    speechSynthesis.speak(u);
+    setTimeout(fin, Math.max(10000, text.length * 480));
+  });
+}
+
+async function playStory(i) {
+  if (!('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，换 Chrome 或 Safari 试试'); return; }
+  try { speechSynthesis.cancel(); } catch (e) {}
+  au.pause();
+  mode = 'tts';
+  storyIdx = i;
+  paraIdx = 0;
+  const st = STORIES[i];
+  $('#p-text').style.display = 'block';
+  $('#p-text').textContent = '正在准备…';
+  $('#p-time').style.display = 'none';
+  setCover(st.em, i);
+  $('#p-name').textContent = st.t;
+  $('#p-kind').textContent = st.ser ? st.ser + ' · 第 ' + st.ep + ' 集' : st.tag;
+  $('#p-fill').style.width = '0%';
+  $('#player').classList.add('on');
+  keepAwake();
+
+  db.lastStory = st.id;
+  markDay('story');
+  save();
+  mediaMeta({ name: st.t, kind: 'story' });
+
+  const sig = ++ttsSig;
+  await readStory(sig);
+  setPlayIcon();
+}
+
+async function readStory(sig) {
+  while (ttsSig === sig) {
+    const st = STORIES[storyIdx];
+    if (!st) return;
+    const lines = [introLine(st)].concat(st.ps);
+    for (let p = 0; p < lines.length; p++) {
+      if (ttsSig !== sig) return;
+      paraIdx = p;
+      $('#p-text').textContent = lines[p];
+      $('#p-fill').style.width = (p / lines.length * 100) + '%';
+      setPlayIcon();
+      await speakZh(lines[p], sig);
+      if (ttsSig !== sig) return;
+      await wait(520);
+    }
+    if (ttsSig !== sig) return;
+    $('#p-fill').style.width = '100%';
+    await wait(700);
+    if (ttsSig !== sig) return;
+    if (storyIdx < STORIES.length - 1) {
+      storyIdx++;
+      const nx = STORIES[storyIdx];
+      $('#p-name').textContent = nx.t;
+      setCover(nx.em, storyIdx);
+      $('#p-kind').textContent = nx.ser ? nx.ser + ' · 第 ' + nx.ep + ' 集' : nx.tag;
+      mediaMeta({ name: nx.t, kind: 'story' });
+    } else {
+      ttsSig++;
+      toast('故事讲完啦，晚安');
+      return;
+    }
+  }
+}
+
+/* ═════════ 播放器控制 ═════════ */
+$('#p-play').addEventListener('click', () => {
+  if (mode === 'tts') {
+    if (!('speechSynthesis' in window)) return toast('这个浏览器不支持朗读');
+    if (speechSynthesis.paused) speechSynthesis.resume();
+    else if (speechSynthesis.speaking) speechSynthesis.pause();
+    else { const sig = ++ttsSig; readStory(sig); }
+    setTimeout(setPlayIcon, 150);
+    return;
+  }
+  if (au.paused) au.play().catch(() => {}); else au.pause();
+});
+
+$('#p-prev').addEventListener('click', () => {
+  if (mode === 'tts') { playStory(Math.max(0, storyIdx - 1)); return; }
+  if (qi > 0) { qi--; loadCurrent(); } else { au.currentTime = 0; }
+});
+
+$('#p-next').addEventListener('click', () => {
+  if (mode === 'tts') {
+    if (storyIdx < STORIES.length - 1) playStory(storyIdx + 1);
+    else toast('已经是最后一个故事啦');
+    return;
+  }
+  if (qi < queue.length - 1) { qi++; loadCurrent(); } else toast('后面没有啦');
+});
+
+document.querySelectorAll('.p-timer button').forEach(b => {
+  b.addEventListener('click', () => setSleep(+b.dataset.min));
+});
+
+/* 儿童锁：按住 0.8 秒退出 */
+const exitBtn = $('#p-exit');
+let holdT = null;
+
+function startHold(e) {
+  if (e && e.cancelable) e.preventDefault();
+  if (holdT) return;
+  exitBtn.classList.add('holding');
+  holdT = setTimeout(() => {
+    holdT = null;
+    exitBtn.classList.remove('holding');
+    closePlayer();
+  }, 800);
+}
+function cancelHold() {
+  if (holdT) { clearTimeout(holdT); holdT = null; }
+  exitBtn.classList.remove('holding');
+}
+exitBtn.addEventListener('pointerdown', startHold);
+exitBtn.addEventListener('mousedown', e => { if (!window.PointerEvent) startHold(e); });
+exitBtn.addEventListener('touchstart', e => { if (!window.PointerEvent) startHold(e); }, { passive: false });
+exitBtn.addEventListener('contextmenu', e => e.preventDefault());
+['pointerup', 'pointercancel', 'mouseup', 'touchend', 'touchcancel'].forEach(ev =>
+  window.addEventListener(ev, cancelHold, true)
+);
+
+function closePlayer() {
+  ttsSig++;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  releaseAwake();
+  au.pause();
+  clearTimeout(sleepTimer);
+  sleepMin = 0;
+  document.querySelectorAll('.p-timer button').forEach(b => b.classList.toggle('on', +b.dataset.min === 0));
+  $('#player').classList.remove('on');
+  setPlayIcon();
+  if (curView === 'home') renderHome();
+  if (curView === 'story') renderStories();
+  if (curView === 'en') renderEn();
+}
+</script><script>
+/* ═════════ 英语：数据 ═════════ */
+const EMOJI = {
+  apple: '🍎', banana: '🍌', orange: '🍊', pear: '🍐', milk: '🥛', water: '💧', bread: '🍞',
+  cake: '🍰', egg: '🥚', rice: '🍚', cat: '🐱', dog: '🐶', bird: '🐦', fish: '🐟',
+  rabbit: '🐰', panda: '🐼', monkey: '🐵', tiger: '🐯', duck: '🦆', pig: '🐷',
+  red: '🔴', blue: '🔵', green: '🟢', yellow: '🟡', black: '⚫', white: '⚪',
+  book: '📖', pen: '🖊️', pencil: '✏️', bag: '🎒', ruler: '📏', desk: '🪑', chair: '🪑',
+  school: '🏫', teacher: '🧑‍🏫', friend: '🧑‍🤝‍🧑', mother: '👩', father: '👨',
+  sister: '👧', brother: '👦', family: '👨‍👩‍👧‍👦', head: '🙂', eye: '👁️', ear: '👂',
+  nose: '👃', mouth: '👄', hand: '✋', foot: '🦶', happy: '😄', sad: '😢',
+  big: '🐘', small: '🐭', hot: '☀️', cold: '❄️', run: '🏃', jump: '🤸',
+  sing: '🎤', dance: '💃', read: '📚', draw: '🖍️', car: '🚗', bus: '🚌',
+  bike: '🚲', ball: '⚽', toy: '🧸', hat: '🧢', shoe: '👟'
+};
+const wordZh = w => (BANK.find(x => x[0] === w) || ['', w])[1];
+const wordState = w => db.en.words[w] || { lv: 0, due: today() };
+
+function planSession() {
+  const t = today();
+  const all = BANK.map(x => x[0]);
+  const learned = Object.keys(db.en.words);
+  const due = learned.filter(w => wordState(w).due <= t)
+    .sort((a, b) => wordState(a).due.localeCompare(wordState(b).due));
+  const fresh = all.filter(w => !db.en.words[w]);
+
+  const pick = [];
+  due.slice(0, 3).forEach(w => pick.push(w));
+  fresh.slice(0, 5 - pick.length).forEach(w => pick.push(w));
+  if (pick.length < 5) {
+    all.filter(w => pick.indexOf(w) < 0).slice(0, 5 - pick.length).forEach(w => pick.push(w));
+  }
+  const list = pick.slice(0, 5);
+  const review = list.filter(w => learned.indexOf(w) >= 0).length;
+  return { list, review, fresh: list.length - review };
+}
+
+/* ═════════ 英语：界面 ═════════ */
+function renderEn() {
+  const learned = Object.keys(db.en.words);
+  const todayDone = (db.days[today()] || {}).en;
+  $('#st-learned').textContent = learned.length;
+  $('#st-days').textContent = Object.keys(db.days).filter(k => db.days[k].en).length;
+  $('#st-today').textContent = todayDone ? '已完成' : '还没做';
+
+  const p = planSession();
+  $('#en-sub').textContent = p.review + ' 个复习 + ' + p.fresh + ' 个新词 · 共 5 个';
+
+  const box = $('#wgrid');
+  const recent = learned.slice().reverse().slice(0, 12);
+  if (!recent.length) {
+    box.innerHTML = '<div class="empty" style="grid-column:1/-1"><b>图鉴还空着</b>' +
+      '做完今天的第一组，这里就会长出卡通单词卡。</div>';
+    $('#wgrid-n').textContent = '';
+    return;
+  }
+  $('#wgrid-n').textContent = learned.length + ' / ' + BANK.length;
+  box.innerHTML = recent.map((w, i) => {
+    const p = pal(i + 3);
+    return '<div class="wcell">' + ph(p[0], p[1], EMOJI[w] || '✨') + '<b>' + w + '</b></div>';
+  }).join('');
+}
+
+async function renderUsage() {
+  try {
+    const e = await navigator.storage.estimate();
+    $('#set-usage').textContent = (e.usage / 1048576).toFixed(1) + ' MB';
+  } catch (err) { $('#set-usage').textContent = '—'; }
+}
+
+/* ═════════ 英语：朗读 ═════════ */
+let enVoice = null;
+function pickVoice() {
+  if (!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices() || [];
+  const en = vs.filter(v => /^en([-_]|$)/i.test(v.lang));
+  enVoice = en.find(v => /natural|google|samantha|aria|jenny|zira/i.test(v.name)) || en[0] || null;
+}
+if ('speechSynthesis' in window) {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+
+function speakEn(text, sig) {
+  return new Promise(res => {
+    if (!('speechSynthesis' in window) || sig !== ttsSig) return res();
+    let done = false;
+    const fin = () => { if (!done) { done = true; res(); } };
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    if (enVoice) u.voice = enVoice;
+    u.rate = db.set.rate || 0.8;
+    u.pitch = 1.05;
+    u.onend = fin;
+    u.onerror = fin;
+    speechSynthesis.speak(u);
+    setTimeout(fin, 6000);
+  });
+}
+
+/* ═════════ 英语：每日 5 个词 ═════════ */
+let sessList = [], sessCur = '';
+
+function startSession() {
+  const p = planSession();
+  if (!p.list.length) { toast('词库都学完啦，真厉害'); return; }
+  sessList = p.list;
+  sessCur = sessList[0];
+  go('sess');
+  $('#sess-count').textContent = '1 / ' + sessList.length;
+  $('#wd-bar').style.width = '0%';
+  const sig = ++ttsSig;
+  runWords(sig).catch(() => {});
+}
+
+function renderWord(w) {
+  $('#wd-en').textContent = w;
+  $('#wd-zh').textContent = wordZh(w);
+  $('#wd-zh').classList.remove('on');
+  const p = pal(BANK.findIndex(x => x[0] === w) + 1);
+  const pic = $('#wd-pic');
+  pic.style.setProperty('--c1', p[0]);
+  pic.style.setProperty('--c2', p[1]);
+  $('#wd-emoji').textContent = EMOJI[w] || '✨';
+  $('#sess-count').textContent = (sessList.indexOf(w) + 1) + ' / ' + sessList.length;
+}
+
+async function runWords(sig) {
+  for (let i = 0; i < sessList.length; i++) {
+    if (sig !== ttsSig) return;
+    sessCur = sessList[i];
+    renderWord(sessCur);
+    await wait(450); if (sig !== ttsSig) return;
+    await speakEn(sessCur, sig); if (sig !== ttsSig) return;
+    await wait(650); if (sig !== ttsSig) return;
+    await speakEn(sessCur, sig); if (sig !== ttsSig) return;
+    $('#wd-zh').classList.add('on');
+    $('#wd-bar').style.width = ((i + 1) / sessList.length * 100) + '%';
+    await wait(1700);
+  }
+  if (sig !== ttsSig) return;
+  finishSession();
+}
+
+function finishSession() {
+  const t = today();
+  sessList.forEach(w => {
+    const s = wordState(w);
+    const lv = Math.min(GAPS.length - 1, (s.lv || 0) + 1);
+    db.en.words[w] = { lv, due: addDays(GAPS[lv]), at: t };
+  });
+  db.en.log[t] = { n: sessList.length };
+  db.days[t] = db.days[t] || {};
+  db.days[t].en = 1;
+  save();
+
+  $('#done-tx').textContent = '这一组学了 ' + sessList.length + ' 个词：' + sessList.join('、');
+  go('done');
+}
+
+/* ═════════ 导入音频 ═════════ */
+let importKind = 'story';
+
+async function importFiles(files) {
+  if (!files.length) return;
+  let ok = 0;
+  for (const f of files) {
+    if (!/^audio\//.test(f.type) && !/\.(mp3|m4a|aac|wav|ogg|flac)$/i.test(f.name)) continue;
+    const id = 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    try {
+      await putFile(id, f);
+      const item = { id, name: f.name.replace(/\.[^.]+$/, ''), kind: importKind, dur: 0, added: Date.now() };
+      db.items.push(item);
+      ok++;
+      const url = URL.createObjectURL(f);
+      const a = new Audio();
+      a.preload = 'metadata';
+      a.onloadedmetadata = () => { item.dur = a.duration || 0; save(); URL.revokeObjectURL(url); };
+      a.onerror = () => URL.revokeObjectURL(url);
+      a.src = url;
+    } catch (err) { console.warn(err); }
+  }
+  save();
+  renderList(importKind);
+  renderHome();
+  if (curView === 'en') renderEn();
+  toast(ok ? '已导入 ' + ok + ' 段音频' : '没有识别到音频文件');
+}
+
+$('#picker').addEventListener('change', e => {
+  const files = Array.from(e.target.files || []);
+  e.target.value = '';
+  importFiles(files);
+});
+
+/* ═════════ 设置 ═════════ */
+function openSheet() {
+  $('#sheet').classList.add('on');
+  renderUsage();
+}
+$('#sheet-close').addEventListener('click', () => $('#sheet').classList.remove('on'));
+$('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') $('#sheet').classList.remove('on'); });
+$('#set-zh').addEventListener('input', e => { db.set.zh = +e.target.value; save(); });
+$('#set-rate').addEventListener('input', e => { db.set.rate = +e.target.value; save(); });
+$('#set-reset').addEventListener('click', () => {
+  if (!confirm('清空全部音频和学习记录？')) return;
+  localStorage.removeItem(LS);
+  try { indexedDB.deleteDatabase('kids-audio'); } catch (e) {}
+  setTimeout(() => location.reload(), 260);
+});
+
+/* ═════════ 事件绑定 ═════════ */
+$('#go-story').addEventListener('click', () => go('story'));
+$('#go-en').addEventListener('click', () => go('en'));
+$('#start-sess').addEventListener('click', startSession);
+$('#done-home').addEventListener('click', () => { ttsSig++; go('home'); });
+$('#sess-exit').addEventListener('click', () => { ttsSig++; try { speechSynthesis.cancel(); } catch (e) {} go('en'); });
+$('#sess-repeat').addEventListener('click', () => { if (sessCur) speakEn(sessCur, ttsSig); });
+$('#imp-story').addEventListener('click', () => { importKind = 'story'; $('#picker').click(); });
+$('#imp-en').addEventListener('click', () => { importKind = 'en'; $('#picker').click(); });
+const openSet = $('#open-set');
+if (openSet) openSet.addEventListener('click', openSheet);
+
+document.addEventListener('click', e => {
+  const back = e.target.closest('[data-back]');
+  if (back) { go('home'); return; }
+
+  const st = e.target.closest('[data-story]');
+  if (st) { playStory(+st.dataset.story); return; }
+
+  const cb = e.target.closest('[data-col]');
+  if (cb) { storyCol = cb.dataset.col; renderStories(); return; }
+
+  const pl = e.target.closest('[data-play]');
+  if (pl) {
+    const kind = pl.dataset.kind;
+    const list = db.items.filter(x => x.kind === kind);
+    openPlayer(list, list.findIndex(x => x.id === pl.dataset.play));
+    return;
+  }
+
+  const del = e.target.closest('[data-del]');
+  if (del) { delItem(del.dataset.del); return; }
+});
+
+/* ═════════ 启动 ═════════ */
+function init() {
+  $('#set-zh').value = db.set.zh;
+  $('#set-rate').value = db.set.rate;
+  renderHome();
+  renderUsage();
+  renderStories();
+
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+}
+init();
+</script>
+</body>
+</html>

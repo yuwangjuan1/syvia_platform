@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "小耳朵 · 故事与英语",
+  "short_name": "小耳朵",
+  "description": "格林童话、伊索寓言、中国寓言随便点开就听，还有带卡通图的英语磨耳朵。音频与学习记录只存在本机。",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdf8f1",
+  "theme_color": "#8fc6ff",
+  "icons": [
+    { "src": "icons/icon-192.jpg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any" },
+    { "src": "icons/icon-512.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "maskable" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,97 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图标生成器 · 小耳朵</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#f5f7fb;color:#0e1726;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;
+    padding:28px 18px 60px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto}
+  h1{font-size:18px;font-weight:750;letter-spacing:-.3px}
+  p.tip{font-size:12.5px;color:#5a6779;line-height:1.9;margin-top:8px}
+  .card{background:#fff;border:1px solid #e6eaf2;border-radius:16px;padding:18px;margin-top:14px}
+  canvas{width:180px;height:180px;border-radius:38px;border:1px solid #e6eaf2;display:block;margin:0 auto 16px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  button{border:0;border-radius:11px;background:#3f7bfd;color:#fff;height:42px;
+    font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
+  button.ghost{background:#eef2f9;color:#3f7bfd}
+  .out{font-size:11.5px;color:#8f9cad;line-height:1.9;margin-top:12px}
+  .ok{color:#3f7bfd;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>生成手机图标</h1>
+  <p class="tip">
+    依次点下面四个按钮，下载的 png 放进 <b>icons/</b> 目录，文件名不要改。
+    放好后手机重新打开一次页面，就能安装成桌面图标。
+  </p>
+
+  <div class="card">
+    <canvas id="prev" width="360" height="360"></canvas>
+    <div class="row">
+      <button data-size="192" data-name="icon-192.png">下载 192</button>
+      <button data-size="512" data-name="icon-512.png">下载 512</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="ghost" data-size="180" data-name="apple-touch-icon.png">下载 180（iPhone）</button>
+      <button class="ghost" data-size="512" data-name="icon-maskable-512.png" data-pad="0.12">下载 512 遮罩版</button>
+    </div>
+    <div class="out" id="out">正在读取图标…</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const out = document.getElementById('out');
+  const prev = document.getElementById('prev');
+  const pctx = prev.getContext('2d');
+  const img = new Image();
+  let ready = false;
+
+  img.onload = () => {
+    ready = true;
+    pctx.drawImage(img, 0, 0, 360, 360);
+    out.innerHTML = '图标已就绪，点上面四个按钮下载即可。';
+  };
+  img.onerror = () => {
+    out.textContent = '读不到 ../icons/icon.svg，确认文件在旁边。';
+  };
+  img.src = '../icons/icon.svg';
+
+  function render(size, pad) {
+    const cv = document.createElement('canvas');
+    cv.width = cv.height = size;
+    const ctx = cv.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, size, size);
+    g.addColorStop(0, '#9bd8ff');
+    g.addColorStop(0.52, '#a9b8ff');
+    g.addColorStop(1, '#c3a7ff');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, size, size);
+    const inner = size * (1 - pad * 2);
+    ctx.drawImage(img, (size - inner) / 2, (size - inner) / 2, inner, inner);
+    return cv;
+  }
+
+  document.querySelectorAll('button[data-size]').forEach(btn => {
+    btn.onclick = () => {
+      if (!ready) return;
+      const cv = render(+btn.dataset.size, +(btn.dataset.pad || 0));
+      cv.toBlob(b => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = btn.dataset.name;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        out.innerHTML = '已下载 <span class="ok">' + btn.dataset.name + '</span> → 放进 icons/ 目录';
+      }, 'image/png');
+    };
+  });
+})();
+</script>
+</body>
+</html>
+
