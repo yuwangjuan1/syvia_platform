@@ -114,25 +114,25 @@ export default function AgentCard({ agent }: { agent: AgentProject }) {
       <AccentStrip color={a.strip} />
       <Corners hoverColor={a.corner} />
 
-      <div className="grid gap-8 p-8 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-12 lg:p-9">
+      <div className="grid gap-5 p-5 sm:gap-8 sm:p-8 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-12 lg:p-9">
         {/* 左侧：身份区 */}
         <div className="flex flex-col">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <span className={`font-mono text-xs font-medium tracking-[0.24em] ${a.idText}`}>
               {agent.id}
             </span>
             {agent.badge && (
-              <span className="badge-pulse border border-amber/50 bg-amber/10 px-2 py-0.5 font-mono text-[11px] font-bold tracking-[0.2em] text-amber">
+              <span className="badge-pulse whitespace-nowrap border border-amber/50 bg-amber/10 px-2 py-0.5 font-mono text-[11px] font-bold tracking-[0.2em] text-amber">
                 {agent.badge}
               </span>
             )}
             <StatusBadge status={agent.status} />
           </div>
-          <h3 className="mt-5 font-display text-3xl font-extrabold leading-tight text-paper sm:text-4xl lg:text-3xl sm:whitespace-nowrap">
+          <h3 className="mt-4 font-display text-2xl font-extrabold leading-tight text-paper sm:mt-5 sm:text-3xl lg:text-3xl">
             {agent.name}
           </h3>
-          <p className="mt-1.5 font-mono text-sm text-mist">{agent.codename}</p>
-          <p className={`mt-5 text-base font-medium leading-relaxed ${a.metricText}`}>
+          <p className="mt-1.5 font-mono text-xs text-mist sm:text-sm">{agent.codename}</p>
+          <p className={`mt-3 text-[15px] font-medium leading-relaxed sm:mt-5 sm:text-base ${a.metricText}`}>
             {agent.tagline}
           </p>
           <div className="mt-auto hidden pt-7 lg:block">
@@ -152,14 +152,21 @@ export default function AgentCard({ agent }: { agent: AgentProject }) {
         </div>
 
         {/* 右侧：内容区 */}
-        <div className="flex flex-col border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
-          <p className="text-[15px] leading-loose text-mist">{agent.description}</p>
-          <p className="mt-6 font-mono text-xs font-medium tracking-[0.24em] text-mist">
+        <div className="flex flex-col border-t border-line pt-5 sm:pt-6 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+          <p className="line-clamp-4 text-[14px] leading-relaxed text-mist sm:line-clamp-none sm:text-[15px] sm:leading-loose">
+            {agent.description}
+          </p>
+          <p className="mt-5 font-mono text-xs font-medium tracking-[0.24em] text-mist sm:mt-6">
             {"//"} 能力清单
           </p>
-          <ul className="mt-3 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
-            {agent.features.map((f) => (
-              <li key={f} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-paper/85">
+          <ul className="mt-2.5 grid gap-x-8 gap-y-2 sm:mt-3 sm:grid-cols-2 sm:gap-y-2.5">
+            {agent.features.map((f, i) => (
+              <li
+                key={f}
+                className={`items-start gap-2.5 text-[14px] leading-relaxed text-paper/85 sm:flex sm:text-[15px] ${
+                  i >= 4 ? "hidden" : "flex"
+                }`}
+              >
                 <span className={`mt-0.5 shrink-0 font-mono ${a.arrow}`}>&#x25b8;</span>
                 {f}
               </li>
@@ -205,7 +212,7 @@ export default function AgentCard({ agent }: { agent: AgentProject }) {
             )}
           </div>
           {agent.note && (
-            <p className="mt-3 font-mono text-xs leading-relaxed text-mist">
+            <p className="mt-3 hidden font-mono text-xs leading-relaxed text-mist sm:block">
               （{agent.note}）
             </p>
           )}

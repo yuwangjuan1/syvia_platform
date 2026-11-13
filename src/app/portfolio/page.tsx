@@ -87,47 +87,6 @@ const PROJECTS: Project[] = [
   },
 ];
 
-const CAPABILITIES = [
-  {
-    group: "前端",
-    items: ["HTML/CSS", "JavaScript (ES2022)", "TypeScript", "React / Next.js", "Tailwind CSS", "响应式与安全区适配"],
-  },
-  {
-    group: "PWA / 离线",
-    items: ["Service Worker 缓存策略", "IndexedDB", "桌面安装", "离线回落", "MediaSession"],
-  },
-  {
-    group: "工程化",
-    items: ["Node.js 脚本", "GitHub Actions", "静态导出部署", "接口签名与鉴权", "自动化发布"],
-  },
-  {
-    group: "AI 应用",
-    items: ["MCP 服务", "Prompt 工程", "Agent 编排", "知识结构化", "本地模型推理"],
-  },
-  {
-    group: "设计",
-    items: ["设计 token", "信息层级", "手写视觉系统", "移动端细节（圆角/阴影/动效）"],
-  },
-];
-
-const WORKING = [
-  {
-    title: "先做能用的，再做愿意用的",
-    detail:
-      "功能齐了才敢回头看它的样子。审美不是装饰——它决定这个东西有没有人愿意第二次打开。",
-  },
-  {
-    title: "需求来自真实用户",
-    detail:
-      "两个产品的用户，一个是我女儿，一个是我自己。真实用户会告诉你哪里啰嗦、哪里多余，比需求文档诚实。",
-  },
-  {
-    title: "上线才算完成",
-    detail:
-      "本地跑通只是开始。缓存版本、离线回落、失败兜底、自动发布，全部兜住之后，这东西才算能交给别人用。",
-  },
-];
-
 const CARD_CLASS =
   "card-glow group flex flex-col border border-line bg-panel/60 p-5 transition-all hover:border-phos/50 sm:p-6";
 
@@ -284,57 +243,7 @@ export default function PortfolioPage() {
       </section>
 
       <section className="mt-16 sm:mt-24">
-        <SectionHead
-          index="02"
-          en="CAPABILITIES"
-          title="能做什么"
-          sub="按能力分组，不按熟练度打分——打分没意义，项目里有证据。"
-        />
-        <div className="mt-8 grid gap-x-10 gap-y-4 border border-line bg-panel/60 px-5 py-5 sm:px-6 sm:py-6 sm:grid-cols-2">
-          {CAPABILITIES.map((g) => (
-            <p key={g.group} className="text-sm leading-relaxed">
-              <span className="mr-3 font-mono text-xs font-bold tracking-wider text-phos">
-                {g.group}
-              </span>
-              <span className="text-paper/85 sm:hidden">
-                {g.items.slice(0, 3).join(" \u00b7 ")}
-                {g.items.length > 3 ? ` +${g.items.length - 3}` : ""}
-              </span>
-              <span className="hidden text-paper/85 sm:inline">{g.items.join(" \u00b7 ")}</span>
-            </p>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-16 sm:mt-24">
-        <SectionHead
-          index="03"
-          en="HOW I WORK"
-          title="怎么做事"
-          sub="三条，都是做完这些东西之后才总结出来的。"
-        />
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {WORKING.map((w, i) => (
-            <div
-              key={w.title}
-              className="card-glow border border-line bg-panel/60 p-5 hover:border-linebright sm:p-6"
-            >
-              <span className="text-glow-soft font-mono text-2xl font-bold text-phos">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-3 font-display text-lg font-bold text-paper sm:mt-4 sm:text-xl">
-                {w.title}
-              </h3>
-              <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-mist sm:mt-3 sm:line-clamp-none sm:text-[15px]">
-                {w.detail}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-16 sm:mt-24">
-        <SectionHead index="04" en="CONTACT" title="聊聊" sub="看项目、问细节、谈合作，都可以直接来。" />
+        <SectionHead index="02" en="CONTACT" title="聊聊" sub="看项目、问细节、谈合作，都可以直接来。" />
         <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <Link
             href="/contact"
