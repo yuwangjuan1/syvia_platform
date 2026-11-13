@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="小耳朵">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/jpeg" sizes="192x192" href="icons/icon-192.jpg">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <title>小耳朵 · 故事与英语</title>
 <style>
@@ -369,7 +369,7 @@
   <section class="view on" id="v-home">
     <div class="hero">
       <div class="hero-row">
-        <div class="hero-art"><img src="icons/icon-192.jpg" alt="小耳朵"></div>
+        <div class="hero-art"><img src="icons/icon-192.png" alt="小耳朵"></div>
         <div><h1>小耳朵</h1><p>今晚想听点什么呀？</p></div>
       </div>
       <div class="hero-tags">
@@ -1629,7 +1629,7 @@ function mediaMeta(it) {
       title: it.name,
       artist: it.kind === 'en' ? '英语课文' : '睡前故事',
       album: '小耳朵',
-      artwork: [{ src: 'icons/icon-512.jpg', sizes: '512x512', type: 'image/jpeg' }]
+      artwork: [{ src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' }]
     });
     const h = navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
     h('play', () => au.play().catch(() => {}));
