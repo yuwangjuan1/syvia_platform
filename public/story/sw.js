@@ -1,5 +1,5 @@
 /* 小耳朵 · Service Worker */
-const CACHE = 'kids-audio-v4';
+const CACHE = 'kids-audio-v5';
 const CORE = ['./', './index.html', './manifest.json',
   './icons/icon-192.jpg', './icons/icon-512.jpg',
   './icons/apple-touch-icon.png', './icons/icon-maskable-512.jpg'];

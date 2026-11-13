@@ -29,6 +29,12 @@ const PRODUCTS = [
     tags: ["PWA", "离线可用", "本地存储"],
     href: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/savings/`,
   },
+  {
+    name: "小耳朵",
+    desc: "格林童话、伊索寓言、中国寓言点开就听，另配每天 10 分钟英语磨耳朵。音频与记录只存本机，断网也能用。",
+    tags: ["PWA", "离线可用", "睡前故事"],
+    href: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/story/`,
+  },
 ];
 
 const PRINCIPLES = [
