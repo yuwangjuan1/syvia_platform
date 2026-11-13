@@ -22,6 +22,15 @@ const STATS = [
   { value: "¥0", label: "月度 API 账单" },
 ];
 
+const PRODUCTS = [
+  {
+    name: "存钱本",
+    desc: "收支流水、账户净资产月度变化、借条与加密保险箱。数据只存在本机，装到手机桌面后断网也能记账。",
+    tags: ["PWA", "离线可用", "本地存储"],
+    href: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/savings/`,
+  },
+];
+
 const PRINCIPLES = [
   {
     title: "真实需求驱动",
@@ -41,7 +50,7 @@ function LabNotes() {
   return (
     <section id="lab-notes" className="mt-20">
       <SectionHead
-        index="05"
+        index="06"
         en="LAB NOTES"
         title="实验室底账"
         sub="怎么协作、用什么造、走过哪些里程碑——一屏看完，不占地方。"
@@ -176,6 +185,41 @@ export default function Page() {
       <section className="mt-20">
         <SectionHead
           index="04"
+          en="PRODUCTS"
+          title="自研工具"
+          sub="不登录、不上传、不收费——打开就能用的小工具。"
+        />
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          {PRODUCTS.map((p) => (
+            <a
+              key={p.name}
+              href={p.href}
+              className="card-glow group flex flex-col border border-line bg-panel/60 p-6 transition-all hover:border-phos/50"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="font-display text-2xl font-bold text-paper">{p.name}</h3>
+                <span className="font-mono text-[11px] tracking-[0.2em] text-phos">LIVE</span>
+              </div>
+              <p className="mt-3 text-[15px] leading-relaxed text-mist">{p.desc}</p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="border border-line px-2 py-0.5 font-mono text-[11px] tracking-wider text-mist"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <span className="mt-5 font-mono text-xs tracking-wider text-phos">打开应用 {"\u2192"}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-20">
+        <SectionHead
+          index="05"
           en="PRINCIPLES"
           title="构建原则"
           sub="三条军规，刻在每个 Agent 的骨子里。"

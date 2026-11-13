@@ -442,6 +442,12 @@ export const DEVLOG: Array<{
     tag: "RELEASE",
   },
   {
+    date: "2026.11",
+    event: "存钱本上线",
+    detail: "收支流水 · 账户净资产月度变化 · 借条 · 加密保险箱 · 可安装到手机桌面，数据只留本机",
+    tag: "RELEASE",
+  },
+  {
     date: "NEXT",
     event: "侦察猫头鹰 · 情报 Agent",
     detail: "信息源订阅轮询 · 内容去重聚类 · 每日简报自动生成",
