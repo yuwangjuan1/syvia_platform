@@ -64,7 +64,7 @@ const PROJECTS: Project[] = [
       "Markdown 进，公众号草稿出：自动排版、金句卡、图片上传、封面裁切、SEO 元数据，图片按公众号要求自动换成可引用的地址。写完 push，GitHub Actions 自动发布站点。",
     metrics: [
       { value: "1 条", label: "命令发布" },
-      { value: "2h → 3min", label: "排版耗时" },
+      { value: "2h→3min", label: "排版耗时" },
       { value: "0", label: "手动上传" },
     ],
     stack: ["Node.js", "微信 API", "GitHub Actions", "Markdown 解析"],
@@ -129,7 +129,7 @@ const WORKING = [
 ];
 
 const CARD_CLASS =
-  "card-glow group flex flex-col border border-line bg-panel/60 p-6 transition-all hover:border-phos/50";
+  "card-glow group flex flex-col border border-line bg-panel/60 p-5 transition-all hover:border-phos/50 sm:p-6";
 
 function ProjectInner({ p }: { p: Project }) {
   return (
@@ -155,8 +155,10 @@ function ProjectInner({ p }: { p: Project }) {
 
       <div className="mt-5 grid grid-cols-3 divide-x divide-line/70 border-y border-line/70">
         {p.metrics.map((m) => (
-          <div key={m.label} className="px-3 py-3 first:pl-0 last:pr-0">
-            <div className="font-display text-lg font-extrabold text-paper">{m.value}</div>
+          <div key={m.label} className="min-w-0 px-2.5 py-3 first:pl-0 last:pr-0 sm:px-3">
+            <div className="whitespace-nowrap font-display text-[15px] font-extrabold leading-tight text-paper sm:text-lg">
+              {m.value}
+            </div>
             <div className="mt-0.5 text-[11px] tracking-wide text-faint">{m.label}</div>
           </div>
         ))}
@@ -196,14 +198,14 @@ function ProjectCard({ p }: { p: Project }) {
 
 export default function PortfolioPage() {
   return (
-    <main className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-28 sm:px-6 sm:pt-36">
-      <section className="grid items-end gap-10 lg:grid-cols-[1fr_380px]">
+    <main className="relative z-10 mx-auto max-w-6xl px-4 pb-20 pt-24 sm:px-6 sm:pb-24 sm:pt-36">
+      <section className="grid items-end gap-8 sm:gap-10 lg:grid-cols-[1fr_380px]">
         <div>
           <p className="rise font-mono text-xs font-medium tracking-[0.24em] text-phos text-glow-soft">
             {">"} FRONTEND ENGINEER · 独立构建者
           </p>
           <h1
-            className="rise mt-5 font-display text-4xl font-extrabold leading-[1.22] sm:text-5xl lg:text-[56px]"
+            className="rise mt-5 font-display text-[32px] font-extrabold leading-[1.28] sm:text-5xl sm:leading-[1.22] lg:text-[56px]"
             style={{ animationDelay: "0.08s" }}
           >
             <span className="gradient-text">把想法，做成</span>
@@ -211,16 +213,16 @@ export default function PortfolioPage() {
             <span className="text-paper text-glow">能用的东西。</span>
           </h1>
           <p
-            className="rise mt-7 max-w-xl text-lg leading-loose text-mist"
+            className="rise mt-6 max-w-xl text-[15px] leading-loose text-mist sm:mt-7 sm:text-lg"
             style={{ animationDelay: "0.16s" }}
           >
             前端工程师。手上有三个线上产品，全部一个人走完：需求、设计、实现、部署、复盘。
             两个给女儿用，一个给自己用——所以每个细节都得经得起每天打开。
           </p>
-          <div className="rise mt-9 flex flex-wrap items-center gap-4" style={{ animationDelay: "0.24s" }}>
+          <div className="rise mt-8 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4" style={{ animationDelay: "0.24s" }}>
             <a
               href="#projects"
-              className="bg-phos px-6 py-3.5 font-mono text-sm font-bold tracking-wider text-ink shadow-[0_0_36px_rgba(127,240,160,0.35)] transition-all hover:bg-paper hover:shadow-[0_0_44px_rgba(234,241,235,0.4)]"
+              className="flex w-full items-center justify-center bg-phos px-6 py-3.5 font-mono text-sm font-bold tracking-wider text-ink shadow-[0_0_36px_rgba(127,240,160,0.35)] transition-all hover:bg-paper hover:shadow-[0_0_44px_rgba(234,241,235,0.4)] sm:w-auto"
             >
               看四个项目 {"\u2193"}
             </a>
@@ -228,7 +230,7 @@ export default function PortfolioPage() {
               href={SITE.github}
               target="_blank"
               rel="noreferrer"
-              className="border border-linebright px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-paper/90 transition-all hover:border-phos hover:text-phos"
+              className="flex w-full items-center justify-center border border-linebright px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-paper/90 transition-all hover:border-phos hover:text-phos sm:w-auto"
             >
               GitHub {"\u2197"}
             </a>
@@ -236,7 +238,7 @@ export default function PortfolioPage() {
         </div>
 
         <div
-          className="rise border border-line bg-panel/60 px-6 py-5"
+          className="rise border border-line bg-panel/60 px-5 py-4 sm:px-6 sm:py-5"
           style={{ animationDelay: "0.3s" }}
         >
           <p className="font-mono text-xs font-medium tracking-[0.2em] text-phos">{"//"} QUICK FACTS</p>
@@ -257,7 +259,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <section id="projects" className="mt-24 scroll-mt-24">
+      <section id="projects" className="mt-16 scroll-mt-24 sm:mt-24">
         <SectionHead
           index="01"
           en="PROJECTS"
@@ -271,14 +273,14 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <section className="mt-24">
+      <section className="mt-16 sm:mt-24">
         <SectionHead
           index="02"
           en="CAPABILITIES"
           title="能做什么"
           sub="按能力分组，不按熟练度打分——打分没意义，项目里有证据。"
         />
-        <div className="mt-8 grid gap-x-10 gap-y-4 border border-line bg-panel/60 px-6 py-6 sm:grid-cols-2">
+        <div className="mt-8 grid gap-x-10 gap-y-4 border border-line bg-panel/60 px-5 py-5 sm:px-6 sm:py-6 sm:grid-cols-2">
           {CAPABILITIES.map((g) => (
             <p key={g.group} className="text-sm leading-relaxed">
               <span className="mr-3 font-mono text-xs font-bold tracking-wider text-phos">
@@ -290,7 +292,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <section className="mt-24">
+      <section className="mt-16 sm:mt-24">
         <SectionHead
           index="03"
           en="HOW I WORK"
@@ -301,7 +303,7 @@ export default function PortfolioPage() {
           {WORKING.map((w, i) => (
             <div
               key={w.title}
-              className="card-glow border border-line bg-panel/60 p-6 hover:border-linebright"
+              className="card-glow border border-line bg-panel/60 p-5 hover:border-linebright sm:p-6"
             >
               <span className="text-glow-soft font-mono text-2xl font-bold text-phos">
                 {String(i + 1).padStart(2, "0")}
@@ -313,12 +315,12 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <section className="mt-24">
+      <section className="mt-16 sm:mt-24">
         <SectionHead index="04" en="CONTACT" title="聊聊" sub="看项目、问细节、谈合作，都可以直接来。" />
-        <div className="mt-8 flex flex-wrap items-center gap-4">
+        <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <Link
             href="/contact"
-            className="bg-phos px-6 py-3.5 font-mono text-sm font-bold tracking-wider text-ink shadow-[0_0_36px_rgba(127,240,160,0.35)] transition-all hover:bg-paper"
+            className="flex items-center justify-center bg-phos px-6 py-3.5 font-mono text-sm font-bold tracking-wider text-ink shadow-[0_0_36px_rgba(127,240,160,0.35)] transition-all hover:bg-paper sm:w-auto"
           >
             联系方式 {"\u2192"}
           </Link>
@@ -326,7 +328,7 @@ export default function PortfolioPage() {
             href={SITE.github}
             target="_blank"
             rel="noreferrer"
-            className="border border-linebright px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-paper/90 transition-all hover:border-phos hover:text-phos"
+            className="flex items-center justify-center border border-linebright px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-paper/90 transition-all hover:border-phos hover:text-phos sm:w-auto"
           >
             github.com/yuwangjuan1 {"\u2197"}
           </a>
@@ -334,7 +336,7 @@ export default function PortfolioPage() {
             href={SITE.gitee}
             target="_blank"
             rel="noreferrer"
-            className="border border-line px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-mist transition-all hover:border-phos hover:text-phos"
+            className="flex items-center justify-center border border-line px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-mist transition-all hover:border-phos hover:text-phos sm:w-auto"
           >
             gitee.com/syvia {"\u2197"}
           </a>
