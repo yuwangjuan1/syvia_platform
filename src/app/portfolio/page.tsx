@@ -151,7 +151,9 @@ function ProjectInner({ p }: { p: Project }) {
         <span className="font-mono text-[11px] font-medium tracking-[0.18em] text-faint">{p.en}</span>
       </h3>
       <p className="mt-2 text-[15px] font-medium text-phos/90">{p.tagline}</p>
-      <p className="mt-3 text-[15px] leading-relaxed text-mist">{p.detail}</p>
+      <p className="mt-2.5 line-clamp-3 text-[14px] leading-relaxed text-mist sm:mt-3 sm:line-clamp-none sm:text-[15px]">
+        {p.detail}
+      </p>
 
       <div className="mt-5 grid grid-cols-3 divide-x divide-line/70 border-y border-line/70">
         {p.metrics.map((m) => (
@@ -164,7 +166,7 @@ function ProjectInner({ p }: { p: Project }) {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 hidden flex-wrap gap-2 sm:flex">
         {p.stack.map((s) => (
           <span
             key={s}
@@ -216,8 +218,11 @@ export default function PortfolioPage() {
             className="rise mt-6 max-w-xl text-[15px] leading-loose text-mist sm:mt-7 sm:text-lg"
             style={{ animationDelay: "0.16s" }}
           >
-            前端工程师。手上有三个线上产品，全部一个人走完：需求、设计、实现、部署、复盘。
-            两个给女儿用，一个给自己用——所以每个细节都得经得起每天打开。
+            <span className="sm:hidden">前端工程师。三个线上产品，从需求到部署全部自己走完。</span>
+            <span className="hidden sm:inline">
+              前端工程师。手上有三个线上产品，全部一个人走完：需求、设计、实现、部署、复盘。
+              两个给女儿用，一个给自己用——所以每个细节都得经得起每天打开。
+            </span>
           </p>
           <div className="rise mt-8 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4" style={{ animationDelay: "0.24s" }}>
             <a
@@ -250,7 +255,12 @@ export default function PortfolioPage() {
               ["协作", "AI 承担实现，我负责判断与验收"],
               ["状态", "可远程 · 可全职"],
             ].map(([k, v]) => (
-              <div key={k} className="flex items-baseline gap-4 py-2.5">
+              <div
+                key={k}
+                className={`items-baseline gap-4 py-2.5 ${
+                  k === "偏好" || k === "协作" ? "hidden sm:flex" : "flex"
+                }`}
+              >
                 <dt className="w-14 shrink-0 font-mono text-xs tracking-wider text-faint">{k}</dt>
                 <dd className="text-sm text-paper/90">{v}</dd>
               </div>
@@ -286,7 +296,11 @@ export default function PortfolioPage() {
               <span className="mr-3 font-mono text-xs font-bold tracking-wider text-phos">
                 {g.group}
               </span>
-              <span className="text-paper/85">{g.items.join(" \u00b7 ")}</span>
+              <span className="text-paper/85 sm:hidden">
+                {g.items.slice(0, 3).join(" \u00b7 ")}
+                {g.items.length > 3 ? ` +${g.items.length - 3}` : ""}
+              </span>
+              <span className="hidden text-paper/85 sm:inline">{g.items.join(" \u00b7 ")}</span>
             </p>
           ))}
         </div>
@@ -308,8 +322,12 @@ export default function PortfolioPage() {
               <span className="text-glow-soft font-mono text-2xl font-bold text-phos">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="mt-4 font-display text-xl font-bold text-paper">{w.title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-mist">{w.detail}</p>
+              <h3 className="mt-3 font-display text-lg font-bold text-paper sm:mt-4 sm:text-xl">
+                {w.title}
+              </h3>
+              <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-mist sm:mt-3 sm:line-clamp-none sm:text-[15px]">
+                {w.detail}
+              </p>
             </div>
           ))}
         </div>
@@ -336,7 +354,7 @@ export default function PortfolioPage() {
             href={SITE.gitee}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center border border-line px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-mist transition-all hover:border-phos hover:text-phos sm:w-auto"
+            className="hidden items-center justify-center border border-line px-6 py-3.5 font-mono text-sm font-medium tracking-wider text-mist transition-all hover:border-phos hover:text-phos sm:flex sm:w-auto"
           >
             gitee.com/syvia {"\u2197"}
           </a>
