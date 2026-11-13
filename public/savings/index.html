@@ -327,6 +327,46 @@
     body{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
     #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
   }
+
+  /* ══════════ 月度存钱看板 ══════════ */
+  .goal-b{display:flex;flex-direction:column;gap:13px}
+  .goal-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .goal-k{font-size:11.5px;color:var(--ink3)}
+  .goal-v{font-size:26px;font-weight:750;letter-spacing:-.6px;margin-top:6px;
+    display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums}
+  .goal-v i{font-size:14px;font-weight:500;font-style:normal;color:var(--ink3)}
+  .goal-v em{font-size:12.5px;font-weight:500;color:var(--ink3);font-style:normal;letter-spacing:0}
+  .goal-state{font-size:11.5px;font-weight:700;padding:5px 11px;line-height:1.4;
+    border:1px solid var(--line);color:var(--ink3);background:#fff;white-space:nowrap}
+  .goal-state.ok{color:#0e8a5f;border-color:#b9e3d1;background:#f0fbf6}
+  .goal-state.no{color:#b45309;border-color:#f7d6a6;background:#fffaf1}
+  .goal-bar{height:8px;background:var(--line2);border:1px solid var(--line);overflow:hidden}
+  .goal-bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .35s ease}
+  .goal-bar i.ok{background:#0e8a5f}
+  .goal-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    font-size:11.5px;color:var(--ink3)}
+  .goal-set{display:inline-flex;align-items:center;gap:6px;color:var(--ink2);white-space:nowrap}
+  .goal-set input{width:96px;height:30px;border:1px solid var(--line);background:#fff;padding:0 8px;
+    font-size:13px;font-family:inherit;outline:none;text-align:right;font-variant-numeric:tabular-nums}
+  .goal-set input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,116,245,.12)}
+  .goal-months{display:flex;gap:5px}
+  .gm{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .gm b{width:100%;height:24px;background:#f7f9fc;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--ink3)}
+  .gm.has b{background:var(--blue-l);border-color:#c3d4f2;color:var(--blue)}
+  .gm.on b{background:var(--blue);border-color:var(--blue);color:#fff}
+  .gm.miss b{background:#fffaf1;border-color:#f7d6a6;color:#c08040}
+  .gm.now b{box-shadow:0 0 0 2px rgba(24,116,245,.20)}
+  .gm span{font-size:9.5px;color:var(--ink3);line-height:1.2}
+  .gm.now span{color:var(--ink);font-weight:700}
+  @media(max-width:780px){
+    .goal-v{font-size:22px}
+    .goal-months{gap:3px}
+    .gm b{height:22px;font-size:9px}
+    .gm span{font-size:9px}
+    .goal-foot{font-size:11px}
+    .goal-set input{height:34px;font-size:16px;width:88px}
+  }
 </style>
 </head>
 <body>
@@ -361,6 +401,25 @@
       <div class="card stat">
         <div class="k"><i class="dot" style="background:var(--income)"></i>本月存下</div>
         <div class="v num"><i>¥</i><b id="h-save">0</b></div>
+      </div>
+    </div>
+
+    <div class="card sec">
+      <div class="sec-h"><h2>月度存钱看板</h2><span class="hint" id="g-sub"></span></div>
+      <div class="sec-b goal-b">
+        <div class="goal-top">
+          <div>
+            <div class="goal-k">本月已存 · 按「存入」记录合计</div>
+            <div class="goal-v"><i>¥</i><b id="g-saved">0</b><em id="g-goal">/ 未设目标</em></div>
+          </div>
+          <div class="goal-state" id="g-state">未设目标</div>
+        </div>
+        <div class="goal-bar"><i id="g-bar"></i></div>
+        <div class="goal-foot">
+          <span id="g-tip">设一个月度目标，才知道这个月算不算存下来了</span>
+          <span class="goal-set">目标 ¥<input id="g-input" type="number" min="0" step="100" inputmode="decimal" placeholder="0"></span>
+        </div>
+        <div class="goal-months" id="g-months"></div>
       </div>
     </div>
 
@@ -776,12 +835,78 @@
     const si=inc.reduce((a,b)=>a+b,0), se=exp.reduce((a,b)=>a+b,0);
     document.getElementById('h-avg').textContent='结余 ¥'+money(si-se);
     document.getElementById('h-mom').textContent='';
+    renderGoal();
   }
 
   function last12(){
     const out=[],y=+ym.split('-')[0],m=+ym.split('-')[1];
     for(let i=11;i>=0;i--){const d=new Date(y,m-1-i,1);out.push(d.getFullYear()+'-'+p2(d.getMonth()+1))}
     return out;
+  }
+
+  /* ───────── 月度存钱看板 ───────── */
+  function prevK(k,n){
+    const y=+k.slice(0,4),m=+k.slice(5,7);
+    const d=new Date(y,m-1-n,1);
+    return d.getFullYear()+'-'+p2(d.getMonth()+1);
+  }
+  function goalOf(){return r2(+db.goal||0)}
+  function saveOf(k){return r2(sumOf(txOf(k),'save'))}
+  // 连续达成月数：本月已达成则从本月数起，否则从上月往前数
+  function streakOf(goal){
+    if(!goal)return 0;
+    let n=0,k=thisMonth();
+    if(saveOf(k)<goal)k=prevK(k,1);
+    for(let i=0;i<24;i++){
+      if(saveOf(k)>=goal){n++;k=prevK(k,1)}else break;
+    }
+    return n;
+  }
+  function renderGoal(){
+    const g=goalOf(), cur=thisMonth(), saved=saveOf(cur);
+    const months=[];
+    for(let i=11;i>=0;i--)months.push(prevK(cur,i));
+    const hits=g?months.filter(k=>saveOf(k)>=g).length:0;
+    const bar=document.getElementById('g-bar'), st=document.getElementById('g-state');
+    const tip=document.getElementById('g-tip'), sub=document.getElementById('g-sub');
+    const input=document.getElementById('g-input');
+    document.getElementById('g-saved').textContent=money(saved);
+    document.getElementById('g-goal').textContent=g?('/ 目标 ¥'+money(g)):'/ 未设目标';
+    if(document.activeElement!==input)input.value=g||'';
+
+    if(!g){
+      st.className='goal-state'; st.textContent='未设目标';
+      bar.className=''; bar.style.width='0';
+      tip.textContent='设一个月度目标，才知道这个月算不算存下来了';
+      sub.textContent='';
+    }else{
+      const pct=Math.min(100,saved/g*100);
+      bar.style.width=pct.toFixed(1)+'%';
+      if(saved>=g){
+        st.className='goal-state ok'; st.textContent='已达成';
+        bar.className='ok';
+        tip.textContent='本月目标达成，比目标多存 ¥'+money(saved-g);
+      }else{
+        st.className='goal-state no'; st.textContent='还差 ¥'+money(g-saved);
+        bar.className='';
+        tip.textContent='已完成本月目标的 '+pct.toFixed(0)+'%';
+      }
+      const n=streakOf(g);
+      sub.textContent=(n?('连续达成 '+n+' 个月 · '):'')+'近 12 个月达成 '+hits+'/12';
+    }
+
+    // 近 12 个月：达成 / 有存入但未达成 / 无记录
+    document.getElementById('g-months').innerHTML=months.map(k=>{
+      const s=saveOf(k), has=s>0;
+      let cls='gm', mark='';
+      if(g){
+        if(s>=g){cls+=' on';mark='✓'}
+        else if(has){cls+=' miss';mark='·'}
+      }else if(has){cls+=' has';mark='·'}
+      if(k===cur)cls+=' now';
+      return '<div class="'+cls+'" title="'+label(k)+' 存入 ¥'+money(s)+(g?(' / 目标 ¥'+money(g)):'')+'">'+
+        '<b>'+mark+'</b><span>'+Number(k.slice(5,7))+'</span></div>';
+    }).join('');
   }
 
   /* ───────── 收支 ───────── */
@@ -1271,6 +1396,17 @@
   });
   document.getElementById('prev').onclick=()=>{shift(-1);renderFlow()};
   document.getElementById('next').onclick=()=>{shift(1);renderFlow()};
+
+  // 月度存钱目标
+  const goalInput=document.getElementById('g-input');
+  goalInput.addEventListener('change',()=>{
+    const v=parseFloat(goalInput.value);
+    db.goal=isFinite(v)&&v>0?r2(v):0;
+    save();
+    goalInput.value=db.goal||'';
+    render();
+  });
+  goalInput.addEventListener('keydown',e=>{if(e.key==='Enter')goalInput.blur()});
 
   function addTx(){
     const name=document.getElementById('name').value.trim();
