@@ -6,6 +6,7 @@ import LogoMark from "@/components/logo-mark";
 import { SITE } from "@/data/agents";
 
 const NAV = [
+  { href: "/portfolio", label: "作品集" },
   { href: "/agents", label: "Agent" },
   { href: "/experts", label: "专家" },
   { href: "/skills", label: "Skills" },
