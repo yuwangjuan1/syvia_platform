@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="小耳朵">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/jpeg" sizes="192x192" href="icons/icon-192.jpg">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <title>小耳朵 · 故事与英语</title>
 <style>
@@ -38,7 +38,7 @@
     font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
-    padding:calc(16px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom));
+    padding:calc(16px + env(safe-area-inset-top)) 20px calc(30px + env(safe-area-inset-bottom));
     min-height:100vh;
     overscroll-behavior-y:contain;
   }
@@ -76,8 +76,8 @@
     font-family:Georgia,'Times New Roman',serif}
   .topbar{display:flex;align-items:center;gap:10px;margin-bottom:16px}
   #v-story .topbar{position:sticky;top:0;z-index:30;
-    margin:calc(-1 * (16px + env(safe-area-inset-top))) -16px 12px;
-    padding:calc(14px + env(safe-area-inset-top)) 16px 10px;
+    margin:calc(-1 * (16px + env(safe-area-inset-top))) -20px 12px;
+    padding:calc(18px + env(safe-area-inset-top)) 20px 12px;
     background:rgba(251,247,242,.9);
     -webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);
     border-bottom:1px solid rgba(30,26,55,.06);
@@ -198,11 +198,11 @@
 
   /* 分类筛选 */
   .lib-nav{position:sticky;top:calc(65px + env(safe-area-inset-top));z-index:20;
-    margin:0 -16px;padding:14px 16px 0;
+    margin:0 -20px;padding:14px 20px 0;
     background:rgba(251,247,242,.9);
     -webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6)}
   .lib-nav .sec-h{margin:0 2px 10px}
-  .colsline{display:flex;gap:8px;overflow-x:auto;padding:0 2px 12px;margin:0 -16px;padding-left:16px;padding-right:16px;
+  .colsline{display:flex;gap:8px;overflow-x:auto;padding:0 20px 12px;margin:0 -20px;
     scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-snap-type:x proximity}
   .colsline::-webkit-scrollbar{display:none}
   .cbtn{flex:none;height:36px;padding:0 15px;border-radius:18px;background:#fff;
@@ -2232,7 +2232,7 @@ function mediaMeta(it) {
       title: it.name,
       artist: it.kind === 'en' ? '英语课文' : '睡前故事',
       album: '小耳朵',
-      artwork: [{ src: 'icons/icon-512.jpg', sizes: '512x512', type: 'image/jpeg' }]
+      artwork: [{ src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' }]
     });
     const h = navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
     h('play', () => {
