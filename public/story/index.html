@@ -1,365 +1,350 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f8f3ea">
+<meta name="theme-color" content="#8fc6ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="小耳朵">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/jpeg" sizes="192x192" href="icons/icon-192.jpg">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <title>小耳朵 · 故事与英语</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   :root{
-    --cream:#f8f3ea; --paper:#f8f3ea; --card:#fffdfa;
-    --ink:#211d33; --ink2:#605a75; --ink3:#9a94a9;
-    --night:#191a35; --night2:#2a2550;
-    --gold:#e3a45c; --gold-l:#fdf3e3;
-    --sky:#5b74d8; --sky-l:#eef1ff; --sky-d:#3d55b8;
-    --mint:#3fb99a; --mint-l:#e6f8f1;
-    --sun:#ffb440; --sun-l:#fff3dd;
-    --coral:#ee8069; --coral-l:#ffece7;
-    --grape:#8b7cf6; --grape-l:#efecff;
-    --line:#eee6da;
-    --shadow:0 2px 4px rgba(72,58,44,.04),0 16px 32px -16px rgba(72,58,90,.24);
-    --shadow-sm:0 1px 2px rgba(72,58,44,.05),0 10px 20px -12px rgba(72,58,90,.20);
-    --serif:'Songti SC','STSong','Noto Serif SC',Georgia,'Times New Roman',serif;
+    --cream:#fbf7f2; --card:#fff;
+    --ink:#1e1b2e; --ink2:#5f5b76; --ink3:#9a96ab;
+    --sky:#4a7dff; --sky-l:#eaf1ff; --sky-d:#2c5ce0;
+    --mint:#20c7a0; --mint-l:#e3faf3;
+    --sun:#ffb02e; --sun-l:#fff4de;
+    --coral:#ff7a5c; --coral-l:#ffeee8;
+    --grape:#8a7bff; --grape-l:#eeebff;
+    --line:#eee9f2;
+    --shadow:0 1px 2px rgba(30,26,55,.04),0 16px 34px -16px rgba(30,26,55,.22);
+    --shadow-sm:0 1px 2px rgba(30,26,55,.04),0 10px 22px -14px rgba(30,26,55,.20);
+    --hair:inset 0 0 0 1px rgba(30,26,55,.05);
   }
   html{-webkit-text-size-adjust:100%}
   body{
-    background-color:var(--paper);
-    background-image:
-      radial-gradient(820px 460px at 6% -10%, #e7eefb 0%, rgba(231,238,251,0) 60%),
-      radial-gradient(700px 420px at 102% 0%, #ffeedb 0%, rgba(255,238,219,0) 58%),
-      radial-gradient(760px 460px at 48% 106%, #ece7fb 0%, rgba(236,231,251,0) 62%),
-      radial-gradient(rgba(120,96,70,.05) 1px, transparent 1px);
-    background-size:auto,auto,auto,22px 22px;
+    background:
+      radial-gradient(680px 340px at 12% -10%, #e4efff 0%, rgba(228,239,255,0) 70%),
+      radial-gradient(560px 300px at 96% -6%, #fff0dc 0%, rgba(255,240,220,0) 70%),
+      var(--cream);
+    background-attachment:fixed;
     color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
-    letter-spacing:.01em;
-    padding:calc(18px + env(safe-area-inset-top)) 16px calc(32px + env(safe-area-inset-bottom));
+    -moz-osx-font-smoothing:grayscale;
+    padding:calc(16px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom));
     min-height:100vh;
+    overscroll-behavior-y:contain;
   }
   .wrap{max-width:560px;margin:0 auto}
   button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
-  button:focus-visible,input:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
 
   /* 通用 */
   .view{display:none}
-  .view.on{display:block;animation:fade .28s cubic-bezier(.22,.7,.32,1)}
-  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .view.on{display:block;animation:fade .22s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   /* 插画卡：纯本地绘制（渐变 + 光斑 + 小圆点 + 主图形），不依赖网络图片 */
   .ph{position:relative;overflow:hidden;isolation:isolate;
-    background:linear-gradient(158deg,var(--c1,#e7f2ff) 0%,var(--c2,#fdf0e3) 100%);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.38),inset 0 -26px 44px -20px rgba(120,105,160,.18)}
-  .ph:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(120% 76% at 50% 6%,rgba(255,255,255,.3),rgba(255,255,255,0) 60%)}
-  .ph .glow{position:absolute;left:-30%;top:-48%;width:94%;height:120%;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,255,255,.7),rgba(255,255,255,0));z-index:0}
-  .ph .hl{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);z-index:1}
+    background:
+      radial-gradient(120% 92% at 16% 6%, rgba(255,255,255,.88) 0%, rgba(255,255,255,0) 58%),
+      linear-gradient(158deg,var(--c1,#e7f2ff) 0%,var(--c2,#fdf0e3) 100%)}
+  .ph:after{content:'';position:absolute;inset:0;border-radius:inherit;z-index:4;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),inset 0 -20px 34px -26px rgba(26,22,55,.42)}
+  .ph .glow{position:absolute;left:-30%;top:-42%;width:100%;height:112%;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.66),rgba(255,255,255,0) 70%);z-index:0}
+  .ph .hl{position:absolute;border-radius:50%;background:rgba(255,255,255,.42);z-index:1}
   .ph .hl.a{bottom:-24%;left:-18%;width:80%;height:52%}
-  .ph .hl.b{bottom:-32%;right:-22%;width:88%;height:60%;background:rgba(255,255,255,.3)}
-  .ph .dt{position:absolute;border-radius:50%;background:rgba(255,255,255,.82);z-index:2}
-  .ph .dt.p1{width:5px;height:5px;left:15%;top:21%}
-  .ph .dt.p2{width:8px;height:8px;left:30%;top:12%;opacity:.8}
-  .ph .dt.p3{width:4px;height:4px;right:18%;top:17%;opacity:.7}
-  .ph .dt.p4{width:3px;height:3px;right:28%;top:35%;opacity:.55}
+  .ph .hl.b{bottom:-32%;right:-22%;width:88%;height:60%;background:rgba(255,255,255,.26)}
+  .ph .dt{position:absolute;border-radius:50%;background:rgba(255,255,255,.95);z-index:2;
+    box-shadow:0 0 10px rgba(255,255,255,.7)}
+  .ph .dt.p1{width:5px;height:5px;left:15%;top:20%}
+  .ph .dt.p2{width:8px;height:8px;left:30%;top:11%;opacity:.85}
+  .ph .dt.p3{width:4px;height:4px;right:18%;top:16%;opacity:.7}
+  .ph .dt.p4{width:3px;height:3px;right:28%;top:34%;opacity:.6}
   .ph .f{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);z-index:3;
-    font-size:var(--fs,44px);line-height:1;filter:drop-shadow(0 10px 16px rgba(70,58,110,.24))}
+    width:1.42em;height:1.42em;display:flex;align-items:center;justify-content:center;
+    font-size:var(--fs,44px);line-height:1;border-radius:50%;
+    background:linear-gradient(158deg,rgba(255,255,255,.92),rgba(255,255,255,.58));
+    box-shadow:0 12px 24px -12px rgba(26,22,55,.5),inset 0 1px 0 rgba(255,255,255,.95)}
   .ph .lt{position:absolute;z-index:2;font-weight:900;color:rgba(255,255,255,.8);
-    font-family:var(--serif)}
-  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-  .topbar h2{font-size:19px;font-weight:800;letter-spacing:-.2px;flex:1}
-  .back{width:42px;height:42px;border-radius:15px;background:var(--card);box-shadow:var(--shadow-sm);
-    display:flex;align-items:center;justify-content:center;flex:none;transition:.16s}
-  .back:active{transform:scale(.94)}
-  .back svg{width:17px;height:17px;stroke:var(--ink);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
-  .pillbtn{height:42px;padding:0 15px;border-radius:15px;background:var(--card);box-shadow:var(--shadow-sm);
-    border:1px solid rgba(91,116,216,.12);
+    font-family:Georgia,'Times New Roman',serif}
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  #v-story .topbar{position:sticky;top:0;z-index:30;
+    margin:calc(-1 * (16px + env(safe-area-inset-top))) -16px 12px;
+    padding:calc(14px + env(safe-area-inset-top)) 16px 10px;
+    background:rgba(251,247,242,.9);
+    -webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);
+    border-bottom:1px solid rgba(30,26,55,.06);
+    box-shadow:0 14px 26px -24px rgba(30,26,55,.55)}
+  .topbar h2{font-size:19px;font-weight:850;letter-spacing:-.4px;flex:1}
+  .back{width:40px;height:40px;border-radius:14px;background:#fff;box-shadow:var(--shadow-sm),var(--hair);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .back svg{width:18px;height:18px;stroke:var(--ink);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .pillbtn{height:40px;padding:0 15px;border-radius:14px;background:#fff;box-shadow:var(--shadow-sm),var(--hair);
     font-size:12.5px;font-weight:750;color:var(--sky-d);display:flex;align-items:center;gap:5px}
-  .sec-h{display:flex;align-items:center;gap:9px;margin:25px 2px 12px}
-  .sec-h b{font-size:15.5px;font-weight:800;letter-spacing:-.2px}
-  .sec-h i{font-style:normal;font-size:13px;width:27px;height:27px;border-radius:9px;display:grid;place-items:center;
-    background:var(--card);box-shadow:var(--shadow-sm)}
-  .sec-h em{font-style:normal;font-size:11px;color:var(--ink3);margin-left:auto}
-  .note{font-size:11px;color:var(--ink3);line-height:1.9;margin:14px 4px 0}
+  .sec-h{display:flex;align-items:center;gap:9px;margin:20px 2px 12px}
+  .sec-h b{font-size:16px;font-weight:850;letter-spacing:-.4px}
+  .sec-h i{font-style:normal;width:26px;height:26px;border-radius:9px;flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:14px;
+    background:#fff;box-shadow:var(--shadow-sm),var(--hair)}
+  .sec-h em{font-style:normal;font-size:11.5px;color:var(--ink3);margin-left:auto;font-weight:650}
+  .note{font-size:11.5px;color:var(--ink3);line-height:1.8;margin:12px 4px 0}
 
   /* 首页 */
-  .hero{position:relative;border-radius:32px;padding:24px 21px 20px;overflow:hidden;color:#fff;
+  .hero{position:relative;border-radius:28px;padding:20px 20px 18px;overflow:hidden;margin-bottom:18px;
     background:
-      radial-gradient(130% 150% at 90% -20%, #55518f 0%, rgba(85,81,143,0) 58%),
-      linear-gradient(160deg,#2b2857 0%,#1d1c40 56%,#14142e 100%);
-    box-shadow:0 22px 44px -22px rgba(28,24,66,.62),inset 0 1px 0 rgba(255,255,255,.10)}
-  .hero:before{content:'';position:absolute;inset:0;z-index:0;opacity:.85;
-    background-image:
-      radial-gradient(1.7px 1.7px at 16% 24%,rgba(255,255,255,.9),transparent),
-      radial-gradient(1.2px 1.2px at 31% 10%,rgba(255,255,255,.7),transparent),
-      radial-gradient(1.5px 1.5px at 58% 20%,rgba(255,255,255,.6),transparent),
-      radial-gradient(1px 1px at 74% 8%,rgba(255,255,255,.55),transparent),
-      radial-gradient(1.8px 1.8px at 86% 30%,rgba(255,255,255,.75),transparent)}
-  .hero:after{content:'';position:absolute;width:200px;height:200px;right:-62px;top:-84px;border-radius:50%;z-index:0;
-    background:radial-gradient(circle,rgba(255,225,180,.92) 0%,rgba(255,211,146,.30) 36%,rgba(255,211,146,0) 68%)}
-  .hero-row{display:flex;align-items:center;gap:15px;position:relative;z-index:1}
-  .hero-art{width:80px;height:80px;border-radius:27px;overflow:hidden;flex:none;padding:2px;
-    background:linear-gradient(150deg,rgba(255,255,255,.5),rgba(255,255,255,.12));
-    box-shadow:0 12px 26px rgba(10,8,34,.42)}
-  .hero-art img{width:100%;height:100%;object-fit:cover;display:block;border-radius:25px}
-  .hero h1{font-family:var(--serif);font-size:31px;font-weight:700;letter-spacing:2px;line-height:1.1;color:#fffaf0}
-  .hero p{font-size:12.5px;color:rgba(249,242,255,.72);margin-top:7px;font-weight:500;letter-spacing:.6px}
-  .hero-tags{display:flex;gap:7px;margin-top:17px;position:relative;z-index:1;flex-wrap:wrap}
-  .tag{font-size:10px;font-weight:600;padding:5px 8px;border-radius:20px;
-    background:rgba(255,255,255,.13);color:#efeaff;
-    border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-    white-space:nowrap}
+      radial-gradient(320px 210px at 88% -6%, rgba(226,206,255,.42) 0%, rgba(226,206,255,0) 66%),
+      radial-gradient(300px 240px at 118% 54%, rgba(255,176,126,.3) 0%, rgba(255,176,126,0) 68%),
+      radial-gradient(280px 210px at -4% 106%, rgba(102,178,255,.22) 0%, rgba(102,178,255,0) 70%),
+      linear-gradient(142deg,#3b3159 0%,#2b2346 48%,#1e1935 100%);
+    box-shadow:0 1px 2px rgba(30,26,55,.08),0 22px 46px -22px rgba(34,26,72,.72),
+      inset 0 1px 0 rgba(255,255,255,.12)}
+  .hero:after{content:'';position:absolute;width:210px;height:210px;right:-66px;top:-80px;border-radius:50%;
+    background:radial-gradient(circle,rgba(216,201,255,.5),rgba(216,201,255,0) 70%)}
+  .hero:before{content:'';position:absolute;width:170px;height:170px;left:-58px;bottom:-76px;border-radius:50%;
+    background:radial-gradient(circle,rgba(122,192,255,.38),rgba(122,192,255,0) 70%)}
+  .hero-row{display:flex;align-items:center;gap:14px;position:relative;z-index:1;padding-right:38px}
+  .hero-art{width:76px;height:76px;border-radius:24px;overflow:hidden;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(158deg,rgba(255,255,255,.18),rgba(255,255,255,.05));
+    box-shadow:0 14px 26px -14px rgba(8,4,24,.8),0 0 0 3px rgba(255,255,255,.16),
+      inset 0 1px 0 rgba(255,255,255,.26)}
+  .hero-art img{width:100%;height:100%;object-fit:contain;display:block;padding:5px;
+    filter:drop-shadow(0 6px 12px rgba(6,3,20,.45))}
+  .hero h1{font-size:28px;font-weight:900;letter-spacing:-1.1px;line-height:1.06;color:#fff;
+    text-shadow:0 2px 16px rgba(10,6,28,.42)}
+  .hero p{font-size:12.5px;color:rgba(214,207,240,.86);margin-top:7px;font-weight:600;letter-spacing:.1px}
+  .hero-set{position:absolute;right:13px;top:13px;z-index:2;width:34px;height:34px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;
+    background:rgba(255,255,255,.13);color:#ece8fb;
+    box-shadow:0 1px 2px rgba(10,6,26,.28),inset 0 0 0 1px rgba(255,255,255,.18);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:transform .16s ease}
+  .hero-set:active{transform:scale(.92)}
+  .hero-tags{display:flex;gap:8px;margin-top:14px;position:relative;z-index:1}
+  .hero-tags .tag{flex:1;display:flex;align-items:center;justify-content:center;gap:4px}
+  .tag{font-size:11px;font-weight:700;padding:5px 11px;border-radius:20px;background:rgba(255,255,255,.12);
+    color:#ece8fb;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    box-shadow:0 1px 2px rgba(10,6,26,.22),inset 0 0 0 1px rgba(255,255,255,.16)}
 
-  .entry{position:relative;display:block;width:100%;text-align:left;border-radius:28px;overflow:hidden;
-    margin-bottom:14px;box-shadow:0 18px 34px -20px rgba(44,38,90,.46);transition:transform .18s,box-shadow .18s;background:var(--card)}
-  .entry:active{transform:scale(.982);box-shadow:0 10px 22px -16px rgba(44,38,90,.4)}
-  .entry .ph{height:142px}
-  .entry .ph:before{content:'';position:absolute;right:-2%;top:50%;width:168px;height:168px;transform:translateY(-50%);
-    border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.20),rgba(255,255,255,0) 66%);z-index:1}
-  .entry .ph .f{left:auto;right:8%;top:41%;transform:translateY(-50%);font-size:56px}
-  .entry.story .ph{--c1:#3b3f81;--c2:#7e5c9d}
-  .entry.story .ph .hl{background:rgba(255,255,255,.11)}
-  .entry.story .ph .hl.b{background:rgba(255,255,255,.07)}
-  .entry.story .ph .dt{background:#fff;box-shadow:0 0 10px rgba(255,255,255,.9)}
-  .entry.en .ph{--c1:#f0a05e;--c2:#ffd58c}
-  .entry.en .ph .hl{background:rgba(255,255,255,.4)}
-  .entry.en .ph .hl.b{background:rgba(255,255,255,.26)}
-  .entry.en .ph .lt{color:rgba(255,255,255,.92);text-shadow:0 2px 10px rgba(180,90,20,.24)}
-  .entry .mask{position:absolute;inset:0;background:linear-gradient(100deg,rgba(11,14,38,.80) 2%,rgba(11,14,38,.42) 46%,rgba(11,14,38,.04) 88%)}
-  .entry.en .mask{background:linear-gradient(100deg,rgba(58,32,10,.72) 2%,rgba(58,32,10,.34) 46%,rgba(58,32,10,.02) 88%)}
-  .entry .txt{position:absolute;left:19px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;color:#fff;max-width:72%}
-  .entry .txt b{font-size:21px;font-weight:800;letter-spacing:.3px;text-shadow:0 2px 12px rgba(0,0,0,.28)}
-  .entry .txt span{font-size:11.5px;color:rgba(255,255,255,.86);margin-top:7px;text-shadow:0 1px 6px rgba(0,0,0,.3);line-height:1.55}
-  .entry .go{position:absolute;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;
-    background:rgba(255,255,255,.96);display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 18px rgba(0,0,0,.22)}
-  .entry .go svg{width:15px;height:15px;stroke:#2f2b46;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .entry{position:relative;display:block;width:100%;text-align:left;border-radius:24px;overflow:hidden;
+    margin-bottom:13px;box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease;background:#fff}
+  .entry:active{transform:scale(.985)}
+  .entry .ph{height:132px}
+  .entry .ph .f{left:auto;right:7%;top:50%;transform:translateY(-50%);font-size:50px;
+    background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;width:auto;height:auto;
+    filter:drop-shadow(0 10px 18px rgba(10,14,40,.4))}
+  .entry.en .ph .f{right:12%}
+  .entry.story .ph{--c1:#2f3a72;--c2:#7b5bb5}
+  .entry.story .ph .hl{background:rgba(255,255,255,.12)}
+  .entry.story .ph .hl.b{background:rgba(255,255,255,.08)}
+  .entry.story .ph .dt{background:#fff;box-shadow:0 0 8px rgba(255,255,255,.9)}
+  .entry.en .ph{--c1:#ffcf8d;--c2:#ff9d7a}
+  .entry.en .ph .hl{background:rgba(255,255,255,.34)}
+  .entry.en .ph .hl.b{background:rgba(255,255,255,.22)}
+  .entry.en .ph .lt{color:rgba(255,255,255,.85);text-shadow:0 2px 8px rgba(180,90,20,.16)}
+  .entry .mask{position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,18,44,.76) 4%,rgba(10,18,44,.28) 56%,rgba(10,18,44,.02) 94%)}
+  .entry.en .mask{background:linear-gradient(100deg,rgba(255,251,243,.95) 0%,rgba(255,251,243,.72) 38%,rgba(255,251,243,.08) 74%,rgba(255,251,243,0) 100%)}
+  .entry.en .txt{color:#3b2416}
+  .entry.en .txt b{text-shadow:none}
+  .entry.en .txt span{color:#8a6144;opacity:1;text-shadow:none;font-weight:600}
+  .entry.en .go{background:#fff;box-shadow:0 10px 22px -10px rgba(80,40,10,.6)}
+  .entry.en .go svg{stroke:#3b2416}
+  .entry .txt{position:absolute;left:18px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;color:#fff;max-width:74%}
+  .entry .txt b{font-size:21px;font-weight:900;letter-spacing:-.5px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+  .entry .txt span{font-size:12px;opacity:.9;margin-top:6px;text-shadow:0 1px 6px rgba(0,0,0,.3);line-height:1.5}
+  .entry .go{position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;
+    background:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 22px -8px rgba(10,18,44,.6)}
+  .entry .go svg{width:16px;height:16px;stroke:#232437;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-  .today{border-radius:26px;background:var(--card);padding:18px 17px;box-shadow:var(--shadow);
-    border:1px solid rgba(255,255,255,.9)}
+  .today{border-radius:22px;background:#fff;padding:16px;box-shadow:var(--shadow),var(--hair)}
   .td-hd{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:750;color:var(--ink2)}
-  .td-hd em{font-style:normal;font-size:11px;color:var(--ink3);font-weight:600;letter-spacing:.4px}
-  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-  .chip{border-radius:18px;padding:13px 12px;background:#faf6ee;border:1px solid #f1e9db;
-    display:flex;align-items:center;gap:10px;transition:.18s}
-  .chip .dot{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    font-size:15px;background:#fff;box-shadow:0 4px 10px rgba(96,80,60,.08);flex:none}
-  .chip b{display:block;font-size:12.5px;font-weight:800;letter-spacing:.2px}
-  .chip em{font-style:normal;display:block;font-size:10px;color:var(--ink3);margin-top:3px}
-  .chip.ok{background:var(--mint-l);border-color:#c4ecdf}
+  .td-hd em{font-style:normal;font-size:11.5px;color:var(--ink3);font-weight:600}
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .chip{border-radius:16px;padding:12px 12px 11px;background:#fbf9fc;border:1.5px solid #f2eef7;
+    display:flex;align-items:center;gap:9px;transition:transform .16s ease}
+  .chip:active{transform:scale(.98)}
+  .chip .dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:15px;background:#fff;flex:none;box-shadow:0 4px 10px -6px rgba(30,26,55,.35)}
+  .chip b{display:block;font-size:12.5px;font-weight:800;letter-spacing:-.1px}
+  .chip em{font-style:normal;display:block;font-size:10.5px;color:var(--ink3);margin-top:2px}
+  .chip.ok{background:var(--mint-l);border-color:#bfeee0}
   .chip.ok .dot{background:#fff}
-  .chip.ok em{color:#149a76;font-weight:700}
-  .tip{font-size:11px;color:var(--ink3);line-height:1.85;margin-top:14px;padding-top:13px;border-top:1px dashed #e7ddcc}
-  .foot{font-size:10.5px;color:var(--ink3);text-align:center;margin-top:24px;line-height:1.9;letter-spacing:.3px}
+  .chip.ok em{color:#0f9c78;font-weight:750}
+  .tip{font-size:11.5px;color:var(--ink3);line-height:1.8;margin-top:12px;padding-top:12px;border-top:1.5px dashed var(--line)}
+  .foot{font-size:11px;color:var(--ink3);text-align:center;margin-top:20px;line-height:1.8}
 
   /* 故事网格 */
-  .sg{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-  .sc{border-radius:24px;overflow:hidden;background:var(--card);box-shadow:var(--shadow-sm);
-    text-align:left;width:100%;transition:transform .16s,box-shadow .16s;position:relative;
-    border:1px solid rgba(255,255,255,.9)}
-  .sc:active{transform:scale(.968)}
-  .sc .ph{aspect-ratio:5/4}
-  .sc .ph .f{--fs:48px}
-  .sc .ph:before{content:'';position:absolute;inset:auto 0 0 0;height:36%;z-index:2;pointer-events:none;
-    background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.22))}
-  .sc .sc-tag{position:absolute;left:9px;top:9px;font-size:9px;font-weight:800;padding:4px 8px;border-radius:20px;
-    background:rgba(255,255,255,.88);color:#4b4f68;letter-spacing:.3px;
-    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:3;
-    box-shadow:0 3px 8px rgba(70,60,110,.10)}
-  .sc .sc-tag.ser{background:linear-gradient(120deg,#f6b45f,#ef8069);color:#fff;
-    box-shadow:0 4px 12px rgba(239,128,105,.36)}
-  .sc .sc-tx{padding:10px 12px 13px}
-  .sc .sc-tx b{display:block;font-size:13.5px;font-weight:800;letter-spacing:.1px;line-height:1.35}
-  .sc .sc-tx span{display:block;font-size:9.5px;color:var(--ink3);margin-top:4px;letter-spacing:.2px}
-  .sc.playing{box-shadow:0 0 0 2.5px rgba(227,164,92,.85),0 14px 26px -14px rgba(227,164,92,.7)}
-  .sc.playing .sc-tx b:before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;
-    background:var(--gold);margin-right:6px;vertical-align:2px;animation:pulse 1.4s infinite}
-  @keyframes pulse{50%{opacity:.35;transform:scale(.8)}}
+  .sg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sc{border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm),var(--hair);
+    text-align:left;width:100%;transition:transform .16s ease,box-shadow .16s ease;position:relative}
+  .sc:active{transform:scale(.97)}
+  .sc .ph{aspect-ratio:4/3}
+  .sc .sc-tag{position:absolute;left:8px;top:8px;font-size:9.5px;font-weight:850;padding:4px 8px;border-radius:20px;
+    background:rgba(255,255,255,.9);color:#3f4258;letter-spacing:.2px;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 2px 6px rgba(30,26,55,.12)}
+  .sc .sc-tag.ser{background:linear-gradient(120deg,#ffb02e,#ff7a5c);color:#fff;
+    box-shadow:0 4px 10px -2px rgba(255,122,92,.45)}
+  .sc .sc-tx{padding:9px 11px 11px}
+  .sc .sc-tx b{display:block;font-size:13.5px;font-weight:800;letter-spacing:-.3px}
+  .sc .sc-tx span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px}
+  .sc.playing{box-shadow:0 0 0 3px rgba(74,125,255,.35),var(--shadow-sm)}
 
   /* 分类筛选 */
-  .colsline{display:flex;gap:8px;overflow-x:auto;padding:0 2px 14px;margin:0 -16px;padding-left:16px;padding-right:16px;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch;
-    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%);
-    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%)}
+  .lib-nav{position:sticky;top:calc(65px + env(safe-area-inset-top));z-index:20;
+    margin:0 -16px;padding:14px 16px 0;
+    background:rgba(251,247,242,.9);
+    -webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6)}
+  .lib-nav .sec-h{margin:0 2px 10px}
+  .colsline{display:flex;gap:8px;overflow-x:auto;padding:0 2px 12px;margin:0 -16px;padding-left:16px;padding-right:16px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-snap-type:x proximity}
   .colsline::-webkit-scrollbar{display:none}
-  .cbtn{flex:none;height:35px;padding:0 15px;border-radius:13px;background:var(--card);
-    box-shadow:var(--shadow-sm);border:1px solid rgba(255,255,255,.9);
-    font-size:12.5px;font-weight:750;color:var(--ink2);white-space:nowrap;transition:.16s}
-  .cbtn.on{background:linear-gradient(150deg,#2f2a52,#1d1a38);color:#fdf6ea;border-color:transparent;
-    box-shadow:0 10px 20px -10px rgba(33,29,51,.7)}
+  .cbtn{flex:none;height:36px;padding:0 15px;border-radius:18px;background:#fff;
+    box-shadow:var(--shadow-sm),var(--hair);font-size:13px;font-weight:750;color:var(--ink2);
+    white-space:nowrap;transition:background .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease;
+    scroll-snap-align:start}
+  .cbtn.on{background:linear-gradient(135deg,#4a7dff 0%,#7b6bff 100%);color:#fff;
+    box-shadow:0 8px 18px -8px rgba(74,125,255,.78),inset 0 1px 0 rgba(255,255,255,.3)}
   .cbtn:active{transform:scale(.96)}
 
-  .item{display:flex;align-items:center;gap:13px;padding:13px 14px;background:var(--card);border-radius:19px;margin-bottom:9px;
-    box-shadow:var(--shadow-sm);border:1px solid rgba(255,255,255,.9)}
-  .item .pl{width:42px;height:42px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(150deg,#6d84e6,#4a5fc4);padding-left:2px;
-    box-shadow:0 8px 16px -8px rgba(74,95,196,.7)}
-  .item .pl:active{transform:scale(.94)}
-  .item .pl svg{width:14px;height:14px;fill:#fff}
+  .item{display:flex;align-items:center;gap:12px;padding:12px 13px;background:#fff;border-radius:18px;margin-bottom:8px;
+    box-shadow:var(--shadow-sm),var(--hair)}
+  .item .pl{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    background:var(--sky);padding-left:2px;box-shadow:0 8px 16px -8px rgba(74,125,255,.8)}
+  .item .pl svg{width:15px;height:15px;fill:#fff}
   .item .nm{flex:1;min-width:0}
   .item .nm b{display:block;font-size:13.5px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .item .nm span{display:block;font-size:10.5px;color:var(--ink3);margin-top:4px}
-  .item .del{width:32px;height:32px;border-radius:11px;color:#c6c0d2;font-size:13px;flex:none}
-  .empty{padding:30px 18px;text-align:center;color:var(--ink3);font-size:11.5px;line-height:1.9;
-    background:rgba(255,253,250,.7);border-radius:22px;border:1.5px dashed #e6dbc9}
-  .empty b{display:block;font-size:13px;color:var(--ink2);margin-bottom:6px;font-weight:750}
+  .item .nm span{display:block;font-size:11px;color:var(--ink3);margin-top:3px}
+  .item .del{width:32px;height:32px;border-radius:11px;color:#c9c6d6;font-size:14px;flex:none}
+  .empty{padding:26px 18px;text-align:center;color:var(--ink3);font-size:12px;line-height:1.9;
+    background:#fff;border-radius:20px;border:1.5px dashed #eae5f3}
+  .empty b{display:block;font-size:13px;color:var(--ink2);margin-bottom:5px}
 
   /* 英语 */
-  .enhero{border-radius:28px;overflow:hidden;position:relative;box-shadow:var(--shadow)}
-  .enhero .ph{height:158px;--c1:#dbe9ff;--c2:#ffefd6}
-  .enhero .ph .f{left:auto;right:17%;top:42%;transform:translateY(-50%);font-size:64px}
-  .enhero .ph .lt{color:rgba(104,124,204,.42);font-weight:600}
-  .enhero .mask{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0) 26%,rgba(255,253,250,.94) 86%)}
-  .enhero .body{position:absolute;left:0;right:0;bottom:0;padding:0 18px 16px}
-  .enhero .body b{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:1px}
-  .enhero .body span{display:block;font-size:11px;color:var(--ink3);margin-top:5px;letter-spacing:.3px}
-  .btn-primary{width:100%;height:54px;border-radius:19px;
-    background:linear-gradient(135deg,#4b4689,#332e63 58%,#272248);
-    color:#fdf8ee;font-size:15.5px;font-weight:800;letter-spacing:.5px;margin-top:14px;
-    box-shadow:0 18px 32px -16px rgba(38,33,72,.9),inset 0 1px 0 rgba(255,255,255,.14);
-    display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .16s}
-  .btn-primary:active{transform:scale(.982)}
-  .btn-primary svg{width:16px;height:16px;fill:#fff}
-  .stat-row{display:flex;gap:9px;margin-top:13px}
-  .stat{flex:1;background:var(--card);border-radius:18px;padding:13px 10px 12px;box-shadow:var(--shadow-sm);
-    text-align:center;border:1px solid rgba(255,255,255,.9)}
-  .stat b{display:block;font-size:19px;font-weight:800;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
-  .stat em{font-style:normal;font-size:10px;color:var(--ink3);letter-spacing:.3px}
+  .enhero{border-radius:24px;overflow:hidden;position:relative;box-shadow:var(--shadow)}
+  .enhero .ph{height:150px;--c1:#dcefff;--c2:#fff1d9}
+  .enhero .ph .f{left:auto;right:17%;top:42%;transform:translateY(-50%);font-size:60px}
+  .enhero .ph .lt{color:rgba(120,146,226,.5)}
+  .enhero .mask{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0) 26%,rgba(255,255,255,.97) 86%)}
+  .enhero .body{position:absolute;left:0;right:0;bottom:0;padding:0 16px 14px}
+  .enhero .body b{font-size:17px;font-weight:900;letter-spacing:-.4px}
+  .enhero .body span{display:block;font-size:11.5px;color:var(--ink3);margin-top:3px}
+  .btn-primary{width:100%;height:52px;border-radius:17px;background:linear-gradient(135deg,#5b8cff,#3a63ee);
+    color:#fff;font-size:16px;font-weight:800;letter-spacing:.3px;margin-top:13px;
+    box-shadow:0 14px 26px -12px rgba(58,99,238,.75),inset 0 1px 0 rgba(255,255,255,.28);
+    display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .16s ease}
+  .btn-primary:active{transform:scale(.985)}
+  .btn-primary svg{width:17px;height:17px;fill:#fff}
+  .stat-row{display:flex;gap:9px;margin-top:12px}
+  .stat{flex:1;background:#fff;border-radius:16px;padding:11px 12px;
+    box-shadow:var(--shadow-sm),var(--hair);text-align:center}
+  .stat b{display:block;font-size:17px;font-weight:900;letter-spacing:-.6px}
+  .stat em{font-style:normal;font-size:10.5px;color:var(--ink3)}
 
-  .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .wcell{border-radius:18px;overflow:hidden;background:var(--card);box-shadow:var(--shadow-sm);position:relative;
-    border:1px solid rgba(255,255,255,.9)}
+  .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .wcell{border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm),var(--hair);position:relative;
+    cursor:pointer;transition:transform .16s ease;user-select:none;-webkit-user-select:none}
+  .wcell:active{transform:scale(.95)}
   .wcell .ph{aspect-ratio:1}
-  .wcell .ph .f{--fs:34px}
+  .wcell .ph .f{--fs:32px}
   .wcell .ph .hl.a{height:44%}
   .wcell .ph .hl.b{height:52%}
-  .wcell b{display:block;font-size:10.5px;font-weight:750;text-align:center;padding:7px 4px 8px;letter-spacing:.1px;
+  .wcell b{display:block;font-size:11px;font-weight:750;text-align:center;padding:6px 4px 7px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* 词卡 */
-  .wcard{border-radius:32px;background:var(--card);padding:17px;
-    box-shadow:0 2px 4px rgba(72,58,44,.04),0 26px 46px -24px rgba(72,58,90,.4);text-align:center;
-    border:1px solid rgba(255,255,255,.9)}
-  .wcard .ph{width:100%;aspect-ratio:1;border-radius:25px}
-  .wcard .ph .f{--fs:92px}
-  .wd-en{font-size:43px;font-weight:800;letter-spacing:-1.4px;line-height:1.1;margin-top:19px;color:var(--ink);
-    font-family:var(--serif)}
-  .wd-zh{font-size:14.5px;color:var(--ink3);margin-top:9px;opacity:0;transition:.28s;font-weight:600;letter-spacing:.5px}
+  .wcard{border-radius:28px;background:#fff;padding:16px;box-shadow:var(--shadow);text-align:center}
+  .wcard .ph{width:100%;aspect-ratio:1;border-radius:22px}
+  .wcard .ph .f{--fs:88px}
+  .wd-en{font-size:42px;font-weight:900;letter-spacing:-1.4px;line-height:1.1;margin-top:16px;color:var(--ink)}
+  .wd-zh{font-size:15px;color:var(--ink3);margin-top:7px;opacity:0;transition:.25s;font-weight:600}
   .wd-zh.on{opacity:1}
-  .wd-bar{height:6px;border-radius:3px;background:#f2ebdf;margin-top:18px;overflow:hidden}
-  .wd-bar i{display:block;height:100%;width:0;border-radius:3px;
-    background:linear-gradient(90deg,#8fb6f5,#4a5fc4);transition:width .3s}
-  .btn-ghost{width:100%;height:50px;border-radius:17px;background:var(--card);color:var(--ink2);font-size:13.5px;font-weight:750;
-    margin-top:13px;box-shadow:var(--shadow-sm);border:1px solid rgba(255,255,255,.9);letter-spacing:.4px}
-  .btn-ghost:active{transform:scale(.985)}
-  .done-card{border-radius:30px;background:var(--card);padding:36px 24px 30px;text-align:center;box-shadow:var(--shadow);
-    border:1px solid rgba(255,255,255,.9)}
-  #v-done.on{display:flex;flex-direction:column;justify-content:center;
-    min-height:calc(100vh - 150px);min-height:calc(100svh - 150px)}
-  .done-card .em{font-size:48px;filter:drop-shadow(0 8px 14px rgba(227,164,92,.35))}
-  .done-card h3{font-family:var(--serif);font-size:20px;margin-top:14px;font-weight:700;letter-spacing:1px}
-  .done-card p{font-size:12px;color:var(--ink3);margin-top:10px;line-height:1.85;letter-spacing:.3px}
+  .wd-bar{height:6px;border-radius:3px;background:#f1eef6;margin-top:16px;overflow:hidden}
+  .wd-bar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#6cc6ff,#3a63ee);transition:width .3s}
+  .btn-ghost{width:100%;height:48px;border-radius:16px;background:#fff;color:var(--ink2);font-size:14px;font-weight:750;
+    margin-top:12px;box-shadow:var(--shadow-sm),var(--hair)}
+  .done-card{border-radius:26px;background:#fff;padding:30px 22px;text-align:center;box-shadow:var(--shadow)}
+  .done-card .em{font-size:46px}
+  .done-card h3{font-size:18px;margin-top:12px;font-weight:900;letter-spacing:-.3px}
+  .done-card p{font-size:12.5px;color:var(--ink3);margin-top:9px;line-height:1.8}
 
   /* 播放器 */
   .player{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;
     background:
-      radial-gradient(120% 70% at 78% -8%, rgba(122,110,196,.55) 0%, rgba(122,110,196,0) 62%),
-      radial-gradient(100% 60% at 8% 104%, rgba(56,96,160,.38) 0%, rgba(56,96,160,0) 62%),
-      linear-gradient(168deg,#22204a 0%,#191733 52%,#111026 100%);
-    color:#fff;
-    padding:calc(16px + env(safe-area-inset-top)) 20px calc(18px + env(safe-area-inset-bottom))}
-  .player:before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.75;
-    background-image:
-      radial-gradient(1.6px 1.6px at 12% 12%,rgba(255,255,255,.8),transparent),
-      radial-gradient(1.1px 1.1px at 28% 6%,rgba(255,255,255,.6),transparent),
-      radial-gradient(1.4px 1.4px at 64% 16%,rgba(255,255,255,.55),transparent),
-      radial-gradient(1px 1px at 84% 8%,rgba(255,255,255,.5),transparent),
-      radial-gradient(1.7px 1.7px at 92% 26%,rgba(255,255,255,.65),transparent)}
-  .player>*{position:relative;z-index:1}
-  .player.on{display:flex;animation:up .3s cubic-bezier(.22,.7,.32,1)}
-  @keyframes up{from{transform:translateY(22px);opacity:0}to{transform:none;opacity:1}}
-  .p-top{display:flex;align-items:center;justify-content:space-between;font-size:10.5px;color:#a9a6c8;flex:none;letter-spacing:.6px}
-  .p-exit{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#cfcce6;border-radius:20px;
-    padding:8px 15px;font-size:11px;letter-spacing:.5px;
+      radial-gradient(520px 300px at 78% -6%, rgba(120,110,255,.28), rgba(120,110,255,0) 68%),
+      radial-gradient(420px 260px at 10% 104%, rgba(70,180,255,.2), rgba(70,180,255,0) 70%),
+      linear-gradient(168deg,#232244 0%,#191933 54%,#111124 100%);color:#fff;
+    padding:calc(16px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom))}
+  .player.on{display:flex;animation:up .26s ease}
+  @keyframes up{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+  .p-top{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:#a8a8c8;flex:none}
+  .p-exit{border:1px solid rgba(255,255,255,.18);color:#d3d3e8;border-radius:20px;padding:8px 15px;font-size:11.5px;
+    background:rgba(255,255,255,.06);
     position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;flex:none;
     touch-action:none;-webkit-touch-callout:none}
   .p-exit:before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;
-    background:rgba(240,200,140,.45);pointer-events:none;z-index:0}
+    background:rgba(255,255,255,.28);pointer-events:none;z-index:0}
   .p-exit.holding:before{width:100%;transition:width .8s linear}
-  .p-exit.holding{color:#fff;border-color:rgba(240,200,140,.55)}
-  .p-cover{flex:none;margin:14px auto 0;width:min(56vw,216px);aspect-ratio:1;border-radius:34px;overflow:hidden;
-    padding:3px;background:linear-gradient(150deg,rgba(255,255,255,.5),rgba(255,255,255,.08) 42%,rgba(240,200,140,.35));
-    box-shadow:0 24px 54px rgba(0,0,0,.5)}
-  .p-cover .ph{width:100%;height:100%;--fs:96px;border-radius:31px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
-  .p-cover .ph:before{content:'';position:absolute;left:50%;top:47%;width:66%;height:66%;transform:translate(-50%,-50%);
-    border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);z-index:2}
-  .p-name{font-family:var(--serif);font-size:21px;font-weight:700;text-align:center;margin-top:18px;letter-spacing:1.2px;flex:none;
-    color:#fff8ec}
-  .p-text{flex:1;min-height:0;overflow:auto;font-size:14.5px;line-height:2;color:#cfcbe6;text-align:center;
-    padding:14px 10px;letter-spacing:.3px;margin-top:4px;scrollbar-width:none;
-    display:grid;align-content:center;
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16px,#000 calc(100% - 16px),transparent 100%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 16px,#000 calc(100% - 16px),transparent 100%)}
-  .p-text::-webkit-scrollbar{display:none}
-  .p-text:before{content:'✦';font-size:10px;line-height:1;color:rgba(231,178,110,.7);margin:0 auto 15px;letter-spacing:2px}
+  .p-exit.holding{color:#fff}
+  .p-cover{flex:none;margin:14px auto 0;width:min(62vw,240px);aspect-ratio:1;border-radius:28px;overflow:hidden;
+    box-shadow:0 26px 54px -18px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.14);background:rgba(255,255,255,.08)}
+  .p-cover .ph{width:100%;height:100%;--fs:92px}
+  .p-name{font-size:19px;font-weight:850;text-align:center;margin-top:16px;letter-spacing:-.4px;flex:none}
+  .p-text{flex:1;min-height:0;overflow:auto;font-size:15px;line-height:1.95;color:#d6d6ea;text-align:center;
+    padding:12px 6px;letter-spacing:.2px}
   .p-prog{margin-top:6px;flex:none}
-  .p-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.13)}
-  .p-bar i{display:block;height:100%;width:0;border-radius:3px;position:relative;
-    background:linear-gradient(90deg,#f3d3a0,#e3a45c);box-shadow:0 0 12px rgba(240,200,140,.6);transition:width .3s}
-  .p-bar i:after{content:'';position:absolute;right:-1px;top:50%;width:9px;height:9px;border-radius:50%;
-    transform:translateY(-50%);background:#fff8ec;box-shadow:0 0 10px rgba(255,220,160,.9)}
-  .p-time{display:flex;justify-content:space-between;font-size:10.5px;color:#8f8cb0;margin-top:9px;font-variant-numeric:tabular-nums;letter-spacing:.4px}
-  .p-ctrl{display:flex;align-items:center;justify-content:center;gap:28px;margin-top:16px;flex:none}
-  .p-ctrl button{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);transition:.16s}
-  .p-ctrl button:active{transform:scale(.92)}
-  .p-ctrl button svg{width:20px;height:20px;fill:#cfcbe6}
-  .p-play{width:74px!important;height:74px!important;border:0!important;
-    background:linear-gradient(150deg,#fffdf6,#f4e4c8)!important;
-    box-shadow:0 16px 32px -12px rgba(240,200,140,.65),inset 0 1px 0 #fff!important}
-  .p-play svg{width:25px!important;height:25px!important;fill:#221f3f!important}
-  .p-timer{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:16px;font-size:10.5px;color:#8f8cb0;flex:none;letter-spacing:.4px}
-  .p-timer button{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);border-radius:16px;
-    padding:6px 12px;font-size:10.5px;color:#c5c2dd;letter-spacing:.4px;transition:.16s}
-  .p-timer button.on{background:linear-gradient(150deg,#f6d9ab,#e3a45c);border-color:transparent;color:#221f3f;font-weight:800;
-    box-shadow:0 8px 18px -8px rgba(240,200,140,.8)}
+  .p-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.16);overflow:hidden}
+  .p-bar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#8fd3ff,#7c8cff);transition:width .3s}
+  .p-time{display:flex;justify-content:space-between;font-size:11px;color:#9292b8;margin-top:8px;font-variant-numeric:tabular-nums}
+  .p-ctrl{display:flex;align-items:center;justify-content:center;gap:30px;margin-top:14px;flex:none}
+  .p-ctrl button{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    transition:transform .16s ease}
+  .p-ctrl button:active{transform:scale(.93)}
+  .p-ctrl button svg{width:22px;height:22px;fill:#d3d3e8}
+  .p-play{width:72px!important;height:72px!important;background:#fff!important;
+    box-shadow:0 16px 34px -10px rgba(120,150,255,.65),0 0 0 6px rgba(255,255,255,.08)}
+  .p-play svg{width:26px!important;height:26px!important;fill:#191933!important}
+  .p-timer{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:14px;font-size:11px;color:#9292b8;flex:none}
+  .p-timer button{border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:6px 12px;font-size:11px;
+    color:#c9c9e0;background:rgba(255,255,255,.05)}
+  .p-timer button.on{background:#8fd3ff;border-color:#8fd3ff;color:#141430;font-weight:800}
 
   /* 设置 */
-  .sheet{position:fixed;inset:0;z-index:60;display:none;background:rgba(20,18,38,.5);
-    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:14px;align-items:flex-end}
+  .sheet{position:fixed;inset:0;z-index:60;display:none;background:rgba(22,20,40,.5);
+    -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);padding:14px;align-items:flex-end}
   .sheet.on{display:flex}
-  .sheet-in{position:relative;background:#fffdfa;border-radius:30px 30px 22px 22px;padding:12px 18px 22px;width:100%;max-width:560px;margin:0 auto;
-    animation:up .22s cubic-bezier(.22,.7,.32,1);box-shadow:0 -10px 40px rgba(20,16,40,.3)}
-  .sheet-in:before{content:'';display:block;width:38px;height:4px;border-radius:3px;background:#e6ddcf;margin:2px auto 8px}
+  .sheet-in{background:#fff;border-radius:26px 26px 20px 20px;padding:16px 16px 20px;width:100%;max-width:560px;
+    margin:0 auto;animation:up .2s ease;box-shadow:0 -12px 40px rgba(20,16,45,.28)}
   .row-lab{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 2px;
-    border-bottom:1px solid #f2eadc;font-size:13.5px;font-weight:600;color:var(--ink2);letter-spacing:.2px}
-  .row-lab b{font-weight:750;color:var(--ink)}
-  .row-lab input[type=range]{width:150px;accent-color:var(--gold)}
-  .danger{width:100%;height:48px;border-radius:16px;background:#fff1ec;color:#d94f38;font-size:13.5px;font-weight:750;margin-top:18px;
-    letter-spacing:.3px}
-  .danger:active{transform:scale(.99)}
+    border-bottom:1.5px solid #f5f2fa;font-size:13.5px;font-weight:600;color:var(--ink2)}
+  .row-lab input[type=range]{width:150px;accent-color:var(--sky)}
+  .danger{width:100%;height:46px;border-radius:15px;background:#fff2f0;color:#e0523c;font-size:13.5px;font-weight:750;margin-top:16px}
 
   .toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(12px);
-    background:rgba(33,29,51,.94);color:#fdf7ec;font-size:12px;padding:12px 18px;border-radius:20px;
-    box-shadow:0 14px 30px -12px rgba(20,16,40,.6);letter-spacing:.3px;
-    opacity:0;pointer-events:none;transition:.22s;z-index:99;max-width:88vw;text-align:center;line-height:1.6}
+    background:rgba(26,23,44,.96);color:#fff;font-size:12.5px;padding:11px 18px;border-radius:22px;
+    box-shadow:0 14px 30px -12px rgba(20,16,45,.7);
+    opacity:0;pointer-events:none;transition:.22s;z-index:99;max-width:88vw;text-align:center;line-height:1.5}
   .toast.on{opacity:1;transform:translateX(-50%)}
 
-  /* 全屏层出现时锁住背景滚动 */
-  body:has(.player.on),body:has(.sheet.on){overflow:hidden}
-
   @media(min-width:600px){
-    body{padding-top:32px}
-    .entry .ph{height:158px}
-    .enhero .ph{height:180px}
+    body{padding-top:30px}
+    .entry .ph{height:150px}
   }
+
+  /* 加载更多（保留分页） */
+  .morebar{margin:16px 0 2px}
+  .morebar[hidden]{display:none}
+  .btn-more{width:100%;height:48px;border-radius:16px;background:#fff;
+    box-shadow:var(--shadow-sm),var(--hair);font-size:12.5px;font-weight:750;color:var(--ink2);
+    display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .16s ease,background .16s ease}
+  .btn-more:active{transform:scale(.99);background:#fbf9fc}
+  .btn-more em{font-style:normal;color:var(--ink3);font-weight:600;font-size:10.5px}
 </style>
 </head>
 <body>
@@ -368,14 +353,14 @@
   <!-- 首页 -->
   <section class="view on" id="v-home">
     <div class="hero">
+      <button class="hero-set" id="open-set" aria-label="设置" title="设置">⚙️</button>
       <div class="hero-row">
-        <div class="hero-art"><img src="icons/icon-192.png" alt="小耳朵"></div>
+        <div class="hero-art"><img src="icons/mushroom-256.png" alt="小耳朵"></div>
         <div><h1>小耳朵</h1><p>今晚想听点什么呀？</p></div>
       </div>
       <div class="hero-tags">
         <span class="tag" id="tag-story">📚 12 个经典故事</span>
         <span class="tag" id="tag-en">🔤 英语每天 10 分钟</span>
-        <button class="tag" id="open-set">⚙️ 设置</button>
       </div>
     </div>
 
@@ -423,9 +408,14 @@
       <button class="pillbtn" id="imp-story">＋ 导入</button>
     </div>
 
-    <div class="sec-h"><i>🌙</i><b>经典故事库</b><em id="st-count">点开就开始读</em></div>
-    <div class="colsline" id="st-cols"></div>
+    <div class="lib-nav">
+      <div class="sec-h"><i>🌙</i><b>经典故事库</b><em id="st-count">点开就开始读</em></div>
+      <div class="colsline" id="st-cols"></div>
+    </div>
     <div class="sg" id="sg"></div>
+    <div class="morebar" id="morebar" hidden>
+      <button class="btn-more" data-more>加载更多 <em id="more-n"></em></button>
+    </div>
 
     <div class="sec-h"><i>📁</i><b>我导入的音频</b><em>可锁屏播放</em></div>
     <div id="story-list"></div>
@@ -470,7 +460,7 @@
     <div class="sec-h"><i>🎵</i><b>课文音频</b><em>可选</em></div>
     <div id="en-list"></div>
 
-    <p class="note">单词由手机自带朗读合成，配上卡通图片，边看边听。导入教材音频后，也可以在这里单独播放。</p>
+    <p class="note">每个单词都配了真人发音，点一下图鉴里的小卡片就能听。导入教材音频后，也可以在这里单独播放。</p>
   </section>
 
   <!-- 词卡 -->
@@ -556,6 +546,7 @@
 
 <input type="file" id="picker" accept="audio/*" multiple style="display:none">
 <audio id="au" preload="metadata"></audio>
+<audio id="stu" preload="none"></audio>
 <div class="toast" id="toast"></div>
 <script>
 /* ═════════ 基础 ═════════ */
@@ -576,7 +567,7 @@ function toast(msg) {
   t._t = setTimeout(() => t.classList.remove('on'), 2200);
 }
 
-/* ═════════ 插画配色（本地渐变绘制，不依赖网络） ═════════ */
+/* ═════════ 插画与图标（本地绘制，不依赖网络） ═════════ */
 const PAL = [
   ['#ffe3ea', '#fff6dc'], ['#e3f0ff', '#f4e6ff'], ['#ffe9d6', '#e8fff4'],
   ['#ffe0d9', '#fff3c9'], ['#dff5e8', '#e6f0ff'], ['#e6f0ff', '#fff0dc'],
@@ -593,7 +584,7 @@ const ph = (c1, c2, em, fs) =>
 
 /* ═════════ 内置故事 ═════════ */
 const STORIES = [
-  { id: 's01', t: '小红帽', tag: '格林童话', em: '🧺',
+  { id: 's01', t: '小红帽', tag: '格林童话', em: '👧',
     ps: [
       '小红帽挎着小篮子，蹦蹦跳跳地走。篮子里是刚烤好的蛋糕，还热乎着。',
       '出门前妈妈说：走大路，别拐弯，别跟不认识的人说话。她点点头，答应得可快了。',
@@ -603,7 +594,9 @@ const STORIES = [
       '谁呀？奶奶在屋里问。是我，小红帽。狼捏着嗓子，把声音压得又细又软。',
       '等小红帽推开门，奶奶躺在床上，被子盖到下巴，屋里静得吓人。',
       '奶奶，你的耳朵怎么这么大？——好听你说话呀。那你的嘴，怎么这么大？——好一口吃掉你呀！',
-      '狼一下蹦起来。小红帽尖叫着往门口跑。正好一个猎人经过，举起斧头冲了进来。'
+      '狼一下蹦起来。小红帽尖叫着往门口跑。正好一个猎人经过，举起斧头冲了进来。',
+      '猎人一把拉开被子，狼吓得蹿出门去，再也没敢回来。奶奶喝下热汤，脸上慢慢有了血色。',
+      '回家的路上，月亮已经升起来了。小红帽在心里悄悄说：下回，一定走大路。'
     ] },
   { id: 's02', t: '狼和七只小羊', tag: '格林童话', em: '🐐',
     ps: [
@@ -614,9 +607,11 @@ const STORIES = [
       '七只小羊撒腿就跑，钻桌底、跳窗台、躲床下。可狼还是一只一只找了出来。',
       '最小的一只钻进了大钟里，捂住嘴，一声都不敢出。',
       '羊妈妈回来，家里空空的，只有那口钟在滴滴答答。她顺着脚印找到树下，狼正呼呼大睡。',
-      '一把剪刀，咔嚓，咔嚓。六只小羊一只接一只跳出来，毛上还沾着草。'
+      '一把剪刀，咔嚓，咔嚓。六只小羊一只接一只跳出来，毛上还沾着草。',
+      '最小的一只还躲在大钟里。妈妈轻轻敲了敲：出来吧，是妈妈呀。它才探出半个脑袋。',
+      '七只小羊一只不少，围着妈妈挤成一团。门闩插好，屋里的灯灭了。'
     ] },
-  { id: 's03', t: '白雪公主', tag: '格林童话', em: '🍎',
+  { id: 's03', t: '白雪公主', tag: '格林童话', em: '👸',
     ps: [
       '冬天，雪花一片一片往下落。王后的小女儿出生了，皮肤白得像雪，嘴唇红得像樱桃。',
       '王后走了以后，国王娶了新的王后。她有一面镜子，每天都要问：镜子镜子，谁是世界上最美的人？',
@@ -626,7 +621,9 @@ const STORIES = [
       '她把屋子擦得干干净净，然后蜷在一张小床上睡着了。',
       '七个小矮人扛着镐子回来，看见床上的姑娘，谁也没舍得叫醒她。',
       '新王后从镜子里知道了，捏着一个红苹果，变成一个老婆婆，颤巍巍地来了。',
-      '咬一口吧，甜着呢。白雪公主咬下去——咕咚，倒在了地上。'
+      '咬一口吧，甜着呢。白雪公主咬下去——咕咚，倒在了地上。',
+      '小矮人们怎么叫也叫不醒她，只好把她放进玻璃棺里，轮流守着。',
+      '过了很久，一位王子路过，轻轻抬起她的手。苹果从喉咙里滑出来，她睁开眼，窗外的花全开了。'
     ] },
   { id: 's04', t: '三只小猪', tag: '经典童话', em: '🐷',
     ps: [
@@ -637,7 +634,9 @@ const STORIES = [
       '大灰狼来了，站在草房子前：小猪小猪，让我进去。不开不开。那我就吹——呼！',
       '草房子散了一地。老大一路跑到老二家。呼——木头房子也倒了。',
       '两只小猪挤进老三的砖房。狼吹得脸都红了，房子一动也不动。',
-      '狼爬上屋顶，要从烟囱钻。老三早烧开了一锅水，锅底的火苗噼啪作响。'
+      '狼爬上屋顶，要从烟囱钻。老三早烧开了一锅水，锅底的火苗噼啪作响。',
+      '狼从烟囱里滑下来——扑通，掉进滚烫的锅里，嗷一声蹿出去，再也没回来。',
+      '三只小猪关好门，一人喝了一碗热汤。砖房里暖暖的，风在外面吹。'
     ] },
   { id: 's05', t: '龟兔赛跑', tag: '伊索寓言', em: '🐢',
     ps: [
@@ -647,7 +646,9 @@ const STORIES = [
       '跑到半路，兔子回头望望，连乌龟的影子都看不见。它打了个哈欠：睡一觉都来得及。',
       '太阳晒得暖烘烘的，兔子往树下一躺。呼——呼——',
       '乌龟没停。一步，一步，汗顺着壳往下淌。',
-      '等兔子睁开眼，前面尘土扬起，乌龟正慢慢爬过终点线。'
+      '等兔子睁开眼，前面尘土扬起，乌龟正慢慢爬过终点线。',
+      '兔子追上去，可终点线已经过了。乌龟回过头，慢慢地笑了一下。',
+      '那天夜里，乌龟睡得很香。兔子把闹钟放在了床头。'
     ] },
   { id: 's06', t: '狼来了', tag: '伊索寓言', em: '🐺',
     ps: [
@@ -656,7 +657,9 @@ const STORIES = [
       '村里人扛着锄头跑上山，气喘吁吁：狼呢？孩子捂着肚子笑：骗你们的。',
       '第二天，他又喊。人们跑上山，又扑了个空。有人摇摇头，走了。',
       '第三天，草丛里真的钻出一只狼，绿眼睛，一步一步靠近。',
-      '孩子拼命地喊，喊得嗓子都破了。山下的门一扇一扇关着，没有人上来。'
+      '孩子拼命地喊，喊得嗓子都破了。山下的门一扇一扇关着，没有人上来。',
+      '那天，羊一只一只被叼走了。孩子坐在山坡上，哭了很久很久。',
+      '从那以后，他说的话，人们都信了——因为每一句都是真的。'
     ] },
   { id: 's07', t: '乌鸦喝水', tag: '伊索寓言', em: '🐦',
     ps: [
@@ -665,7 +668,9 @@ const STORIES = [
       '瓶口那么小，水那么浅。乌鸦绕着瓶子走了两圈。',
       '它叼起一颗小石子，丢进去。咚。又一颗，咚。',
       '石子一颗一颗沉下去，水面一格一格往上爬。',
-      '乌鸦低下头，咕咚，咕咚，喝了个饱。'
+      '乌鸦低下头，咕咚，咕咚，喝了个饱。',
+      '喝饱了，它拍拍翅膀飞上枝头，把羽毛抖了抖。',
+      '太阳落下去，瓶子还立在原地，里面的水亮亮的。'
     ] },
   { id: 's08', t: '狐狸和葡萄', tag: '伊索寓言', em: '🦊',
     ps: [
@@ -674,7 +679,9 @@ const STORIES = [
       '它退后两步，猛地一蹿——爪子擦着葡萄过去了。',
       '再蹿。再蹿。摔得四脚朝天，尾巴上全是土。',
       '狐狸拍拍身上的灰，哼了一声：这种葡萄，酸得很。',
-      '它走远了。葡萄还在架上，晃啊晃。'
+      '它走远了。葡萄还在架上，晃啊晃。',
+      '夜里起了风，葡萄熟得发紫。狐狸在洞里翻了个身，饿着肚子睡着了。',
+      '第二天路过那道架子，它绕了个大圈。'
     ] },
   { id: 's09', t: '农夫与蛇', tag: '伊索寓言', em: '🐍',
     ps: [
@@ -683,7 +690,9 @@ const STORIES = [
       '他解开棉袄，把蛇揣进怀里，捂得严严实实。',
       '走了一段路，怀里动了动。蛇醒了，抬起三角形的头。',
       '吭哧一口，咬在农夫胸口。',
-      '农夫倒在雪地上，看着蛇慢慢游走，一句话也说不出来。'
+      '农夫倒在雪地上，看着蛇慢慢游走，一句话也说不出来。',
+      '雪一片一片落下来，把他的脚印盖住了。',
+      '后来的人说：心要热，眼睛也要亮。'
     ] },
   { id: 's10', t: '守株待兔', tag: '中国寓言', em: '🐰',
     ps: [
@@ -692,7 +701,9 @@ const STORIES = [
       '农夫拎起兔子掂了掂：真沉。晚上炖了一锅。',
       '第二天，锄头靠在墙边。他搬了个小板凳，坐在树桩旁边。',
       '太阳升起来，又落下去。树桩还是那个树桩。',
-      '草长高了，地荒了。兔子一只也没有再来。'
+      '草长高了，地荒了。兔子一只也没有再来。',
+      '秋天，别人家的谷子堆成了山。他的田里，只有风吹着草。',
+      '他终于扛起锄头，把地重新翻了一遍。'
     ] },
   { id: 's11', t: '亡羊补牢', tag: '中国寓言', em: '🐑',
     ps: [
@@ -701,7 +712,9 @@ const STORIES = [
       '邻居探头进来：快把洞补上吧。他摆摆手：羊都丢了，补它还有什么用。',
       '半夜，风声里夹着一声羊叫。等他趿着鞋跑出去——又少了一只。',
       '第二天一早，他抱来木板，叮叮当当敲了半天，把洞堵得严严实实。',
-      '从那以后，他每晚都数一遍羊。一只也没再少。'
+      '从那以后，他每晚都数一遍羊。一只也没再少。',
+      '春天，羊圈里添了两只小羊。他蹲在门口，看它们蹦来蹦去。',
+      '夜里的风还是那么大，门关得紧紧的。'
     ] },
   { id: 's12', t: '井底之蛙', tag: '中国寓言', em: '🐸',
     ps: [
@@ -710,9 +723,11 @@ const STORIES = [
       '一只海龟从井边经过，探头往里看。青蛙招呼：进来坐坐？',
       '海龟的脚刚伸进去，就被井口卡住了。它退回来，笑了。',
       '你见过海吗？一眼望不到边，浪一层压着一层。青蛙张了张嘴，没说出话。',
-      '天还是那么圆，井还是那么深。'
+      '天还是那么圆，井还是那么深。',
+      '青蛙望着井口那一点点蓝，第一次想：外面，到底是什么样子呢。',
+      '后来有一天，它试着往上跳了一点点。就一点点。'
     ] },
-  { id: 's13', t: '青蛙王子', tag: '格林童话', em: '🐸',
+  { id: 's13', t: '青蛙王子', tag: '格林童话', em: '🤴',
     ps: [
       '井边，小公主把金球抛得高高的，啪地接住，笑得眼睛弯成月牙。',
       '抛得太高了一点。金球在空中一偏，咕咚一声，沉进了井里。',
@@ -721,9 +736,11 @@ const STORIES = [
       '行行行。公主一口答应。球一捞上来，她抱着就跑，裙角都没回头看一眼。',
       '第二天，咚咚咚，有敲门声。公主一开门，脸都白了。',
       '国王放下刀叉：答应过的事，就要做到。',
-      '公主只好让青蛙坐上桌。它刚碰到桌布——啪，一团烟雾散了，站着一位王子。'
+      '公主只好让青蛙坐上桌。它刚碰到桌布——啪，一团烟雾散了，站着一位王子。',
+      '公主愣在原地。桌上站着的，是一位穿绿衣的王子。',
+      '国王笑了，把刀叉放下。那天晚上，城堡的灯一直亮着。'
     ] },
-  { id: 's14', t: '睡美人', tag: '格林童话', em: '😴',
+  { id: 's14', t: '睡美人', tag: '格林童话', em: '🌹',
     ps: [
       '小公主满月那天，十二位仙女来了，一人送一句祝福：漂亮、聪明、唱歌好听。',
       '第十三位仙女站在门口，声音冷冷的：十五岁那年，她会被纺锤扎到，一睡不醒。',
@@ -732,7 +749,9 @@ const STORIES = [
       '来，试试。公主伸出手指——啊。',
       '她倒下了。城堡里的钟停了，面包师的手停在半空，连火苗都不动了。',
       '一百年后，王子的靴子踩过荆棘。他推开塔门，看见床上睡着的姑娘。',
-      '他低下头。公主睁开眼，窗外的玫瑰正好开了。'
+      '他低下头。公主睁开眼，窗外的玫瑰正好开了。',
+      '城堡醒了。钟开始走，面包师的手落下来，火苗一跳一跳。',
+      '两个人坐在窗边，看玫瑰爬满整面墙。'
     ] },
   { id: 's15', t: '灰姑娘', tag: '格林童话', em: '👠',
     ps: [
@@ -744,9 +763,11 @@ const STORIES = [
       '舞会上，王子谁也没看，只看她。钟声一下一下地近了。',
       '十二点。她提着裙角跑，台阶上落下一只鞋。',
       '王子拿着鞋走遍全国。姐姐们抢着试，脚怎么都塞不进去。',
-      '灰姑娘伸出脚，鞋一穿，刚刚好。'
+      '灰姑娘伸出脚，鞋一穿，刚刚好。',
+      '王子抬起头，认出那双眼睛。姐姐们的脸，一下红到了耳朵。',
+      '婚礼那天，水晶鞋摆在窗台上，晒了一整天的太阳。'
     ] },
-  { id: 's16', t: '不来梅的音乐家', tag: '格林童话', em: '🐴',
+  { id: 's16', t: '不来梅的音乐家', tag: '格林童话', em: '🎺',
     ps: [
       '老驴拉不动磨了，主人拿着绳子走过来。它挣开缰绳，往不来梅去了。',
       '路上遇见老狗。狗说：我牙掉了，主人要赶我走。驴说：跟我走，我们去当音乐家。',
@@ -755,9 +776,11 @@ const STORIES = [
       '驴把前腿搭上窗台，狗跳上驴背，猫跳上狗背，公鸡踩在最上面。',
       '一、二、三——咴！汪！喵！喔喔喔！',
       '屋里的强盗跳起来，连碗都摔了，一路逃进黑树林。',
-      '四个伙伴吃了桌上的面包，挤在火边睡了。谁也没再赶它们走。'
+      '四个伙伴吃了桌上的面包，挤在火边睡了。谁也没再赶它们走。',
+      '从那天起，它们就住在这间小屋里。白天唱歌，晚上看门。',
+      '路过的旅人说，森林深处，总有四个声音在一齐唱。'
     ] },
-  { id: 's17', t: '汉赛尔与格莱特', tag: '格林童话', em: '🍪',
+  { id: 's17', t: '汉赛尔与格莱特', tag: '格林童话', em: '🍬',
     ps: [
       '家里只剩半个面包了。继母对父亲说：把孩子丢进森林吧。',
       '门后，汉赛尔听见了。他悄悄溜出去，把口袋塞满了白色小石子。',
@@ -766,7 +789,9 @@ const STORIES = [
       '第二次，他撒的是面包屑。小鸟飞下来，一啄，一啄，全吃光了。',
       '天黑了，兄妹俩在森林里转圈。前面忽然透出一点光。',
       '是糖做的屋子。墙上抹着奶油，窗框是巧克力。',
-      '门开了，一个老婆婆笑呵呵地招手：进来吧，孩子，进来吧。'
+      '门开了，一个老婆婆笑呵呵地招手：进来吧，孩子，进来吧。',
+      '老婆婆端出糖和牛奶。格莱特悄悄捏了捏哥哥的手——那扇窗，是铁的。',
+      '他们装作听话，等老婆婆睡熟，从后门跑了出去。天亮时，看见了家里的炊烟。'
     ] },
   { id: 's18', t: '丑小鸭', tag: '安徒生童话', em: '🦆',
     ps: [
@@ -776,9 +801,11 @@ const STORIES = [
       '丑小鸭游到了池塘另一边。秋天，叶子黄了；冬天，水面结了冰。',
       '它趴在冰边，冷得发抖。一个农夫把它抱进屋，它却吓得到处乱飞。',
       '春天，河面化了。几只白天鹅落下来，羽毛白得发亮。',
-      '丑小鸭低下头。水里映着的，也是一只白天鹅。'
+      '丑小鸭低下头。水里映着的，也是一只白天鹅。',
+      '几只天鹅游过来，用嘴轻轻碰它。它低下头，脸红了。',
+      '它张开翅膀飞起来，飞过湖面，飞进春天里。'
     ] },
-  { id: 's19', t: '卖火柴的小女孩', tag: '安徒生童话', em: '🔥',
+  { id: 's19', t: '卖火柴的小女孩', tag: '安徒生童话', em: '🕯️',
     ps: [
       '雪下得很大，街上的人都回家了。小女孩抱着一把火柴，缩在墙角。',
       '她的鞋跑丢了一只，脚趾冻得发紫。',
@@ -787,9 +814,11 @@ const STORIES = [
       '又一根。火光里，桌上摆着烤鹅，肚子里塞着苹果。',
       '第三根。奶奶站在光里，笑着向她伸出手。',
       '奶奶，带我走。她把剩下的火柴全擦亮了，一根接一根。',
-      '天亮的时候，她靠在墙角，脸上还带着笑。'
+      '天亮的时候，她靠在墙角，脸上还带着笑。',
+      '人们把她抱起来。她的手里，还捏着一把烧完的火柴。',
+      '有人说，那天夜里，看见她和奶奶一起，走得很远很远。'
     ] },
-  { id: 's20', t: '拇指姑娘', tag: '安徒生童话', em: '🌸',
+  { id: 's20', t: '拇指姑娘', tag: '安徒生童话', em: '🌷',
     ps: [
       '女人种下一粒种子，花开了。花心里坐着一个小姑娘，才拇指那么大。',
       '她用花瓣当被子，用树叶当小船，在水盆里划来划去。',
@@ -798,7 +827,9 @@ const STORIES = [
       '金龟子把她带到树上，又嫌她太瘦，摇摇头，把她丢在草地上。',
       '整个冬天，她住在地洞里，给一只受伤的燕子喂水。',
       '春天，燕子好了。飞呀飞，飞过田野，飞到一个开满花的地方。',
-      '每一朵花心都住着一个小小的孩子。最高的那朵，站着一位小王子。'
+      '每一朵花心都住着一个小小的孩子。最高的那朵，站着一位小王子。',
+      '小王子把一顶金色的花冠戴在她头上。燕子在上头唱了一整天。',
+      '从此，她住在最高的那朵花里，风一吹，就轻轻摇。'
     ] },
   { id: 's21', t: '皇帝的新装', tag: '安徒生童话', em: '👑',
     ps: [
@@ -862,7 +893,7 @@ const STORIES = [
       '老鼠跑过来，咔哧，咔哧，一根一根咬断绳子。',
       '狮子站起来，抖了抖毛，低头看了看脚边那只小小的老鼠。'
     ] },
-  { id: 's27', t: '狐狸和乌鸦', tag: '伊索寓言', em: '🦊',
+  { id: 's27', t: '狐狸和乌鸦', tag: '伊索寓言', em: '🧀',
     ps: [
       '乌鸦叼着一块肉，停在树枝上，肉还冒着热气。',
       '狐狸在树下绕圈，尾巴一摇一摇。',
@@ -872,7 +903,7 @@ const STORIES = [
       '乌鸦一张嘴——啊。肉掉了下来。',
       '狐狸叼起肉，头也不回地钻进草丛。'
     ] },
-  { id: 's28', t: '拔苗助长', tag: '中国寓言', em: '🌱',
+  { id: 's28', t: '拔苗助长', tag: '中国寓言', em: '🧑‍🌾',
     ps: [
       '禾苗才冒出一点点绿。农夫蹲在田埂上，越看越急。',
       '怎么就不长呢？他伸手把一棵苗往上提了提。',
@@ -881,7 +912,7 @@ const STORIES = [
       '今天可累坏我了，苗都长高了。他回家就往床上一躺。',
       '第二天，儿子跑到田里，蹲下去一看——苗全蔫了，叶子卷成一条。'
     ] },
-  { id: 's29', t: '画蛇添足', tag: '中国寓言', em: '🐍',
+  { id: 's29', t: '画蛇添足', tag: '中国寓言', em: '🖌️',
     ps: [
       '地上摆着一壶酒，几个人围着，谁先画完一条蛇，谁喝。',
       '一个书生手快，刷刷几笔，蛇头蛇身都齐了。',
@@ -943,7 +974,7 @@ const STORIES = [
       '哥哥在旁边愣了愣，伸手拿了一个中等的。',
       '一桌子人都笑了。梨的甜味，飘了满屋。'
     ] },
-  { id: 's35', t: '司马光砸缸', tag: '中国故事', em: '🪣',
+  { id: 's35', t: '司马光砸缸', tag: '中国故事', em: '🔨',
     ps: [
       '院子里有一口大水缸，比小孩还高，装得满满的。',
       '几个孩子在院子里追着跑。一个孩子爬上缸沿，想看看水里有什么。',
@@ -1061,7 +1092,7 @@ const STORIES = [
       '小红母鸡把面包往怀里一抱：不。这是我的。',
       '她坐在台阶上，一口一口，把面包吃完了。'
     ] },
-  { id: 's44', t: '杰克与豌豆', tag: '经典童话', em: '🌱',
+  { id: 's44', t: '杰克与豌豆', tag: '经典童话', em: '🪜',
     ps: [
       '杰克家里只剩一头奶牛。妈妈让他牵到集上去卖。',
       '路上，一个老头拦住他：这几颗豆子，换你的牛，怎么样？',
@@ -1223,7 +1254,7 @@ const STORIES = [
       '园子里的桃子，一颗一颗，红得发亮。悟空摘下一颗，咬了一口，甜得眼睛都眯起来。',
       '一个下午，他吃饱了，躺在树杈上打盹。树下有人走过，说着明天开蟠桃会的事。悟空竖起耳朵——请的名单里，没有他。'
     ] },
-  { id: 'x4', t: '大战天兵', ser: '西游记', ep: 4, tag: '连载故事', em: '⚡',
+  { id: 'x4', t: '大战天兵', ser: '西游记', ep: 4, tag: '连载故事', em: '⚔️',
     ps: [
       '悟空从树杈上跳下来，拦住七仙女：蟠桃会请了谁？',
       '七仙女一个一个数，数到最后，没有齐天大圣。',
@@ -1305,7 +1336,7 @@ const STORIES = [
       '悟空跪下来，磕了三个头，站起来，转身走了。',
       '走了十几步，他回过头。'
     ] },
-  { id: 'x8', t: '三打白骨精（三）', ser: '西游记', ep: 8, tag: '连载故事', em: '🐴',
+  { id: 'x8', t: '三打白骨精（三）', ser: '西游记', ep: 8, tag: '连载故事', em: '😢',
     ps: [
       '唐僧把脸转开，不看他。',
       '悟空站在云头上，看着师父、八戒、沙僧，还有那匹白马，一点一点走进山里。',
@@ -1324,6 +1355,563 @@ const STORIES = [
       '白马忽然咬住他的衣角，使劲往后拽。',
       '八戒愣了愣，抬头看向东边。',
       '花果山那棵最大的桃树下，悟空正枕着金箍棒睡觉，一根桃枝垂下来，在他脸上晃。'
+    ] },
+
+  /* ─────── 课标经典 · 中国神话 ─────── */
+  { id: 'n01', t: '盘古开天地', tag: '中国神话', em: '🌌',
+    ps: [
+      '很久很久以前，天和地还没有分开。整个宇宙黑漆漆的，像一个很大的蛋。',
+      '这个蛋里睡着一个人，叫盘古。他一睡，就睡了一万八千年。',
+      '有一天，盘古醒了。他睁眼一看，什么也看不见，就伸手往前一推。',
+      '哗啦一声，蛋壳裂开了。轻的东西慢慢飘上去，成了天；重的东西沉下来，成了地。',
+      '盘古怕它们再合起来，就站在中间，手托着天，脚踩着地。天每天高一丈，他也每天长高一丈。',
+      '又过了一万八千年，天很高了，地很厚了，盘古也累得站不住了。',
+      '他倒下的时候，呼出的气变成了风，声音变成了雷，左眼变成了太阳，右眼变成了月亮。',
+      '他的身体变成了高山，血变成了江河。从那天起，天地之间有了光，也有了山水。'
+    ] },
+  { id: 'n02', t: '女娲造人', tag: '中国神话', em: '🧑',
+    ps: [
+      '天地有了，可是地上空空的，没有一个人。',
+      '天上住着一位女神，叫女娲。她走在河边，看着水里的影子，觉得有点孤单。',
+      '她弯下腰，捧起一把黄泥，照着自己的样子，捏了一个小人。',
+      '小人一放到地上就活了，围着她喊：妈妈，妈妈。',
+      '女娲高兴极了，捏了一个又一个。捏到手酸，她就用一根绳子蘸上泥浆，往地上一甩。',
+      '泥点落下来，也变成了小人，笑着跑开了。',
+      '白天，他们在河边追蝴蝶；晚上，他们围着火堆唱歌。',
+      '女娲坐在山顶看着他们，觉得天地一下就热闹起来了。'
+    ] },
+  { id: 'n03', t: '女娲补天', tag: '中国神话', em: '🌈',
+    ps: [
+      '有一天，天上忽然传来可怕的响声。',
+      '撑天的柱子断了，天塌下一个大洞。火从天上烧下来，水从地下涌上来。',
+      '野兽也跑出来吓人。女娲看着孩子们四处逃，心里急得发疼。',
+      '她跑到大江边，捡来红、黄、蓝、白、黑五种颜色的石头，架起火来烧。',
+      '火烧了九天九夜，石头化成了亮晶晶的彩浆。',
+      '女娲捧着彩浆，一点一点把天上的洞补好。补过的地方，泛着温柔的光。',
+      '她又找来一只大龟，用四条腿把天稳稳撑住。',
+      '水退了，火灭了，人们回到河边。夜里抬头看，天上有一道七彩的桥。'
+    ] },
+  { id: 'n04', t: '后羿射日', tag: '中国神话', em: '🏹',
+    ps: [
+      '很久以前，天上有十个太阳。它们本来轮流出来，每天一个。',
+      '可是有一天，十个太阳一起跑了出来。',
+      '河水晒干了，庄稼晒焦了，石头烫得冒烟。',
+      '人们躲在山洞里，白天也不敢出门。',
+      '有一个力气很大的人，叫后羿。他背上弓，爬上了最高的山。',
+      '他拉开弓，嗖的一声，一个太阳掉下来，变成一只金色的鸟。',
+      '他一箭一箭地射，太阳一个接一个往下落。射到第九个，天上只剩一个了。',
+      '后羿放下弓。从那以后，太阳每天乖乖升起，又乖乖落下。'
+    ] },
+  { id: 'n05', t: '嫦娥奔月', tag: '中国神话', em: '🌙',
+    ps: [
+      '后羿射下九个太阳，人们都很感激他。',
+      '天上的神仙送给他一颗仙药，吃了就能飞到天上。',
+      '后羿舍不得离开人间，就把药交给妻子嫦娥收着。',
+      '有一年八月十五，后羿出门打猎。一个坏心眼的人闯进院子，逼嫦娥交出仙药。',
+      '嫦娥急得没办法，一仰头把药吞了下去。',
+      '她的身子忽然轻了，飘飘悠悠飞出窗户，一直飞到月亮上。',
+      '后羿回来，只看见空空的盒子。他抬头，月亮又圆又亮。',
+      '他在院子里摆上嫦娥爱吃的果子，一年一年地等。',
+      '后来每到八月十五，人们都抬头看月亮，说嫦娥今天也在看我们呢。'
+    ] },
+  { id: 'n06', t: '精卫填海', tag: '中国神话', em: '🕊️',
+    ps: [
+      '炎帝有个小女儿，叫女娃。她最喜欢去东海边玩。',
+      '有一天，海上起了大浪，把小船打翻了。女娃再也没有回来。',
+      '后来，海边飞来一只小鸟，白嘴红脚，头上带着花纹。',
+      '它叫起来是精卫、精卫的声音。它就是女娃变的。',
+      '精卫每天从西山衔一粒石子，或者一根树枝，飞到东海上空，往下一扔。',
+      '海浪哗一声，把石子卷走了。她也不哭，转身又去衔。',
+      '大海笑她：小鸟，你什么时候才能把我填平？',
+      '精卫说：一天填一点，总有一天。',
+      '就这样，她一直飞，一直填，从来没有停过。'
+    ] },
+  { id: 'n07', t: '夸父追日', tag: '中国神话', em: '🌞',
+    ps: [
+      '远古的时候，有一个巨人叫夸父。',
+      '他看着太阳每天从东边出来，又落到西边去，心里想：我想追上它，看看它住在哪儿。',
+      '他迈开长腿，一直往西跑。',
+      '跑过一座山，又跑过一片草原。渴了，就趴到黄河边，一口气把水喝干。',
+      '太阳在前面跑，夸父在后面追。风把手杖吹得呼呼响。',
+      '跑到很远很远的地方，太阳快落下去了。他伸出手，差一点就摸到。',
+      '可是他又渴又累，走不动了。他倒在地上，手杖掉在一边。',
+      '第二天，手杖变成了一片桃林。走远路的人渴了，就在树下歇一歇，吃一个桃子。',
+      '人们说，夸父没有追上太阳，可他留下了一片甜。'
+    ] },
+  { id: 'n08', t: '大禹治水', tag: '中国神话', em: '🌊',
+    ps: [
+      '很久以前，洪水淹没了田地，人们只能住在山上。',
+      '一个叫鲧的人去治水。他只想着把水堵住，筑起高高的堤。可水越涨越高，堤还是破了。',
+      '后来，鲧的儿子禹接下了这件事。',
+      '禹没有急着堵。他走遍山川，看水从哪里来，往哪里去。',
+      '他带着人们挖开河道，把水一路引到大海里。这里开一条沟，那里通一条渠。',
+      '他在外面治水十三年，三次路过家门口，都没进去。',
+      '有人问他：不想家吗？禹说：水退了，家家都安心，我才好回家。',
+      '终于有一天，洪水顺着河道流走，露出的土地上长出了新苗。',
+      '人们围着禹欢呼。他只是把手上的泥洗了洗，笑了。'
+    ] },
+  { id: 'n09', t: '神农尝百草', tag: '中国神话', em: '🌿',
+    ps: [
+      '古时候，人们不知道哪些草能吃，哪些草会让人生病。',
+      '有一位首领叫神农。他背着一个大口袋，走进了深山。',
+      '他看见一种草，就先摘一片叶子，放进嘴里慢慢嚼。',
+      '甜的他记下来：这个能吃。苦的他也记下来：这个能治病。',
+      '有的草让他头晕，有的草让他肚子疼。他就坐下来喝口泉水，等一等，再记。',
+      '一天里，他常常要尝好几十种草。',
+      '他走过一座山，又走过一座山，口袋里的种子越来越多。',
+      '后来，人们照他记下的，种庄稼、采药草。神农的名字，也一直留在了山里。'
+    ] },
+  { id: 'n10', t: '仓颉造字', tag: '中国神话', em: '✍️',
+    ps: [
+      '很久以前，人们想记下一件事，只能在绳子上打结。',
+      '打了太多结，谁也记不清哪个结是什么意思。',
+      '有一个叫仓颉的人，管着很多牲口和粮食。他也记糊涂了。',
+      '一天，他看见猎人看着地上的脚印说：这是兔子的，这是野猪的。',
+      '仓颉心里一亮：脚印能认出不同的野兽，那能不能画出不同的记号，记住不同的事？',
+      '他抬头看太阳，画一个圆；低头看月亮，画一弯；看山，画三个尖。',
+      '他把这些记号教给大家。人们一看就懂，一学就会。',
+      '从那以后，话可以写下来，故事可以留下来。'
+    ] },
+
+  /* ─────── 课标经典 · 中国故事 ─────── */
+  { id: 'n11', t: '孟母三迁', tag: '中国故事', em: '🏠',
+    ps: [
+      '孟子小时候，家住在墓地旁边。',
+      '他常常看见人家办丧事，就和小伙伴学着哭丧、挖土。',
+      '孟子的妈妈看见了，摇摇头说：这里不适合孩子住。',
+      '他们搬到集市旁边。孟子又学着商人大声吆喝，学着讨价还价。',
+      '妈妈又说：这里也不合适。',
+      '第三次，他们搬到学堂旁边。',
+      '每天早上，孟子听见学生读书，也跟着念。他学着行礼，学着安静地坐着看书。',
+      '妈妈这才笑了：这里才是孩子该住的地方。',
+      '后来孟子成了很有学问的人。人们说，那是他妈妈三次搬家搬出来的。'
+    ] },
+  { id: 'n12', t: '岳母刺字', tag: '中国故事', em: '🪡',
+    ps: [
+      '岳飞小时候，家里很穷。他白天帮妈妈干活，晚上点着灯读书。',
+      '那时候常常打仗，很多人只想往远处逃。',
+      '妈妈问他：孩子，你长大了想做什么？',
+      '岳飞说：我想去当兵，保护大家。',
+      '妈妈点点头，拿出针，说：我要在你背上刺四个字，让你一辈子记住。',
+      '针刺下去，血珠冒出来。岳飞咬着牙，一声也没吭。',
+      '四个字是：精忠报国。',
+      '妈妈说：疼要忍，难也要忍。心里记着这四个字，就不怕。',
+      '后来岳飞带着兵打仗，无论多难，他都没忘过背上这四个字。'
+    ] },
+  { id: 'n13', t: '曾子杀猪', tag: '中国故事', em: '🐷',
+    ps: [
+      '曾子的妻子要去集市，儿子哭着要跟。',
+      '她哄孩子说：你在家等着，回来我杀猪给你吃。',
+      '孩子一听，立刻不哭了。',
+      '妻子回来，看见曾子正在磨刀，准备杀猪。',
+      '她急忙拦住：我是哄孩子的，你怎么当真了？',
+      '曾子说：孩子什么都不懂，他跟着父母学。今天你骗他，明天他就学会骗人。',
+      '一头猪没了，可以再养。父母的话不算数了，孩子心里那盏灯就灭了。',
+      '于是他们真的杀了猪。那天晚上，一家人吃得很香。'
+    ] },
+  { id: 'n14', t: '铁杵磨成针', tag: '中国故事', em: '🪨',
+    ps: [
+      '李白小时候不爱读书，常常偷偷跑出去玩。',
+      '一天，他在河边看见一位老婆婆，正拿着一根铁棍在石头上磨。',
+      '李白好奇地问：婆婆，您磨这个做什么？',
+      '老婆婆说：我要把它磨成一根绣花针。',
+      '李白笑起来：这么粗的铁棍，怎么可能磨成针？',
+      '老婆婆头也不抬：今天磨一点，明天磨一点，一天一天磨下去，总会细的。',
+      '李白站在那里，看着那根铁棍，忽然不笑了。',
+      '他转身回了书房。从那天起，他把书一页一页地读下去。',
+      '很多年以后，他写出了许多好诗。人们说，那些诗也是这样一点一点磨出来的。'
+    ] },
+  { id: 'n15', t: '凿壁偷光', tag: '中国故事', em: '💡',
+    ps: [
+      '汉朝有个孩子叫匡衡，家里穷得买不起蜡烛。',
+      '一到晚上，屋里黑漆漆的，他就没法读书。',
+      '隔壁邻居家点着灯，墙缝里透过来一线光。',
+      '匡衡想了想，找来一把小凿子，把那道缝慢慢凿大了一点。',
+      '光漏进来，照在书页上。他凑得很近，一个字一个字地看。',
+      '白天他要帮家里干活，晚上就借着这线光读。',
+      '书读完了，他就去给有钱人家做工，不要工钱，只求借书看。',
+      '后来他成了很有学问的人。人们记住的不是那道墙缝，是他不肯放下的那本书。'
+    ] },
+  { id: 'n16', t: '黄香温席', tag: '中国故事', em: '🛏️',
+    ps: [
+      '东汉有个孩子叫黄香。九岁那年，妈妈去世了。',
+      '家里只剩下他和爸爸。',
+      '夏天很热，蚊子多。晚上爸爸要睡的时候，黄香先拿着扇子，把床上的席子扇凉。',
+      '冬天很冷，被窝像冰一样。他先钻进被子里暖热，再请爸爸躺下。',
+      '爸爸说：你自己也冷啊。',
+      '黄香笑笑：我年轻，不怕冷。',
+      '街坊知道了，都说这孩子心细。',
+      '后来人们讲起孝敬父母，总会提起这个给爸爸暖被窝的孩子。'
+    ] },
+  { id: 'n17', t: '叶公好龙', tag: '中国寓言', em: '🐉',
+    ps: [
+      '从前有个人叫叶公，他最喜欢龙。',
+      '他家的门环是龙，柱子上刻着龙，衣服上绣着龙，连杯子上也画着龙。',
+      '一有人来，他就讲龙：龙多威风啊，我要是能见一面就好了。',
+      '天上的真龙听说了，很感动。',
+      '一天，它从云里下来，把头探进叶公的窗户，尾巴拖在院子里。',
+      '叶公一回头，看见那么大的龙头、那么亮的鳞，吓得脸都白了，转身就跑。',
+      '龙愣在那里，慢慢飞回了天上。',
+      '人们说：嘴上说喜欢，心里其实怕。这样的喜欢，不算真的喜欢。'
+    ] },
+  { id: 'n18', t: '南辕北辙', tag: '中国寓言', em: '🧭',
+    ps: [
+      '从前有个人，要往南边的楚国去。',
+      '他坐上马车，却把马头朝向北方，扬起鞭子就跑。',
+      '路上有人问他：你去楚国，怎么往北走？',
+      '他说：我的马好，跑得快。',
+      '那人说：马再好，方向错了也到不了啊。',
+      '他又说：我带的钱多，车也结实。',
+      '那人叹了口气，不说话了。',
+      '马越快，钱越多，他离楚国就越远。',
+      '方向错了，走得再快也是白费力气。'
+    ] },
+  { id: 'n19', t: '惊弓之鸟', tag: '中国寓言', em: '🏹',
+    ps: [
+      '有一天，更羸陪着魏王站在高台上。',
+      '天上飞来一只大雁，飞得很慢，叫声很哀。',
+      '更羸说：我不用箭，只拉一下弓，就能把它射下来。',
+      '魏王不信。',
+      '更羸拉开弓，手指一松，弦嗡地响了一声。',
+      '那只大雁听见响声，猛地往上冲，扑腾两下就掉了下来。',
+      '魏王惊呆了：箭呢？',
+      '更羸说：它身上有旧伤，又离开了伙伴。听见弓响，它先怕了，一挣扎，伤口就裂开了。',
+      '受过伤的心，最怕再听见那声弓响。'
+    ] },
+  { id: 'n20', t: '滥竽充数', tag: '中国寓言', em: '🎵',
+    ps: [
+      '齐国的国王喜欢听吹竽，而且喜欢三百个人一起吹。',
+      '有个南郭先生，根本不会吹，也混进了乐队里。',
+      '他抱着竽，鼓着腮帮子，跟着大家一起摇晃，谁也看不出来。',
+      '就这样，他领了好几年俸禄。',
+      '后来老国王去世了，新国王喜欢一个一个地听。',
+      '轮到南郭先生，他抱着竽，手心全是汗。',
+      '他悄悄放下竽，从后门走了。',
+      '混在人群里，谁也看不见你；一个人站着的时候，就藏不住了。'
+    ] },
+
+  /* ─────── 课标经典 · 安徒生 ─────── */
+  { id: 'n21', t: '海的女儿', tag: '安徒生童话', em: '🧜',
+    ps: [
+      '大海最深的地方，有一座珊瑚做的宫殿，住着海王和他的六个女儿。',
+      '最小的公主最喜欢听奶奶讲岸上的事：树是绿的，花会香，人有一条腿，可以跳舞。',
+      '她十五岁那年，终于浮到海面上。',
+      '海上正有一条船。船上有个年轻的王子在过生日。忽然起了大风暴，船翻了。',
+      '小人鱼把王子托出水面，一直送到沙滩上，直到有人走来，她才躲到礁石后面。',
+      '她想变成人，就去找海巫婆。巫婆给她一瓶药，要用她最好听的声音来换。',
+      '药喝下去，尾巴变成了腿，每走一步都像踩在刀上。可王子不认识她。',
+      '王子要娶别人了。姐姐们用头发换来一把刀，说：把刀插进他心里，你就能回到海里。',
+      '小人鱼握着刀走到床边。王子睡着，脸上很安静。她把刀扔进了海里。',
+      '天亮的时候，她化成了海面上的泡沫。可那些泡沫没有散，它们变成透明的光，往天上飘去。'
+    ] },
+  { id: 'n22', t: '野天鹅', tag: '安徒生童话', em: '🦢',
+    ps: [
+      '从前有个公主叫艾丽莎，她有十一个哥哥。',
+      '后来爸爸娶了一个坏心的后母。后母把哥哥们变成十一只野天鹅，把艾丽莎赶出了家门。',
+      '艾丽莎一路走，一路找。有一天，十一只天鹅落在她身边，变成了哥哥。',
+      '他们说：白天我们是天鹅，只有夜里才能变回来。',
+      '要救哥哥，艾丽莎必须用荨麻编十一件衬衫，从开始到做完，一个字也不能说。',
+      '她住在山洞里，手指被荨麻扎得又红又肿，还是不停地编。',
+      '一位国王发现了她，把她带回宫里。她一句话也不说，大家以为她是哑姑娘。',
+      '夜里她还在采荨麻。有人以为她是巫女，要把她烧死。',
+      '就在火堆点起来的时候，她终于编完了最后一件。她把衬衫往天鹅身上一抛。',
+      '十一只天鹅变回了十一个王子。艾丽莎这才开口，说出了第一句话。'
+    ] },
+  { id: 'n23', t: '打火匣', tag: '安徒生童话', em: '🔥',
+    ps: [
+      '一个士兵打完仗，背着包走在路上。',
+      '一个老巫婆拦住他，说：树洞里有钱，你去拿。拿完把里面的打火匣给我。',
+      '士兵爬进树洞。里面蹲着三只大狗，眼睛像茶杯、像磨盘。',
+      '他用巫婆的围裙垫着，把狗抱开，装满了钱，也带上了打火匣。',
+      '出来以后，他问：你要这个打火匣做什么？巫婆不说。士兵就把她赶走了。',
+      '他住进城里最好的旅馆，把钱分给穷人。钱花完了，他躲进小阁楼。',
+      '一天，他擦了一下打火匣，一只大狗跳出来：主人，您要什么？',
+      '后来，他帮公主解决了很多难事，也赢得了公主的心。',
+      '人们说，是三只狗听他使唤。他自己知道，最早那些钱，他都分给了别人。'
+    ] },
+  { id: 'n24', t: '夜莺', tag: '安徒生童话', em: '🎶',
+    ps: [
+      '从前，一位皇帝的御花园里住着一只夜莺。它唱起歌来，连渔夫都会停下网来听。',
+      '皇帝听说了，派人把它请进宫。',
+      '夜莺站在金架子上，唱了一首又一首。皇帝听得流下了眼泪。',
+      '后来有人送来一只人造的鸟，全是亮闪闪的宝石，一上发条就唱，唱的永远是同一首。',
+      '大家都去看那只金鸟。夜莺悄悄飞回了树林。',
+      '一年后，金鸟坏了，没人会修。皇帝病倒了。',
+      '夜里，死神坐在他胸口，许多面孔在墙上晃。',
+      '窗外忽然传来歌声。是那只真的夜莺回来了。',
+      '它唱着春天、麦田和安静的树林。死神听着听着，慢慢退了出去。',
+      '天亮时，皇帝好了。夜莺说：我不进笼子，但每晚我都会在窗外的树上唱给你听。'
+    ] },
+  { id: 'n25', t: '小意达的花儿', tag: '安徒生童话', em: '💐',
+    ps: [
+      '小意达的花儿，昨天还开着，今天却低了头。',
+      '一个学生告诉她：花儿们晚上会去参加舞会，跳一整夜，所以白天累了。',
+      '小意达半信半疑。夜里，她悄悄走到窗边。',
+      '客厅里，花儿真的动起来了。郁金香鞠躬，风信子转圈，百合弹琴。',
+      '一个小小的花国王和王后，在中间跳舞。',
+      '天亮以后，客厅又安静了。花儿低着头，像是睡着了。',
+      '哥哥说：它们死了。',
+      '小意达不相信。她找来一个盒子，把花儿放进去，说：你们好好睡，明年夏天再跳舞。',
+      '第二年，窗外的花开了。她总觉得，那几朵特别会摇。'
+    ] },
+  { id: 'n26', t: '冰雪女王', tag: '安徒生童话', em: '❄️',
+    ps: [
+      '城里有两个孩子，男孩叫加伊，女孩叫格尔达。',
+      '一块魔镜的碎片飞进了加伊的眼睛，他的心也变冷了。',
+      '冬天，冰雪女王坐着雪橇经过，把他带走了。',
+      '格尔达等了很久。春天一到，她决定去找他。',
+      '她问过河，问过花，问过乌鸦，也遇到过强盗的女儿，还坐过驯鹿的背。',
+      '女巫的宫殿里，加伊正坐在冰上拼字，脸冻得发白。',
+      '格尔达跑过去，抱住他，眼泪落在他胸口。',
+      '那滴泪很热。镜子碎片化了，加伊的眼睛亮起来：格尔达，你来了。',
+      '他们手拉手走出宫殿。回头看时，冰雪化成了满地的绿草。'
+    ] },
+  { id: 'n27', t: '老头子做事总不会错', tag: '安徒生童话', em: '🐄',
+    ps: [
+      '乡下有对老夫妻。老爷爷赶着马去集市，想换点东西。',
+      '路上，他用马换了一头牛，又用牛换了一只羊。',
+      '后来，羊换成了鹅，鹅换成了鸡，鸡最后换成了一袋烂苹果。',
+      '在店里，他把换来的东西说给两个有钱人听。他们笑他：回家老婆准要骂你。',
+      '老爷爷说：不，她会亲我一下。',
+      '他们打赌，三个人一起回到老爷爷家。',
+      '老奶奶听完，每听一句都笑：有牛好啊，可以挤奶。',
+      '换成羊也好，冬天有羊毛袜子。鹅呢，可以炖汤。',
+      '最后她看见那袋烂苹果，说：太好了，我正想去借苹果，现在不用借了。',
+      '说完，她亲了老爷爷一下。那两个有钱人输掉了钱，可走出门的时候，心里有点暖。'
+    ] },
+  { id: 'n28', t: '一个豆荚里的五粒豆', tag: '安徒生童话', em: '🌱',
+    ps: [
+      '一个豆荚里，住着五粒豌豆。',
+      '它们每天都看外面。豆荚是绿的，它们就觉得世界是绿的。',
+      '豆荚一天天变黄，它们也跟着变黄。太阳照着，豆荚轻轻摇。',
+      '有一天，豆荚裂开，五粒豆滚出来，落进一个孩子的手里。',
+      '他把豆子装进吹管，砰地打出去。四粒飞得远远的，去向不明。',
+      '最后一粒落在顶楼窗台的一道小缝里，那里有一点土。',
+      '顶楼住着一个生病的女孩。她躺着，看着窗外。',
+      '春天来了，窗缝里长出一根细绿的小芽。',
+      '女孩每天给它浇水，看着它一天天长高，开出淡紫的花。',
+      '她也慢慢能坐起来，最后能走到窗边。',
+      '那粒豌豆不知道自己做了什么。它只是悄悄地，往上长了长。'
+    ] },
+
+  /* ─────── 课标经典 · 世界民间童话 ─────── */
+  { id: 'n29', t: '十二个月', tag: '经典童话', em: '🗓️',
+    ps: [
+      '有个女人带着两个女儿，一个亲生的，一个继女。',
+      '冬天里，继母让继女上山采雪莲，采不到不许回来。',
+      '女孩走着走着，看见山上一堆篝火，十二个老人围着火坐着，那是十二个月。',
+      '他们问她来做什么。她说：找雪莲，家里的妹妹病了。',
+      '三月老人让出位子一会儿。火一旺，雪化了一小块，雪莲露了出来。',
+      '女孩采了花，谢过他们，下山去了。',
+      '继母不甘心，又逼她去要草莓、要苹果。三月、六月轮流帮了她。',
+      '后来继母和亲女儿也想自己去，一上山就遇上大雪，怎么也找不到路。',
+      '最后她们跟着滑雪的人回了家，冻得一句话都说不出。第二年，她们再没提过那些要求。'
+    ] },
+  { id: 'n30', t: '三只山羊嘎啦嘎啦', tag: '经典童话', em: '🐐',
+    ps: [
+      '山这头住着三只山羊，都叫嘎啦嘎啦。一只小，一只中，一只大。',
+      '山那头的草最嫩。可是过河必须走一座桥，桥下住着一个大妖怪。',
+      '小山羊先过桥。嘎啦嘎啦，嘎啦嘎啦。',
+      '妖怪喊：谁在踩我的桥？',
+      '小山羊说：是我。我太小了，不够你吃，后面还有更大的。',
+      '妖怪想了想，让它过去了。',
+      '中山羊过桥，也说自己不够吃。妖怪又让它过去了。',
+      '最后大山羊来了。嘎啦嘎啦，嘎啦嘎啦，桥被踩得直晃。',
+      '妖怪冲上来。大山羊低下头，用两只角一顶，把妖怪顶下了河。',
+      '三只山羊在山那边吃得饱饱的，又慢慢走回山这边睡觉。'
+    ] },
+  { id: 'n31', t: '石头汤', tag: '经典童话', em: '🍲',
+    ps: [
+      '一个人走了很远的路，来到一个村子。',
+      '他敲了几家门，谁都说家里没吃的。',
+      '他坐在村口，架起锅，倒了水，放进一块洗干净的石头。',
+      '有人问：你在做什么？',
+      '他说：我在煮石头汤。很香，只是要能有一点盐，就更好了。',
+      '那人回家拿了盐。又有人说，加两个胡萝卜会更甜。',
+      '一会儿，有人送来洋葱，有人送来土豆，有人送来蘑菇。',
+      '锅越煮越香，全村人都来了，围着锅坐。',
+      '大家分着喝汤。有人说：这么香的汤，真的只放了一块石头？',
+      '那个人笑：是啊，只放了一块石头。'
+    ] },
+  { id: 'n32', t: '甜粥', tag: '格林童话', em: '🍚',
+    ps: [
+      '从前有个善良的小女孩，和妈妈住在一起。家里穷得只剩一口小锅。',
+      '一天，她在林子里遇到一位老婆婆。老婆婆说：这口小锅送你。你说小锅，煮吧，它就会煮甜粥。',
+      '小女孩拿回家，说：小锅，煮吧。锅里立刻冒出甜甜的粥。',
+      '妈妈说：小锅，停下吧。粥就停了。',
+      '有一天，妈妈一个人在家。她说：小锅，煮吧。粥滚了起来。',
+      '她忘了停的那句话，只好喊：够了，够了。可是粥听不懂。',
+      '粥从锅里漫出来，流到灶上，流出门外。',
+      '邻居跑过来，看见一条街都是粥。有人想起那句话，大声喊：小锅，停下吧。',
+      '粥停住了。那天，全村人都吃了甜粥，还捧回家一大碗。'
+    ] },
+
+  /* ─────── 课标经典 · 古诗 ─────── */
+  { id: 'n33', t: '咏柳', tag: '童谣古诗', em: '🍃',
+    ps: [
+      '碧玉妆成一树高，万条垂下绿丝绦。',
+      '不知细叶谁裁出，二月春风似剪刀。'
+    ] },
+  { id: 'n34', t: '小池', tag: '童谣古诗', em: '🪷',
+    ps: [
+      '泉眼无声惜细流，树阴照水爱晴柔。',
+      '小荷才露尖尖角，早有蜻蜓立上头。'
+    ] },
+  { id: 'n35', t: '村居', tag: '童谣古诗', em: '🪁',
+    ps: [
+      '草长莺飞二月天，拂堤杨柳醉春烟。',
+      '儿童散学归来早，忙趁东风放纸鸢。'
+    ] },
+  { id: 'n36', t: '登鹳雀楼', tag: '童谣古诗', em: '🏔️',
+    ps: [
+      '白日依山尽，黄河入海流。',
+      '欲穷千里目，更上一层楼。',
+      '太阳靠着山慢慢落下去，黄河朝着大海哗哗地流。想看得更远一些，就要再往上登一层楼。'
+    ] },
+  { id: 'n37', t: '望庐山瀑布', tag: '童谣古诗', em: '💦',
+    ps: [
+      '日照香炉生紫烟，遥看瀑布挂前川。',
+      '飞流直下三千尺，疑是银河落九天。',
+      '太阳照着香炉峰，升起淡淡的紫烟。远远望去，瀑布像一条白布挂在山前。水从高高的地方直冲下来，好像是天上的银河掉了下来。'
+    ] },
+  { id: 'n38', t: '江雪', tag: '童谣古诗', em: '❄️',
+    ps: [
+      '千山鸟飞绝，万径人踪灭。',
+      '孤舟蓑笠翁，独钓寒江雪。',
+      '大雪盖住了群山，鸟儿都不见了，小路上也没有脚印。只有一位披着蓑衣、戴着斗笠的老爷爷，坐在一条小船上，在寒冷的江面上静静地钓鱼。'
+    ] },
+  { id: 'n39', t: '春夜喜雨', tag: '童谣古诗', em: '🌧️',
+    ps: [
+      '好雨知时节，当春乃发生。',
+      '随风潜入夜，润物细无声。',
+      '好雨好像知道季节，春天一到就来了。它跟着风，悄悄地在夜里落下，轻轻地滋润着花草树木，一点声音也没有。'
+    ] },
+  { id: 'n40', t: '画鸡', tag: '童谣古诗', em: '🐔',
+    ps: [
+      '头上红冠不用裁，满身雪白走将来。',
+      '平生不敢轻言语，一叫千门万户开。',
+      '大公鸡头上的红冠子，像是天生就有的，不用裁剪。它一身雪白的羽毛，走起路来神气极了。它平时不爱随便叫，可只要它一叫，千家万户就都开门了，天亮了。'
+    ] },
+
+  /* ─────── 连载 · 木偶奇遇记 ─────── */
+  { id: 'm1', t: '会说话的木头', ser: '木偶奇遇记', ep: 1, tag: '连载故事', em: '🪵',
+    ps: [
+      '老木匠安东尼奥在院子里，找到了一根木头。',
+      '这根木头又直又亮，他高兴地扛回家，想做个桌子腿。',
+      '他拿起斧子，刚要砍下去——',
+      '哎哟！别砍我！',
+      '老木匠吓了一跳。屋子里一个人也没有。',
+      '他找了一圈，又拿起刨子。',
+      '痒！痒死了！别刨我！',
+      '老木匠一屁股坐在地上，脸都白了。',
+      '这时候，门响了。是他的老朋友，杰佩托。',
+      '杰佩托说：我想做个会跳舞、会翻跟头的木偶，陪我过日子。',
+      '老木匠把木头推给他：你拿去吧，这木头会说话。',
+      '杰佩托抱着木头回家，一边走一边哼歌。',
+      '他在木头上刻眼睛。眼睛刚刻好，就骨碌碌转起来，直直地盯着他。',
+      '他吓得手一抖，可还是接着刻鼻子。鼻子刚刻好，就自己长长了。',
+      '杰佩托愣住了：这木头，到底还要闹出什么事来呢？'
+    ] },
+  { id: 'm2', t: '会跑会跳的木偶', ser: '木偶奇遇记', ep: 2, tag: '连载故事', em: '🎭',
+    ps: [
+      '杰佩托刻好了嘴巴。嘴巴还没刻完，就笑起来，还朝他吐了吐舌头。',
+      '他刻好了手。手一做好，就一把抢走他的假发，戴在自己头上。',
+      '他刻好了脚。脚刚装好，杰佩托还没站直——',
+      '木偶自己跳下桌子，一溜烟跑到门口，蹦出去了。',
+      '杰佩托在后面追：站住！站住！我的木偶！',
+      '街上的人都在笑：快看，一个老头在追一块会跑的木头！',
+      '木偶跑得飞快，拐进一条小巷。一个警察拦住了他。',
+      '警察拎起木偶，递还给了杰佩托。',
+      '木偶往地上一躺，两条腿一伸，不动了。',
+      '旁边的人喊：哎呀，这老头把孩子怎么了？',
+      '警察一转身，反倒把杰佩托带走了。',
+      '木偶偷偷爬起来，笑着跑回了家。',
+      '天黑了，杰佩托才回来。他没生气，只是坐下来，给木偶讲了一个长长的故事。',
+      '木偶听着听着，第一次安静下来。他抬起头：你，为什么对我这么好？',
+      '杰佩托摸摸他的头：因为你是我做的孩子呀。',
+      '可第二天早上，木偶就忘光了。他背上书包出门上学，半路上，一阵音乐声飘了过来。'
+    ] },
+  { id: 'm3', t: '说谎的鼻子', ser: '木偶奇遇记', ep: 3, tag: '连载故事', em: '👃',
+    ps: [
+      '音乐是从一个戏台子那儿飘来的。木偶站住了。',
+      '他看看书包，又看看戏台子。就听一小会儿，他想。',
+      '他把书包卖了，换了一张票。',
+      '台上，木偶们正在跳舞。他忍不住跳上台，跟着一起翻跟头。',
+      '台下的人全站起来了：好！好！',
+      '班主给了他五个金币。木偶攥着金币，心里乐开了花。',
+      '回家的路上，他碰到一只瘸腿狐狸和一只瞎眼猫。',
+      '狐狸说：金币种在地里，能长出一棵金币树。',
+      '木偶眼睛亮了：真的吗？',
+      '猫点点头：当然，我们都知道那个地方。',
+      '他们走进一片黑森林。天越来越暗，树越来越密。',
+      '忽然，树后面跳出两个黑影，一把抢走了金币。',
+      '木偶吓坏了，跑啊跑，跑到一所小房子前，使劲敲门。',
+      '开门的是一位蓝头发的仙女。',
+      '仙女问：你的金币呢？',
+      '木偶说：丢，丢了。话还没说完，他的鼻子就长长了一截，长到碰到了墙。',
+      '仙女又问：丢在哪儿了？',
+      '木偶说：在，在森林里。鼻子又长了一截，长到顶住了窗户。',
+      '他哇地一声哭了：我说谎了，金币被抢走了！',
+      '鼻子这才慢慢缩回去。仙女叹口气：孩子，说谎的鼻子会变长，说谎的心也会变沉啊。'
+    ] },
+
+  /* ─────── 连载 · 爱丽丝漫游奇境 ─────── */
+  { id: 'a1', t: '掉进兔子洞', ser: '爱丽丝漫游奇境', ep: 1, tag: '连载故事', em: '🐇',
+    ps: [
+      '河边的大树下，爱丽丝坐着，有点无聊。',
+      '忽然，一只白兔子从她面前跑过去，一边跑一边看怀表：要迟到了！要迟到了！',
+      '爱丽丝跳起来就追。',
+      '兔子钻进一个洞。她想也没想，跟着钻了进去。',
+      '洞是往下的。她一直往下掉，往下掉。',
+      '掉啊掉，掉得太久了，她还有空看看两边的墙。',
+      '墙上有一排柜子，她伸手拿了一罐果酱。罐子是空的，她又放了回去。',
+      '掉啊掉，她看见一张小桌子，上面放着一把金钥匙。',
+      '落地的时候，她打开一扇小门，门外是一座美丽的花园。',
+      '可是门太小了，她连头都挤不进去。',
+      '桌上有个小瓶子，写着：喝我。',
+      '她喝了一口。呀，她变小了，小得像只老鼠。',
+      '可是小门又够不着了，钥匙还留在高高的桌上。',
+      '她急得直哭。眼泪流啊流，流成了一个大水池。',
+      '忽然，水声里传来啪嗒啪嗒的脚步声。',
+      '是那只白兔子，抱着一双手套，一边跑一边喊：要迟到了！要迟到了！'
+    ] },
+  { id: 'a2', t: '眼泪池和老鼠', ser: '爱丽丝漫游奇境', ep: 2, tag: '连载故事', em: '😭',
+    ps: [
+      '爱丽丝把手套戴在手上，一下子就变大了，大得眼泪池只到她的脚踝。',
+      '她哗啦哗啦走到岸边，看见一只小老鼠在水里扑腾。',
+      '她把小老鼠捞起来，放在手心里，轻轻吹干。',
+      '小老鼠抖了抖毛，跟她聊起天来。',
+      '一群小鸟和小动物从岸边跑过来，围成一个大圈，身上全湿透了。',
+      '它们说要开一场赛跑，把身子跑干。',
+      '大家跑啊跑，跑得乱七八糟，最后谁也说不清谁赢了。',
+      '渡渡鸟清了清嗓子：大家都赢，大家都有奖。',
+      '奖品是一块糖。爱丽丝从口袋里摸出那块糖，分给大家。',
+      '分完了，她又犯了愁：怎么才能变回原来的样子呢？',
+      '这时候，白兔子又跑过来了，手里拿着一把扇子。',
+      '爱丽丝扇了扇，又变小了，小得连桌子都爬不上去。',
+      '她一慌，脚下踩空，掉进了水里。',
+      '抬头一看，岸上蹲着一只大猫，正咧着嘴冲她笑。',
+      '那猫笑着笑着，就只剩下一张嘴，最后连嘴也不见了。',
+      '爱丽丝揉揉眼：这地方，真是什么怪事都有啊。'
+    ] },
+  { id: 'a3', t: '毛毛虫的建议', ser: '爱丽丝漫游奇境', ep: 3, tag: '连载故事', em: '🐛',
+    ps: [
+      '爱丽丝游到岸边，看见一朵大蘑菇。',
+      '蘑菇顶上，坐着一只蓝色的毛毛虫，正抱着胳膊抽水烟。',
+      '毛毛虫问：你是谁？',
+      '爱丽丝说：我，我今天变了好多次大小，我自己都糊涂了。',
+      '毛毛虫慢吞吞地说：咬一口蘑菇，一边会让你变大，一边会让你变小。',
+      '爱丽丝各咬了一口。',
+      '她先是猛地长高，头一下子顶到了树梢，树上的鸽子吓得直叫。',
+      '她又咬另一口，慢慢缩小，缩到正好。',
+      '她走进那座小花园，看见三个园丁在给白玫瑰刷红漆。',
+      '园丁说：红心王后最喜欢红玫瑰，白的她看见了要砍头。',
+      '话音刚落，喇叭响了，王后来了。',
+      '王后穿着红袍子，脸色很冷：谁在动我的玫瑰？',
+      '她一指爱丽丝：你，会打槌球吗？',
+      '爱丽丝点点头。她发现球是活刺猬，球杆是火烈鸟，球场上的拱门会到处跑。',
+      '王后冷冷地说：在这里，谁不听话，就砍头。',
+      '爱丽丝心里怦怦跳。她抬起头，看见王后身后站着那只一直笑的猫，正冲她眨眼睛。'
     ] }
 ];
 
@@ -1421,7 +2009,7 @@ function go(name) {
   $('#sheet').classList.remove('on');
   window.scrollTo(0, 0);
   if (name === 'home') renderHome();
-  if (name === 'story') { renderStories(); renderList('story'); }
+  if (name === 'story') { renderStories(true); renderList('story'); }
   if (name === 'en') { renderEn(); renderList('en'); }
 }
 
@@ -1455,11 +2043,16 @@ function renderHome() {
 }
 
 /* ═════════ 故事列表 ═════════ */
-const COLS = ['全部', '连载故事', '格林童话', '安徒生童话', '伊索寓言', '中国寓言', '中国故事', '经典童话', '一千零一夜', '童谣古诗'];
+const COLS = ['全部', '连载故事', '中国神话', '格林童话', '安徒生童话', '伊索寓言', '中国寓言', '中国故事', '经典童话', '一千零一夜', '童谣古诗'];
+const STORY_STEP = 12;
+const TAG_TONE = { '格林童话': 1, '安徒生童话': 2, '伊索寓言': 3, '中国寓言': 3, '中国神话': 4, '中国故事': 4, '经典童话': 2, '一千零一夜': 5, '童谣古诗': 1, '连载故事': 5 };
 let storyCol = '全部';
+let storyLimit = STORY_STEP;
 
-function renderStories() {
-  const list = STORIES.map((s, i) => ({ s, i })).filter(x => storyCol === '全部' || x.s.tag === storyCol);
+function renderStories(reset) {
+  if (reset) storyLimit = STORY_STEP;
+  const all = STORIES.map((s, i) => ({ s, i })).filter(x => storyCol === '全部' || x.s.tag === storyCol);
+  const list = all.slice(0, storyLimit);
 
   $('#st-cols').innerHTML = COLS.map(c => {
     const n = c === '全部' ? STORIES.length : STORIES.filter(s => s.tag === c).length;
@@ -1468,7 +2061,7 @@ function renderStories() {
       (c === '全部' ? '全部 ' + n : c) + '</button>';
   }).join('');
 
-  $('#sg').innerHTML = list.map(({ s, i }) => {
+  $('#sg').innerHTML = list.length ? list.map(({ s, i }) => {
     const min = Math.max(2, Math.round(s.ps.join('').length / 150));
     const p = pal(i);
     const badge = s.ser
@@ -1479,11 +2072,16 @@ function renderStories() {
       '<span class="sc-tag' + (s.ser ? ' ser' : '') + '">' + badge + '</span>' +
       '<div class="sc-tx"><b>' + esc(s.t) + '</b><span>' + (s.ser ? '第 ' + s.ep + ' 集 · ' : '') + s.ps.length + ' 段 · 约 ' + min + ' 分钟</span></div>' +
     '</button>';
-  }).join('');
+  }).join('') : '<div class="empty"><b>这个分类还没有故事</b>换个分类看看吧。</div>';
+
+  const rest = all.length - list.length;
+  const mb = $('#morebar');
+  mb.hidden = rest <= 0;
+  $('#more-n').textContent = rest > 0 ? '还有 ' + rest + ' 个' : '';
 
   $('#st-count').textContent = storyCol === '全部'
     ? '共 ' + STORIES.length + ' 个'
-    : list.length + ' 个 · 共 ' + STORIES.length + ' 个';
+    : all.length + ' 个';
 }
 
 function setCover(em, i) {
@@ -1527,13 +2125,16 @@ async function delItem(id) {
 
 /* ═════════ 播放器：公共 ═════════ */
 const au = $('#au');
-let mode = 'audio';           // audio | tts
+const stu = $('#stu');
+let mode = 'audio';           // audio 导入音频 | story 预生成故事音频 | tts 系统朗读
 let queue = [], qi = 0, curURL = '', curId = '', lastSaveAt = 0;
 let sleepTimer = null, sleepMin = 0;
 
 function setPlayIcon() {
   let playing;
-  if (mode === 'tts') {
+  if (mode === 'story') {
+    playing = !stu.paused && !stu.ended;
+  } else if (mode === 'tts') {
     playing = ('speechSynthesis' in window) && speechSynthesis.speaking && !speechSynthesis.paused;
   } else {
     playing = !au.paused && !au.ended;
@@ -1550,6 +2151,7 @@ function setSleep(min) {
   if (!min) return;
   sleepTimer = setTimeout(() => {
     if (mode === 'tts') { ttsSig++; try { speechSynthesis.cancel(); } catch (e) {} }
+    else if (mode === 'story') stu.pause();
     else au.pause();
     toast(min + ' 分钟到啦，自动停止');
     setPlayIcon();
@@ -1563,6 +2165,7 @@ async function openPlayer(list, index) {
   mode = 'audio';
   ttsSig++;
   try { speechSynthesis.cancel(); } catch (e) {}
+  stu.pause();
   queue = list.slice();
   qi = Math.max(0, Math.min(index < 0 ? 0 : index, queue.length - 1));
   $('#p-text').style.display = 'none';
@@ -1629,13 +2232,25 @@ function mediaMeta(it) {
       title: it.name,
       artist: it.kind === 'en' ? '英语课文' : '睡前故事',
       album: '小耳朵',
-      artwork: [{ src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' }]
+      artwork: [{ src: 'icons/icon-512.jpg', sizes: '512x512', type: 'image/jpeg' }]
     });
     const h = navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
-    h('play', () => au.play().catch(() => {}));
-    h('pause', () => au.pause());
-    h('previoustrack', () => { if (qi > 0) { qi--; loadCurrent(); } });
-    h('nexttrack', () => { if (qi < queue.length - 1) { qi++; loadCurrent(); } });
+    h('play', () => {
+      if (mode === 'story') { if (stu.src) stu.play().catch(() => {}); }
+      else if (mode === 'tts') {
+        try { speechSynthesis.resume(); } catch (e) {}
+        if (!('speechSynthesis' in window) || !speechSynthesis.speaking) { const sig = ++ttsSig; readStory(sig, paraIdx); }
+      } else au.play().catch(() => {});
+      setTimeout(setPlayIcon, 150);
+    });
+    h('pause', () => {
+      if (mode === 'story') stu.pause();
+      else if (mode === 'tts') { try { speechSynthesis.pause(); } catch (e) {} }
+      else au.pause();
+      setTimeout(setPlayIcon, 150);
+    });
+    h('previoustrack', prevTrack);
+    h('nexttrack', nextTrack);
   } catch (e) {}
 }
 
@@ -1663,7 +2278,8 @@ function releaseAwake() {
 }
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState !== 'visible') return;
-  if (mode === 'tts' ? speechSynthesis.speaking : !au.paused) keepAwake();
+  if (mode === 'tts' && ('speechSynthesis' in window) && speechSynthesis.speaking) keepAwake();
+  else if (mode === 'audio' && !au.paused) keepAwake();
 });
 
 function speakZh(text, sig) {
@@ -1682,40 +2298,117 @@ function speakZh(text, sig) {
   });
 }
 
-async function playStory(i) {
-  if (!('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，换 Chrome 或 Safari 试试'); return; }
-  try { speechSynthesis.cancel(); } catch (e) {}
-  au.pause();
-  mode = 'tts';
-  storyIdx = i;
-  paraIdx = 0;
-  const st = STORIES[i];
+/* ── 预生成音频：清单 + 逐段播放 ── */
+let audioMap = null;
+async function ensureAudioMap() {
+  if (audioMap) return audioMap;
+  audioMap = {};
+  try {
+    const r = await fetch('audio/manifest.json', { cache: 'no-cache' });
+    if (r.ok) {
+      const j = await r.json();
+      if (j && j.stories) audioMap = j.stories;
+    }
+  } catch (e) {}
+  return audioMap;
+}
+const storySrcOf = (st, p) => 'audio/' + st.id + '-' + p + '.mp3';
+
+function applyStoryMeta(st, i) {
   $('#p-text').style.display = '';
-  $('#p-text').textContent = '正在准备…';
   $('#p-time').style.display = 'none';
   setCover(st.em, i);
   $('#p-name').textContent = st.t;
   $('#p-kind').textContent = st.ser ? st.ser + ' · 第 ' + st.ep + ' 集' : st.tag;
+  $('#p-text').textContent = '';
   $('#p-fill').style.width = '0%';
-  $('#player').classList.add('on');
-  keepAwake();
+}
 
+async function playStory(i) {
+  try { speechSynthesis.cancel(); } catch (e) {}
+  au.pause();
+  stu.pause();
+  const sig = ++ttsSig;
+  const st = STORIES[i];
+  if (!st) return;
+  storyIdx = i;
+  paraIdx = 0;
+  $('#player').classList.add('on');
+  applyStoryMeta(st, i);
   db.lastStory = st.id;
   markDay('story');
   save();
   mediaMeta({ name: st.t, kind: 'story' });
 
-  const sig = ++ttsSig;
-  await readStory(sig);
+  const map = await ensureAudioMap();
+  if (ttsSig !== sig) return;
+
+  if (map[st.id]) {
+    mode = 'story';
+    releaseAwake();               // 放音频可以息屏
+    playStoryPart(sig, 0);
+  } else {
+    if (!('speechSynthesis' in window)) { toast('这个浏览器不支持朗读，换 Chrome 或 Safari 试试'); return; }
+    mode = 'tts';
+    keepAwake();
+    $('#p-text').textContent = '正在准备…';
+    await readStory(sig, 0);
+  }
   setPlayIcon();
 }
 
-async function readStory(sig) {
+function playStoryPart(sig, p) {
+  if (ttsSig !== sig) return;
+  const st = STORIES[storyIdx];
+  if (!st) return;
+  const lines = [introLine(st)].concat(st.ps);
+  paraIdx = p;
+  $('#p-text').textContent = lines[p] || '';
+  $('#p-fill').style.width = (p / lines.length * 100) + '%';
+  stu.src = storySrcOf(st, p);
+  stu.play().catch(() => {});
+  setPlayIcon();
+}
+
+/* 音频拉不到就退回系统朗读，从当前段落接着念 */
+function storyFallback() {
+  if (!('speechSynthesis' in window)) { toast('音频没加载出来，请检查网络'); return; }
+  toast('音频没加载出来，改用系统朗读');
+  mode = 'tts';
+  keepAwake();
+  const sig = ++ttsSig;
+  readStory(sig, paraIdx);
+  setPlayIcon();
+}
+
+stu.addEventListener('play', setPlayIcon);
+stu.addEventListener('pause', setPlayIcon);
+stu.addEventListener('error', () => { if (mode === 'story' && stu.getAttribute('src')) storyFallback(); });
+stu.addEventListener('timeupdate', () => {
+  if (mode !== 'story' || !stu.duration) return;
+  const st = STORIES[storyIdx];
+  if (!st) return;
+  const total = st.ps.length + 1;
+  $('#p-fill').style.width = ((paraIdx + stu.currentTime / stu.duration) / total * 100) + '%';
+});
+stu.addEventListener('ended', () => {
+  if (mode !== 'story') return;
+  const st = STORIES[storyIdx];
+  if (!st) return;
+  const total = st.ps.length + 1;
+  if (paraIdx + 1 < total) { playStoryPart(ttsSig, paraIdx + 1); return; }
+  $('#p-fill').style.width = '100%';
+  if (storyIdx < STORIES.length - 1) { playStory(storyIdx + 1); return; }
+  toast('故事讲完啦');
+  setPlayIcon();
+});
+
+async function readStory(sig, from) {
   while (ttsSig === sig) {
     const st = STORIES[storyIdx];
     if (!st) return;
     const lines = [introLine(st)].concat(st.ps);
-    for (let p = 0; p < lines.length; p++) {
+    for (let p = from || 0; p < lines.length; p++) {
       if (ttsSig !== sig) return;
       paraIdx = p;
       $('#p-text').textContent = lines[p];
@@ -1725,6 +2418,7 @@ async function readStory(sig) {
       if (ttsSig !== sig) return;
       await wait(520);
     }
+    from = 0;
     if (ttsSig !== sig) return;
     $('#p-fill').style.width = '100%';
     await wait(700);
@@ -1738,38 +2432,50 @@ async function readStory(sig) {
       mediaMeta({ name: nx.t, kind: 'story' });
     } else {
       ttsSig++;
-      toast('故事讲完啦，晚安');
+      toast('故事讲完啦');
       return;
     }
   }
 }
 
 /* ═════════ 播放器控制 ═════════ */
-$('#p-play').addEventListener('click', () => {
+function togglePlay() {
+  if (mode === 'story') {
+    if (stu.paused) {
+      if (stu.getAttribute('src')) stu.play().catch(() => {});
+      else playStoryPart(ttsSig, paraIdx);
+    } else stu.pause();
+    setTimeout(setPlayIcon, 120);
+    return;
+  }
   if (mode === 'tts') {
     if (!('speechSynthesis' in window)) return toast('这个浏览器不支持朗读');
     if (speechSynthesis.paused) speechSynthesis.resume();
     else if (speechSynthesis.speaking) speechSynthesis.pause();
-    else { const sig = ++ttsSig; readStory(sig); }
+    else { const sig = ++ttsSig; readStory(sig, paraIdx); }
     setTimeout(setPlayIcon, 150);
     return;
   }
   if (au.paused) au.play().catch(() => {}); else au.pause();
-});
+}
 
-$('#p-prev').addEventListener('click', () => {
-  if (mode === 'tts') { playStory(Math.max(0, storyIdx - 1)); return; }
+function prevTrack() {
+  if (mode === 'story' || mode === 'tts') { playStory(Math.max(0, storyIdx - 1)); return; }
   if (qi > 0) { qi--; loadCurrent(); } else { au.currentTime = 0; }
-});
+}
 
-$('#p-next').addEventListener('click', () => {
-  if (mode === 'tts') {
+function nextTrack() {
+  if (mode === 'story' || mode === 'tts') {
     if (storyIdx < STORIES.length - 1) playStory(storyIdx + 1);
     else toast('已经是最后一个故事啦');
     return;
   }
   if (qi < queue.length - 1) { qi++; loadCurrent(); } else toast('后面没有啦');
-});
+}
+
+$('#p-play').addEventListener('click', togglePlay);
+$('#p-prev').addEventListener('click', prevTrack);
+$('#p-next').addEventListener('click', nextTrack);
 
 document.querySelectorAll('.p-timer button').forEach(b => {
   b.addEventListener('click', () => setSleep(+b.dataset.min));
@@ -1805,6 +2511,7 @@ function closePlayer() {
   ttsSig++;
   try { speechSynthesis.cancel(); } catch (e) {}
   releaseAwake();
+  stu.pause();
   au.pause();
   clearTimeout(sleepTimer);
   sleepMin = 0;
@@ -1812,7 +2519,7 @@ function closePlayer() {
   $('#player').classList.remove('on');
   setPlayIcon();
   if (curView === 'home') renderHome();
-  if (curView === 'story') renderStories();
+  if (curView === 'story') renderStories(false);
   if (curView === 'en') renderEn();
 }
 </script><script>
@@ -1874,7 +2581,7 @@ function renderEn() {
   $('#wgrid-n').textContent = learned.length + ' / ' + BANK.length;
   box.innerHTML = recent.map((w, i) => {
     const p = pal(i + 3);
-    return '<div class="wcell">' + ph(p[0], p[1], EMOJI[w] || '✨') + '<b>' + w + '</b></div>';
+    return '<div class="wcell" data-w="' + w + '">' + ph(p[0], p[1], EMOJI[w] || '✨') + '<b>' + w + '</b></div>';
   }).join('');
 }
 
@@ -1891,7 +2598,9 @@ function pickVoice() {
   if (!('speechSynthesis' in window)) return;
   const vs = speechSynthesis.getVoices() || [];
   const en = vs.filter(v => /^en([-_]|$)/i.test(v.lang));
-  enVoice = en.find(v => /natural|google|samantha|aria|jenny|zira/i.test(v.name)) || en[0] || null;
+  // 只用本机音色：Chrome 的英文音色多是联网音色，网络不通会静默挂起
+  const local = en.filter(v => v.localService);
+  enVoice = local.find(v => /natural|samantha|aria|jenny|zira|david|mark/i.test(v.name)) || local[0] || null;
 }
 if ('speechSynthesis' in window) {
   pickVoice();
@@ -1910,9 +2619,53 @@ function speakEn(text, sig) {
     u.pitch = 1.05;
     u.onend = fin;
     u.onerror = fin;
-    speechSynthesis.speak(u);
-    setTimeout(fin, 6000);
+    try { speechSynthesis.speak(u); } catch (e) { return fin(); }
+    setTimeout(fin, 4000);
   });
+}
+
+/* 单词发音：优先播放内置真人录音 audio/words/<word>.mp3，失败再退回系统朗读 */
+const wordEls = new Map();      // 复用 Audio 对象，避免反复请求
+const wordBad = new Set();      // 播放失败过的词，之后直接走 TTS
+let wordNow = null;
+
+function stopWord() {
+  if (!wordNow) return;
+  try { wordNow.pause(); wordNow.currentTime = 0; } catch (e) {}
+  wordNow = null;
+}
+
+function playWordFile(word, sig) {
+  return new Promise(res => {
+    if (!word || wordBad.has(word) || sig !== ttsSig) return res(false);
+    let a = wordEls.get(word);
+    if (!a) {
+      a = new Audio('audio/words/' + encodeURIComponent(word) + '.mp3');
+      a.preload = 'auto';
+      wordEls.set(word, a);
+    }
+    let done = false;
+    const fin = ok => {
+      if (done) return;
+      done = true;
+      clearTimeout(t);
+      if (wordNow === a) wordNow = null;
+      res(ok);
+    };
+    const t = setTimeout(() => fin(true), 5000);   // 兜底，别把会话卡住
+    a.onended = () => fin(true);
+    a.onerror = () => { wordBad.add(word); wordEls.delete(word); fin(false); };
+    wordNow = a;
+    try { a.currentTime = 0; } catch (e) {}
+    a.play().catch(() => { wordBad.add(word); wordEls.delete(word); fin(false); });
+  });
+}
+
+async function playEn(word, sig) {
+  if (sig !== ttsSig) return;
+  const ok = await playWordFile(word, sig);
+  if (sig !== ttsSig) return;
+  if (!ok) await speakEn(word, sig);
 }
 
 /* ═════════ 英语：每日 5 个词 ═════════ */
@@ -1923,6 +2676,7 @@ function startSession() {
   if (!p.list.length) { toast('词库都学完啦，真厉害'); return; }
   sessList = p.list;
   sessCur = sessList[0];
+  stopWord();
   go('sess');
   $('#sess-count').textContent = '1 / ' + sessList.length;
   $('#wd-bar').style.width = '0%';
@@ -1948,9 +2702,9 @@ async function runWords(sig) {
     sessCur = sessList[i];
     renderWord(sessCur);
     await wait(450); if (sig !== ttsSig) return;
-    await speakEn(sessCur, sig); if (sig !== ttsSig) return;
+    await playEn(sessCur, sig); if (sig !== ttsSig) return;
     await wait(650); if (sig !== ttsSig) return;
-    await speakEn(sessCur, sig); if (sig !== ttsSig) return;
+    await playEn(sessCur, sig); if (sig !== ttsSig) return;
     $('#wd-zh').classList.add('on');
     $('#wd-bar').style.width = ((i + 1) / sessList.length * 100) + '%';
     await wait(1700);
@@ -2031,8 +2785,17 @@ $('#go-story').addEventListener('click', () => go('story'));
 $('#go-en').addEventListener('click', () => go('en'));
 $('#start-sess').addEventListener('click', startSession);
 $('#done-home').addEventListener('click', () => { ttsSig++; go('home'); });
-$('#sess-exit').addEventListener('click', () => { ttsSig++; try { speechSynthesis.cancel(); } catch (e) {} go('en'); });
-$('#sess-repeat').addEventListener('click', () => { if (sessCur) speakEn(sessCur, ttsSig); });
+$('#sess-exit').addEventListener('click', () => { ttsSig++; stopWord(); try { speechSynthesis.cancel(); } catch (e) {} go('en'); });
+$('#sess-repeat').addEventListener('click', () => { if (sessCur) { stopWord(); playEn(sessCur, ttsSig); } });
+$('#wd-en').addEventListener('click', () => { if (sessCur) { stopWord(); playEn(sessCur, ttsSig); } });
+$('#wgrid').addEventListener('click', e => {
+  const cell = e.target.closest('.wcell');
+  const w = cell && cell.dataset.w;
+  if (!w) return;
+  stopWord();
+  try { speechSynthesis.cancel(); } catch (err) {}
+  playEn(w, ttsSig);
+});
 $('#imp-story').addEventListener('click', () => { importKind = 'story'; $('#picker').click(); });
 $('#imp-en').addEventListener('click', () => { importKind = 'en'; $('#picker').click(); });
 const openSet = $('#open-set');
@@ -2046,7 +2809,19 @@ document.addEventListener('click', e => {
   if (st) { playStory(+st.dataset.story); return; }
 
   const cb = e.target.closest('[data-col]');
-  if (cb) { storyCol = cb.dataset.col; renderStories(); return; }
+  if (cb) {
+    storyCol = cb.dataset.col;
+    renderStories(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const more = e.target.closest('[data-more]');
+  if (more) {
+    storyLimit += STORY_STEP;
+    renderStories(false);
+    return;
+  }
 
   const pl = e.target.closest('[data-play]');
   if (pl) {
@@ -2066,7 +2841,7 @@ function init() {
   $('#set-rate').value = db.set.rate;
   renderHome();
   renderUsage();
-  renderStories();
+  renderStories(true);
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', () => {

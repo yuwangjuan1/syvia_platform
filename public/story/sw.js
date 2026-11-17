@@ -1,8 +1,8 @@
 /* 小耳朵 · Service Worker */
-const CACHE = 'kids-audio-v7';
+const CACHE = 'kids-audio-v5';
 const CORE = ['./', './index.html', './manifest.json',
-  './icons/icon-192.png', './icons/icon-512.png',
-  './icons/apple-touch-icon.png', './icons/icon-maskable-512.png'];
+  './icons/icon-192.jpg', './icons/icon-512.jpg',
+  './icons/apple-touch-icon.png', './icons/icon-maskable-512.jpg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
