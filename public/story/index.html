@@ -258,6 +258,42 @@
   .wcell b{display:block;font-size:11px;font-weight:750;text-align:center;padding:6px 4px 7px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+  /* 英语课 */
+  .enl{display:grid;gap:9px}
+  .el{display:flex;align-items:center;gap:11px;background:#fff;border-radius:18px;padding:9px 11px;
+    box-shadow:var(--shadow-sm),var(--hair);text-align:left;width:100%;transition:transform .16s ease}
+  .el:active{transform:scale(.975)}
+  .el .ph{width:50px;flex:none;aspect-ratio:1;border-radius:14px}
+  .el .ph .f{--fs:26px}
+  .el-tx{flex:1;min-width:0}
+  .el-tx b{display:block;font-size:13.5px;font-weight:800;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .el-tx span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .el-ok,.el-go{flex:none;width:24px;height:24px;border-radius:12px;display:grid;place-items:center;
+    font-size:11px;font-weight:900;color:#3a63ee;background:rgba(74,125,255,.12)}
+  .el-ok{color:#12a45a;background:rgba(18,164,90,.12)}
+
+  .elhead{display:flex;align-items:center;gap:13px;background:#fff;border-radius:22px;padding:13px;
+    box-shadow:var(--shadow-sm),var(--hair);margin-bottom:12px}
+  .elhead .ph{width:78px;flex:none;aspect-ratio:1;border-radius:18px}
+  .elhead .ph .f{--fs:40px}
+  .elhead b{display:block;font-size:17px;font-weight:900;letter-spacing:-.3px}
+  .elhead span{display:block;font-size:11px;color:var(--ink3);margin-top:5px}
+  .elbar{height:6px;border-radius:3px;background:#f1eef6;margin:12px 2px 0;overflow:hidden}
+  .elbar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#6cc6ff,#3a63ee);transition:width .3s}
+  .ellines{display:grid;gap:8px;margin-top:14px}
+  .elrow{display:block;width:100%;text-align:left;background:#fff;border-radius:15px;padding:11px 13px;
+    box-shadow:var(--shadow-sm),var(--hair);transition:box-shadow .16s ease,transform .12s ease}
+  .elrow:active{transform:scale(.985)}
+  .elrow b{display:block;font-size:14px;font-weight:750;line-height:1.5;letter-spacing:-.1px}
+  .elrow em{display:block;font-size:11px;color:var(--ink3);margin-top:3px;font-style:normal}
+  .elrow.on{box-shadow:0 0 0 2.5px rgba(74,125,255,.45),var(--shadow-sm)}
+  .elsp{display:inline-block;font-size:9.5px;font-weight:850;color:#3a63ee;background:rgba(74,125,255,.1);
+    border-radius:6px;padding:1px 6px;margin-bottom:5px}
+  .wordchips{display:flex;flex-wrap:wrap;gap:8px}
+  .wchip{border-radius:12px;background:#fff;padding:7px 11px;box-shadow:var(--shadow-sm),var(--hair);
+    font-size:12.5px;font-weight:800}
+  .wchip span{font-size:10.5px;color:var(--ink3);font-weight:600;margin-left:5px}
+
   /* 词卡 */
   .wcard{border-radius:28px;background:#fff;padding:16px;box-shadow:var(--shadow);text-align:center}
   .wcard .ph{width:100%;aspect-ratio:1;border-radius:22px}
@@ -457,6 +493,9 @@
       <div class="stat"><b id="st-today">—</b><em>今日状态</em></div>
     </div>
 
+    <div class="sec-h"><i>📖</i><b>英语课</b><em id="enl-n"></em></div>
+    <div class="enl" id="enl-list"></div>
+
     <div class="sec-h"><i>🖼️</i><b>单词图鉴</b><em id="wgrid-n"></em></div>
     <div class="wgrid" id="wgrid"></div>
 
@@ -464,6 +503,34 @@
     <div id="en-list"></div>
 
     <p class="note">每个单词都配了真人发音，点一下图鉴里的小卡片就能听。导入教材音频后，也可以在这里单独播放。</p>
+  </section>
+
+  <!-- 英语课 -->
+  <section class="view" id="v-enlesson">
+    <div class="topbar">
+      <button class="back" data-back aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <h2 id="el-title">英语课</h2>
+      <span class="pillbtn" id="el-kind">故事</span>
+    </div>
+
+    <div class="elhead">
+      <div class="ph" id="el-cover">
+        <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
+        <span class="dt p1"></span><span class="dt p2"></span><span class="dt p3"></span>
+        <span class="f" id="el-emoji">📖</span>
+      </div>
+      <div><b id="el-zh">英语课</b><span id="el-meta"></span></div>
+    </div>
+
+    <button class="btn-primary" id="el-play">▶ 整篇连听</button>
+    <div class="elbar"><i id="el-prog"></i></div>
+
+    <div class="ellines" id="el-lines"></div>
+
+    <div class="sec-h"><i>✨</i><b>本课单词</b><em>点一下听</em></div>
+    <div class="wordchips" id="el-words"></div>
+
+    <p class="note" id="el-note"></p>
   </section>
 
   <!-- 词卡 -->
@@ -3619,6 +3686,11 @@ const BANK = [
 
 const GAPS = [1, 2, 4, 7, 15, 30];
 
+/* ═════════ 英语课：数据（由 tools/apply-en-lessons.mjs 生成） ═════════ */
+/* EN_LESSONS:BEGIN */
+const EN_LESSONS = [{"id":"e01","t":"The Big Turnip","zh":"拔萝卜","kind":"story","em":"🥕","ps":[["A little old man plants a turnip.","一位老爷爷种下了一棵萝卜。"],["The turnip grows and grows. It is very big.","萝卜长啊长，长得非常大。"],["The old man pulls and pulls. He cannot pull it up.","老爷爷拔呀拔，拔不动。"],["\"Grandma, come and help!\"","“老奶奶，快来帮忙！”"],["Grandma pulls the old man. They pull and pull.","老奶奶拉着老爷爷，拔呀拔。"],["\"Girl, come and help!\"","“小姑娘，快来帮忙！”"],["The girl pulls grandma. They pull and pull.","小姑娘拉着老奶奶，拔呀拔。"],["\"Dog, come and help!\"","“小狗，快来帮忙！”"],["They pull and pull... POP! Out comes the turnip!","他们拔呀拔……噗！萝卜出来了！"],["Everyone is happy.","大家都很开心。"]],"ws":["big","happy"],"note":"（给爸爸妈妈：这篇只有 10 句，反复出现 pull and pull，适合让孩子跟着做“拔”的动作。可以问：Who helps the old man?）"},{"id":"e02","t":"The Little Red Hen","zh":"小红母鸡","kind":"story","em":"🐔","ps":[["A little red hen finds some seeds.","一只小红母鸡找到了一些种子。"],["\"Who will help me plant the seeds?\"","“谁来帮我种种子？”"],["\"Not I,\" says the cat.","“不是我。”小猫说。"],["\"Not I,\" says the dog.","“不是我。”小狗说。"],["The hen plants the seeds alone.","母鸡自己种下了种子。"],["The seeds grow into wheat.","种子长成了小麦。"],["\"Who will help me make the bread?\"","“谁来帮我做面包？”"],["\"Not I,\" says the cat. \"Not I,\" says the dog.","“不是我。”小猫和小狗一起说。"],["The hen makes the bread alone.","母鸡自己做了面包。"],["\"Who will help me eat the bread?\"","“谁来帮我吃面包？”"],["\"I will!\" says the cat. \"I will!\" says the dog.","“我来！”小猫和小狗说。"],["\"No, thank you,\" says the hen. She eats it all by herself.","“不用了，谢谢。”母鸡说。她自己把面包吃光了。"]],"ws":["cat","dog","bread"],"note":"（给爸爸妈妈：经典绘本故事，重复句 Who will help me… 很适合孩子接话。可以问：Who eats the bread?）"},{"id":"e03","t":"The Sun and the Wind","zh":"太阳和风","kind":"story","em":"☀️","ps":[["The sun and the wind are talking.","太阳和风在说话。"],["\"I am stronger than you,\" says the wind.","“我比你强壮。”风说。"],["\"Let's see,\" says the sun.","“那我们试试看。”太阳说。"],["A man is walking on the road. He has a coat.","一个人走在路上，他穿着一件外套。"],["\"Who can take off his coat?\"","“谁能让他把外套脱下来？”"],["The wind blows and blows.","风呼呼地吹。"],["The man holds his coat tight.","那个人把外套裹得紧紧的。"],["The sun shines warm and bright.","太阳暖暖地照着。"],["The man takes off his coat.","那个人脱下了外套。"],["\"Gentle is stronger,\" says the sun.","“温和比强硬更有力量。”太阳说。"]],"ws":["hot","cold","big"],"note":"（给爸爸妈妈：伊索寓言。可以问孩子：Who wins, the wind or the sun? 顺便聊聊“好好说比大声喊管用”。）"},{"id":"e04","t":"The Lion and the Mouse","zh":"狮子和小老鼠","kind":"story","em":"🦁","ps":[["A lion is sleeping.","狮子在睡觉。"],["A little mouse runs over his nose.","一只小老鼠从他的鼻子上跑过。"],["The lion wakes up. \"I will eat you!\"","狮子醒了。“我要吃了你！”"],["\"Please let me go. I can help you one day.\"","“请放了我吧，有一天我会帮你的。”"],["The lion laughs. \"You are so small.\"","狮子笑了。“你这么小。”"],["But he lets the mouse go.","但他还是放走了小老鼠。"],["One day, the lion is in a net.","有一天，狮子被网住了。"],["The mouse hears him and runs to the net.","小老鼠听见了，跑到网边。"],["He bites the net with his sharp teeth.","他用尖尖的牙齿咬网。"],["\"Thank you, little mouse,\" says the lion.","“谢谢你，小老鼠。”狮子说。"],["Small friends can help, too.","小小的朋友也能帮上大忙。"]],"ws":["big","small","friend"],"note":"（给爸爸妈妈：适合聊“不要小看任何人”。可以问：How does the mouse help the lion?）"},{"id":"e05","t":"Breakfast Time","zh":"早餐时间","kind":"dialog","em":"🥣","sp":["Mom","Mia"],"ps":[["Good morning, Mom!","早上好，妈妈！",1],["Good morning! What do you want for breakfast?","早上好！早餐想吃什么？",0],["I want some bread and milk.","我想要面包和牛奶。",1],["Here you are. Do you want an egg?","给你。要一个鸡蛋吗？",0],["Yes, please. Thank you.","好的，谢谢。",1],["Eat slowly. It is still hot.","慢点吃，还烫着。",0],["Mmm, it is yummy!","嗯，真好吃！",1]],"ws":["bread","milk","egg"],"note":"（给爸爸妈妈：早上吃饭时就能用上。可以让孩子演 Mia，你演 Mom，互换再来一遍。）"},{"id":"e06","t":"Get Dressed","zh":"穿衣服","kind":"dialog","em":"🧥","sp":["Mom","Mia"],"ps":[["Let's get dressed. It is cold today.","我们穿衣服吧，今天很冷。",0],["OK. Where is my coat?","好。我的外套在哪儿？",1],["It is on the chair.","在椅子上。",0],["And my hat?","我的帽子呢？",1],["Your hat is in the bag.","你的帽子在包里。",0],["Now I am ready. Let's go!","我准备好了，走吧！",1],["Wait! Your shoes!","等等！你的鞋子！",0]],"ws":["hat","shoe","cold"],"note":"（给爸爸妈妈：穿衣、出门的真实场景。可以边穿边把 coat、hat、shoes 换成当天穿的衣物。）"},{"id":"e07","t":"At the Playground","zh":"在游乐场","kind":"dialog","em":"🛝","sp":["Ben","Mia"],"ps":[["Let's play on the slide.","我们去玩滑梯吧。",1],["OK! You go first.","好！你先来。",0],["Whee! That was fun.","哇！真好玩。",1],["Now it is my turn.","现在轮到我了。",0],["Look at the swing. Let's try it.","看那个秋千，我们试试。",1],["Hold my hand. One, two, three... go!","拉着我的手。一、二、三……走！",0],["Be careful! Slow down!","小心！慢一点！",1]],"ws":["run","jump","ball"],"note":"（给爸爸妈妈：playground 高频句 You go first / my turn / Be careful，玩的时候直接说。）"},{"id":"e08","t":"Twinkle, Twinkle, Little Star","zh":"小星星","kind":"rhyme","em":"⭐","ps":[["Twinkle, twinkle, little star,","一闪一闪小星星，"],["How I wonder what you are.","我多想知道你是什么。"],["Up above the world so high,","挂在天上那么高，"],["Like a diamond in the sky.","像天上的一颗钻石。"],["Twinkle, twinkle, little star,","一闪一闪小星星，"],["How I wonder what you are.","我多想知道你是什么。"]],"ws":["big"],"note":"（给爸爸妈妈：最经典的英文童谣，可以配中文版《小星星》的调子唱。睡前关灯唱一遍最合适。）"},{"id":"e09","t":"Five Little Ducks","zh":"五只小鸭子","kind":"rhyme","em":"🦆","ps":[["Five little ducks went out one day,","五只小鸭子出门去，"],["Over the hill and far away.","翻过小山走远了。"],["Mother duck said, \"Quack, quack, quack, quack.\"","鸭妈妈说：“嘎嘎嘎嘎。”"],["But only four little ducks came back.","可只有四只小鸭子回来了。"],["Four little ducks went out one day,","四只小鸭子出门去，"],["Over the hill and far away.","翻过小山走远了。"],["Mother duck said, \"Quack, quack, quack, quack.\"","鸭妈妈说：“嘎嘎嘎嘎。”"],["But only three little ducks came back.","可只有三只小鸭子回来了。"]],"ws":["duck","mother"],"note":"（给爸爸妈妈：用手指当小鸭子，边唱边一根根收手指。可以接着往下数 three、two、one。）"},{"id":"e10","t":"Every Day English","zh":"每天都能用的话","kind":"phrase","em":"💬","ps":[["Good morning!","早上好！"],["Thank you very much.","非常感谢。"],["I am sorry.","对不起。"],["May I have some water?","我可以喝点水吗？"],["Help me, please.","请帮帮我。"],["Let's go outside.","我们出去玩吧。"],["Wait for me!","等等我！"],["It is yummy!","真好吃！"],["I love you, Mom.","我爱你，妈妈。"],["Good night!","晚安！"]],"ws":["water","happy","mother"],"note":"（给爸爸妈妈：这 10 句是日常高频句，建议一天挑 1 句，在家真实场景里反复用。）"}];
+/* EN_LESSONS:END */
+
 /* ═════════ 数据 ═════════ */
 const DEF = () => ({
   v: 2,
@@ -3627,14 +3699,14 @@ const DEF = () => ({
   prog: {},        // 音频续播位置
   last: '',
   lastStory: '',
-  en: { words: {}, log: {} },
+  en: { words: {}, log: {}, read: {} },
   days: {}         // 'YYYY-MM-DD' -> {story:1,en:1}
 });
 
 function norm(d) {
   d.set = d.set || {}; if (!d.set.rate) d.set.rate = 0.8; if (!d.set.zh) d.set.zh = 0.9;
   d.items = d.items || []; d.prog = d.prog || {}; d.last = d.last || ''; d.lastStory = d.lastStory || '';
-  d.en = d.en || {}; d.en.words = d.en.words || {}; d.en.log = d.en.log || {};
+  d.en = d.en || {}; d.en.words = d.en.words || {}; d.en.log = d.en.log || {}; d.en.read = d.en.read || {};
   d.days = d.days || {};
   return d;
 }
@@ -3684,7 +3756,7 @@ async function delFile(id) {
 }
 </script><script>
 /* ═════════ 视图 ═════════ */
-const VIEWS = { home: 'v-home', story: 'v-story', en: 'v-en', sess: 'v-sess', done: 'v-done' };
+const VIEWS = { home: 'v-home', story: 'v-story', en: 'v-en', enlesson: 'v-enlesson', sess: 'v-sess', done: 'v-done' };
 let curView = 'home';
 
 function go(name) {
@@ -3696,6 +3768,7 @@ function go(name) {
   if (name === 'home') renderHome();
   if (name === 'story') { renderStories(true); renderList('story'); }
   if (name === 'en') { renderEn(); renderList('en'); }
+  if (name === 'enlesson') renderEnLesson();
 }
 
 function markDay(kind) {
@@ -4254,6 +4327,7 @@ function renderEn() {
   $('#st-learned').textContent = learned.length;
   $('#st-days').textContent = Object.keys(db.days).filter(k => db.days[k].en).length;
   $('#st-today').textContent = todayDone ? '已完成' : '还没做';
+  renderEnLessons();
 
   const p = planSession();
   $('#en-sub').textContent = p.review + ' 个复习 + ' + p.fresh + ' 个新词 · 共 5 个';
@@ -4272,6 +4346,143 @@ function renderEn() {
     return '<div class="wcell" data-w="' + w + '">' + ph(p[0], p[1], EMOJI[w] || '✨') + '<b>' + w + '</b></div>';
   }).join('');
 }
+
+/* ═════════ 英语课：列表 / 播放 ═════════ */
+const EN_KIND = { story: '小故事', dialog: '对话', rhyme: '童谣', phrase: '跟读句' };
+let enCur = null, enIdx = -1, enAll = false, enSeq = 0;
+const enAudio = new Audio();
+enAudio.preload = 'auto';
+
+function renderEnLessons() {
+  const box = $('#enl-list');
+  if (!box) return;
+  const read = db.en.read || {};
+  const done = EN_LESSONS.filter(l => read[l.id]).length;
+  $('#enl-n').textContent = done + ' / ' + EN_LESSONS.length;
+  box.innerHTML = EN_LESSONS.map((l, i) => {
+    const p = pal(i + 2);
+    return '<button class="el" data-enl="' + l.id + '">' +
+      ph(p[0], p[1], l.em) +
+      '<div class="el-tx"><b>' + esc(l.t) + '</b><span>' + esc(l.zh) + ' · ' +
+        (EN_KIND[l.kind] || '英语') + ' · ' + l.ps.length + ' 句</span></div>' +
+      (read[l.id] ? '<span class="el-ok">✓</span>' : '<span class="el-go">▶</span>') +
+    '</button>';
+  }).join('');
+}
+
+function openEnLesson(id) {
+  const l = EN_LESSONS.find(x => x.id === id);
+  if (!l) return;
+  stopEnAudio();
+  enCur = l; enIdx = -1;
+  go('enlesson');
+}
+
+function renderEnLesson() {
+  const l = enCur;
+  if (!l) { go('en'); return; }
+  const p = pal(EN_LESSONS.indexOf(l) + 2);
+  const cov = $('#el-cover');
+  cov.style.setProperty('--c1', p[0]);
+  cov.style.setProperty('--c2', p[1]);
+  $('#el-emoji').textContent = l.em;
+  $('#el-title').textContent = l.t;
+  $('#el-kind').textContent = EN_KIND[l.kind] || '英语';
+  $('#el-zh').textContent = l.zh;
+  const chars = l.ps.reduce((n, r) => n + r[0].length, 0);
+  $('#el-meta').textContent = (EN_KIND[l.kind] || '英语') + ' · ' + l.ps.length + ' 句 · 约 ' +
+    Math.max(1, Math.round(chars / 600)) + ' 分钟';
+
+  $('#el-lines').innerHTML = l.ps.map((r, k) => {
+    const sp = (l.sp && r[2] != null) ? l.sp[r[2]] : '';
+    return '<button class="elrow" data-eli="' + k + '">' +
+      (sp ? '<span class="elsp">' + esc(sp) + '</span>' : '') +
+      '<b>' + esc(r[0]) + '</b><em>' + esc(r[1]) + '</em></button>';
+  }).join('');
+
+  const ws = l.ws || [];
+  $('#el-words').innerHTML = ws.length
+    ? ws.map(w => '<button class="wchip" data-enw="' + esc(w) + '">' + esc(w) +
+        '<span>' + esc(wordZh(w)) + '</span></button>').join('')
+    : '<span class="note" style="margin:0">这一课没有单独的生词。</span>';
+
+  const nt = $('#el-note');
+  nt.textContent = l.note || '';
+  nt.style.display = l.note ? '' : 'none';
+  $('#el-prog').style.width = '0%';
+  $('#el-play').textContent = '▶ 整篇连听';
+}
+
+function setEnRow(k) {
+  document.querySelectorAll('#el-lines .elrow').forEach((el, i) => el.classList.toggle('on', i === k));
+  const row = document.querySelector('#el-lines .elrow.on');
+  if (row) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function playEnLine(k, all) {
+  const l = enCur;
+  if (!l || !l.ps[k]) return;
+  const sig = ++enSeq;
+  enIdx = k; enAll = !!all;
+  setEnRow(k);
+  $('#el-prog').style.width = ((k + 1) / l.ps.length * 100) + '%';
+  $('#el-play').textContent = enAll ? '⏸ 暂停' : '▶ 整篇连听';
+  try { enAudio.pause(); } catch (e) {}
+  enAudio.src = 'audio/en/' + l.id + '-' + k + '.mp3';
+  enAudio.play().catch(() => { if (sig === enSeq) enSpeakLine(k, sig); });
+}
+
+function enSpeakLine(k, sig) {
+  const l = enCur;
+  if (!l || !l.ps[k] || sig !== enSeq) return;
+  if (!('speechSynthesis' in window)) { toast('音频没加载出来，请检查网络'); return; }
+  const u = new SpeechSynthesisUtterance(l.ps[k][0]);
+  u.lang = 'en-US';
+  if (enVoice) u.voice = enVoice;
+  u.rate = 0.75;
+  const fin = () => {
+    if (sig !== enSeq) return;
+    if (enAll) nextEnLine(sig);
+    else $('#el-play').textContent = '▶ 整篇连听';
+  };
+  u.onend = fin;
+  u.onerror = fin;
+  try { speechSynthesis.speak(u); } catch (e) { fin(); }
+}
+
+function nextEnLine(sig) {
+  const l = enCur;
+  if (!l || sig !== enSeq) return;
+  if (enIdx + 1 < l.ps.length) playEnLine(enIdx + 1, true);
+  else finishEn();
+}
+
+function finishEn() {
+  if (!enCur) return;
+  const k = today();
+  db.en.read[enCur.id] = k;
+  db.days[k] = db.days[k] || {};
+  db.days[k].en = 1;
+  save();
+  enAll = false;
+  $('#el-play').textContent = '▶ 整篇连听';
+  $('#el-prog').style.width = '100%';
+  renderEnLessons();
+  toast('这一课听完啦，明天再来一遍');
+}
+
+function stopEnAudio() {
+  enSeq++;
+  enAll = false;
+  try { enAudio.pause(); } catch (e) {}
+  try { speechSynthesis.cancel(); } catch (e) {}
+}
+
+enAudio.addEventListener('ended', () => {
+  if (!enCur) return;
+  if (enAll) nextEnLine(enSeq);
+  else $('#el-play').textContent = '▶ 整篇连听';
+});
 
 async function renderUsage() {
   try {
@@ -4489,9 +4700,34 @@ $('#imp-en').addEventListener('click', () => { importKind = 'en'; $('#picker').c
 const openSet = $('#open-set');
 if (openSet) openSet.addEventListener('click', openSheet);
 
+const elPlay = $('#el-play');
+if (elPlay) elPlay.addEventListener('click', () => {
+  if (!enCur) return;
+  if (enAll) { stopEnAudio(); setEnRow(-1); elPlay.textContent = '▶ 整篇连听'; return; }
+  playEnLine(0, true);
+});
+
 document.addEventListener('click', e => {
   const back = e.target.closest('[data-back]');
-  if (back) { go('home'); return; }
+  if (back) {
+    stopEnAudio();
+    go(curView === 'enlesson' ? 'en' : 'home');
+    return;
+  }
+
+  const enl = e.target.closest('[data-enl]');
+  if (enl) { openEnLesson(enl.dataset.enl); return; }
+
+  const eli = e.target.closest('[data-eli]');
+  if (eli) { playEnLine(+eli.dataset.eli, false); return; }
+
+  const enw = e.target.closest('[data-enw]');
+  if (enw) {
+    const w = enw.dataset.enw;
+    const sig = ttsSig;
+    playWordFile(w, sig).then(ok => { if (!ok && sig === ttsSig) speakEn(w, sig); });
+    return;
+  }
 
   const st = e.target.closest('[data-story]');
   if (st) { playStory(+st.dataset.story); return; }
