@@ -295,8 +295,11 @@
   .wchip span{font-size:10.5px;color:var(--ink3);font-weight:600;margin-left:5px}
 
   /* 英语分类 tab */
-  .entabs{display:flex;gap:8px;overflow-x:auto;margin:2px -20px 14px;padding:2px 20px 2px;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .entabs{position:sticky;top:calc(env(safe-area-inset-top, 0px));z-index:25;display:flex;gap:8px;overflow-x:auto;
+    margin:2px -20px 14px;padding:10px 20px 8px;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    background:rgba(251,247,242,.92);
+    -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6)}
   .entabs::-webkit-scrollbar{display:none}
   .entabs button{flex:none;height:34px;padding:0 14px;border-radius:17px;background:#fff;
     box-shadow:var(--shadow-sm),var(--hair);font-size:12.5px;font-weight:750;color:var(--ink2);
@@ -489,6 +492,7 @@
       <button data-entab="dialog">对话</button>
     </div>
 
+    <div id="en-sec-daily">
     <div class="enhero">
       <div class="ph">
         <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
@@ -511,9 +515,10 @@
       <div class="stat"><b id="st-days">0</b><em>坚持天数</em></div>
       <div class="stat"><b id="st-today">—</b><em>今日状态</em></div>
     </div>
+    </div>
 
     <div id="en-sec-lessons">
-      <div class="sec-h"><i>📖</i><b>英语课</b><em id="enl-n"></em></div>
+      <div class="sec-h"><i>📖</i><b id="enl-t">英语课</b><em id="enl-n"></em></div>
       <div class="enl" id="enl-list"></div>
     </div>
 
@@ -4374,6 +4379,7 @@ function renderEn() {
 
 /* ═════════ 英语课：列表 / 播放 ═════════ */
 const EN_KIND = { story: '小故事', dialog: '对话', rhyme: '童谣', phrase: '跟读句' };
+const EN_TAB_TITLE = { all: '英语课', word: '英语课', phrase: '短句跟读', rhyme: '儿歌童谣', story: '英语小故事', dialog: '情景对话' };
 let enCur = null, enIdx = -1, enAll = false, enSeq = 0, enTab = 'all';
 const enAudio = new Audio();
 enAudio.preload = 'auto';
@@ -4381,10 +4387,14 @@ enAudio.preload = 'auto';
 function applyEnTab() {
   const t = enTab;
   const isWord = t === 'word';
+  const daily = $('#en-sec-daily');
   const lessons = $('#en-sec-lessons'), words = $('#en-sec-words'), audio = $('#en-sec-audio');
+  if (daily) daily.style.display = (t === 'all' || isWord) ? '' : 'none';
   if (lessons) lessons.style.display = isWord ? 'none' : '';
   if (words) words.style.display = (t === 'all' || isWord) ? '' : 'none';
   if (audio) audio.style.display = (t === 'all' || isWord) ? '' : 'none';
+  const title = $('#enl-t');
+  if (title) title.textContent = EN_TAB_TITLE[t] || '英语课';
   document.querySelectorAll('#en-tabs button').forEach(b => {
     b.classList.toggle('on', b.dataset.entab === t);
   });
@@ -4764,7 +4774,7 @@ document.addEventListener('click', e => {
   if (enl) { openEnLesson(enl.dataset.enl); return; }
 
   const etb = e.target.closest('[data-entab]');
-  if (etb) { enTab = etb.dataset.entab; applyEnTab(); return; }
+  if (etb) { enTab = etb.dataset.entab; applyEnTab(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
 
   const eli = e.target.closest('[data-eli]');
   if (eli) { playEnLine(+eli.dataset.eli, false); return; }
