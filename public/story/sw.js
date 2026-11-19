@@ -1,5 +1,5 @@
 /* 小耳朵 · Service Worker */
-const CACHE = 'kids-audio-v14';
+const CACHE = 'kids-audio-v15';
 const CORE = ['./', './index.html', './manifest.json',
   './icons/icon-192.png', './icons/icon-512.png', './icons/mushroom-256.png',
   './icons/apple-touch-icon.png', './icons/icon-maskable-512.png'];
@@ -43,7 +43,15 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  /* 静态资源：先用缓存，同时后台更新 */
+  /* 音频：纯缓存优先，命中后不再重复下载（避免播放时抢带宽造成卡顿） */
+  if (/\/audio\//.test(url.pathname)) {
+    e.respondWith(
+      caches.match(req).then(hit => hit || fetch(req).then(res => put(req, res)).catch(() => null))
+    );
+    return;
+  }
+
+  /* 其它静态资源：先用缓存，同时后台更新 */
   e.respondWith(
     caches.match(req).then(hit => {
       const net = fetch(req).then(res => put(req, res)).catch(() => null);

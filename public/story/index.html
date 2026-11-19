@@ -1,4 +1,4 @@
-﻿<!doctype html>
+﻿﻿<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
@@ -647,7 +647,7 @@
 
 <input type="file" id="picker" accept="audio/*" multiple style="display:none">
 <audio id="au" preload="metadata"></audio>
-<audio id="stu" preload="none"></audio>
+<audio id="stu" preload="auto"></audio>
 <div class="toast" id="toast"></div>
 <script>
 /* ═════════ 基础 ═════════ */
@@ -4102,6 +4102,33 @@ async function ensureAudioMap() {
 }
 const storySrcOf = (st, p) => 'audio/' + st.id + '-' + p + '.mp3';
 
+/* 预取后面的段落：长故事最容易卡在句与句之间（等下一段下载）。
+   一次把本集剩下的都放进缓存，总流量和正常听完一样，但段与段之间不再等网络。 */
+const preloading = new Set();
+const preloadQueue = [];
+let preloadBusy = 0;
+
+function prefetchPart(st, p) {
+  const total = st.ps.length + 1;
+  if (p < 1 || p >= total) return;
+  const src = storySrcOf(st, p);
+  if (preloading.has(src)) return;
+  preloading.add(src);
+  preloadQueue.push(src);
+  pumpPrefetch();
+}
+
+function pumpPrefetch() {
+  while (preloadBusy < 2 && preloadQueue.length) {
+    const src = preloadQueue.shift();
+    preloadBusy++;
+    fetch(src, { cache: 'force-cache' })
+      .then(r => { if (!r.ok) preloading.delete(src); })
+      .catch(() => preloading.delete(src))
+      .then(() => { preloadBusy--; pumpPrefetch(); });
+  }
+}
+
 function applyStoryMeta(st, i) {
   $('#p-text').style.display = '';
   $('#p-time').style.display = 'none';
@@ -4124,6 +4151,7 @@ async function playStory(i) {
   if (!st) return;
   storyIdx = i;
   paraIdx = 0;
+  preloadQueue.length = 0;        // 换故事时丢掉上一集的预取队列
   $('#player').classList.add('on');
   applyStoryMeta(st, i);
   db.lastStory = st.id;
@@ -4158,6 +4186,13 @@ function playStoryPart(sig, p) {
   $('#p-fill').style.width = (p / lines.length * 100) + '%';
   stu.src = storySrcOf(st, p);
   stu.play().catch(() => {});
+  const total = st.ps.length + 1;
+  for (let k = p + 1; k < total; k++) prefetchPart(st, k);
+  /* 快讲完时把下一集开头也取好，连载之间不断档 */
+  if (p + 3 >= total) {
+    const nx = STORIES[storyIdx + 1];
+    if (nx) { prefetchPart(nx, 0); prefetchPart(nx, 1); }
+  }
   setPlayIcon();
 }
 
