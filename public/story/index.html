@@ -3914,6 +3914,8 @@ function go(name) {
 function countEpisode() {
   const d = today();
   db.eps[d] = (db.eps[d] || 0) + 1;
+  const r = db.recent.find(x => x.i === storyIdx);
+  if (r) { r.p = 0; r.t = 0; }
 }
 function markDay(kind) {
   const t = today();
