@@ -646,8 +646,9 @@
 </div>
 
 <input type="file" id="picker" accept="audio/*" multiple style="display:none">
-<audio id="au" preload="metadata"></audio>
-<audio id="stu" preload="auto"></audio>
+<audio id="au" preload="metadata" playsinline></audio>
+<audio id="stu" preload="auto" playsinline></audio>
+<audio id="alive" preload="auto" loop playsinline></audio>
 <div class="toast" id="toast"></div>
 <script>
 /* ═════════ 基础 ═════════ */
@@ -3917,6 +3918,34 @@ const stu = $('#stu');
 let mode = 'audio';           // audio 导入音频 | story 预生成故事音频 | tts 系统朗读
 let queue = [], qi = 0, curURL = '', curId = '', lastSaveAt = 0;
 let sleepTimer = null, sleepMin = 0;
+let wantPlay = false;         // 用户是否希望继续播放（息屏后被系统打断时据此自动恢复）
+let wxHinted = false;         // 微信内置浏览器不支持息屏播放，提示过一次就够
+
+/* ── 静音续航音轨 ──
+   息屏后系统会冻结后台 JS，故事“一段放完接下一段”就可能接不上。
+   播放故事期间保持一条静音音轨在响，页面始终算“正在放音”，段落切换不会被冻结。 */
+const alive = $('#alive');
+let aliveURL = '';
+function silentWav(sec) {
+  const rate = 8000, n = rate * sec, bytes = n * 2;
+  const buf = new ArrayBuffer(44 + bytes), v = new DataView(buf);
+  const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  str(0, 'RIFF'); v.setUint32(4, 36 + bytes, true); str(8, 'WAVE');
+  str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+  v.setUint16(22, 1, true); v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+  v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  str(36, 'data'); v.setUint32(40, bytes, true);
+  return new Blob([buf], { type: 'audio/wav' });
+}
+function startAlive() {
+  if (!aliveURL) aliveURL = URL.createObjectURL(silentWav(1));
+  if (!alive.getAttribute('src')) alive.src = aliveURL;
+  /* 不能设成静音：iOS 会把“静音播放”当作没有音频，息屏就冻结页面。音频本身是纯静音，留极小音量即可 */
+  alive.volume = 0.01;
+  alive.muted = false;
+  if (alive.paused) alive.play().catch(() => {});
+}
+function stopAlive() { try { alive.pause(); } catch (e) {} }
 
 function setPlayIcon() {
   let playing;
@@ -3930,6 +3959,9 @@ function setPlayIcon() {
   $('#p-play').innerHTML = playing
     ? '<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
     : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+  try {
+    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+  } catch (e) {}
 }
 
 function setSleep(min) {
@@ -3938,8 +3970,9 @@ function setSleep(min) {
   document.querySelectorAll('.p-timer button').forEach(b => b.classList.toggle('on', +b.dataset.min === min));
   if (!min) return;
   sleepTimer = setTimeout(() => {
+    wantPlay = false;
     if (mode === 'tts') { ttsSig++; try { speechSynthesis.cancel(); } catch (e) {} }
-    else if (mode === 'story') stu.pause();
+    else if (mode === 'story') { stopAlive(); stu.pause(); }
     else au.pause();
     toast(min + ' 分钟到啦，自动停止');
     setPlayIcon();
@@ -3987,6 +4020,8 @@ async function loadCurrent() {
   };
   au.src = curURL;
   au.load();
+  wantPlay = true;
+  startAlive();
   au.play().catch(() => toast('点一下播放键开始'));
 
   db.last = it.id;
@@ -4010,7 +4045,7 @@ au.addEventListener('play', setPlayIcon);
 au.addEventListener('pause', setPlayIcon);
 au.addEventListener('ended', () => {
   if (qi < queue.length - 1) { qi++; loadCurrent(); }
-  else { setPlayIcon(); toast('这一段听完啦'); }
+  else { wantPlay = false; stopAlive(); setPlayIcon(); toast('这一段听完啦'); }
 });
 
 function mediaMeta(it) {
@@ -4018,27 +4053,35 @@ function mediaMeta(it) {
   try {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: it.name,
-      artist: it.kind === 'en' ? '英语课文' : '睡前故事',
+      artist: it.artist || (it.kind === 'en' ? '英语课文' : '睡前故事'),
       album: '小耳朵',
-      artwork: [{ src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' }]
+      artwork: [
+        { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+        { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+      ]
     });
     const h = navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
     h('play', () => {
-      if (mode === 'story') { if (stu.src) stu.play().catch(() => {}); }
+      wantPlay = true;
+      if (mode === 'story') { if (stu.src) { startAlive(); stu.play().catch(() => {}); } }
       else if (mode === 'tts') {
         try { speechSynthesis.resume(); } catch (e) {}
         if (!('speechSynthesis' in window) || !speechSynthesis.speaking) { const sig = ++ttsSig; readStory(sig, paraIdx); }
-      } else au.play().catch(() => {});
+      } else { startAlive(); au.play().catch(() => {}); }
       setTimeout(setPlayIcon, 150);
     });
     h('pause', () => {
-      if (mode === 'story') stu.pause();
+      wantPlay = false;
+      if (mode === 'story') { stopAlive(); stu.pause(); }
       else if (mode === 'tts') { try { speechSynthesis.pause(); } catch (e) {} }
-      else au.pause();
+      else { stopAlive(); au.pause(); }
       setTimeout(setPlayIcon, 150);
     });
     h('previoustrack', prevTrack);
     h('nexttrack', nextTrack);
+    h('seekbackward', d => skipBy(-((d && d.seekOffset) || 15)));
+    h('seekforward', d => skipBy((d && d.seekOffset) || 30));
+    h('stop', () => closePlayer());
   } catch (e) {}
 }
 
@@ -4153,11 +4196,15 @@ async function playStory(i) {
   paraIdx = 0;
   preloadQueue.length = 0;        // 换故事时丢掉上一集的预取队列
   $('#player').classList.add('on');
+  if (!wxHinted && /MicroMessenger/i.test(navigator.userAgent)) {
+    wxHinted = true;
+    setTimeout(() => toast('微信里息屏会停，点右上角“在浏览器打开”就能息屏继续听'), 1200);
+  }
   applyStoryMeta(st, i);
   db.lastStory = st.id;
   markDay('story');
   save();
-  mediaMeta({ name: st.t, kind: 'story' });
+  mediaMeta({ name: st.t, kind: 'story', artist: st.ser ? st.ser + ' · 第 ' + st.ep + ' 集' : '睡前故事' });
 
   const map = await ensureAudioMap();
   if (ttsSig !== sig) return;
@@ -4185,6 +4232,8 @@ function playStoryPart(sig, p) {
   $('#p-text').textContent = lines[p] || '';
   $('#p-fill').style.width = (p / lines.length * 100) + '%';
   stu.src = storySrcOf(st, p);
+  wantPlay = true;
+  startAlive();                 // 息屏后保持“正在放音”，段落切换不被系统冻结
   stu.play().catch(() => {});
   const total = st.ps.length + 1;
   for (let k = p + 1; k < total; k++) prefetchPart(st, k);
@@ -4268,21 +4317,24 @@ async function readStory(sig, from) {
 function togglePlay() {
   if (mode === 'story') {
     if (stu.paused) {
+      wantPlay = true;
+      startAlive();
       if (stu.getAttribute('src')) stu.play().catch(() => {});
       else playStoryPart(ttsSig, paraIdx);
-    } else stu.pause();
+    } else { wantPlay = false; stopAlive(); stu.pause(); }
     setTimeout(setPlayIcon, 120);
     return;
   }
   if (mode === 'tts') {
     if (!('speechSynthesis' in window)) return toast('这个浏览器不支持朗读');
-    if (speechSynthesis.paused) speechSynthesis.resume();
-    else if (speechSynthesis.speaking) speechSynthesis.pause();
-    else { const sig = ++ttsSig; readStory(sig, paraIdx); }
+    if (speechSynthesis.paused) { wantPlay = true; speechSynthesis.resume(); }
+    else if (speechSynthesis.speaking) { wantPlay = false; speechSynthesis.pause(); }
+    else { wantPlay = true; const sig = ++ttsSig; readStory(sig, paraIdx); }
     setTimeout(setPlayIcon, 150);
     return;
   }
-  if (au.paused) au.play().catch(() => {}); else au.pause();
+  if (au.paused) { wantPlay = true; startAlive(); au.play().catch(() => {}); }
+  else { wantPlay = false; stopAlive(); au.pause(); }
 }
 
 function prevTrack() {
@@ -4298,6 +4350,29 @@ function nextTrack() {
   }
   if (qi < queue.length - 1) { qi++; loadCurrent(); } else toast('后面没有啦');
 }
+
+/* 锁屏/耳机上的快退快进 */
+function skipBy(sec) {
+  if (mode === 'story') {
+    if (isFinite(stu.duration) && stu.duration > 0) {
+      stu.currentTime = Math.max(0, Math.min(stu.duration - 0.3, stu.currentTime + sec));
+    }
+  } else if (mode === 'audio' && isFinite(au.duration)) {
+    au.currentTime = Math.max(0, Math.min(au.duration - 0.3, au.currentTime + sec));
+  }
+}
+
+/* 息屏守护：来电、系统清理等把播放暂停后，只要用户没亲手暂停就自动接上 */
+setInterval(() => {
+  if (!wantPlay) return;
+  if (mode === 'story' && stu.paused && stu.getAttribute('src')) {
+    startAlive();
+    stu.play().catch(() => {});
+  } else if (mode === 'audio' && au.paused && au.getAttribute('src')) {
+    startAlive();
+    au.play().catch(() => {});
+  }
+}, 5000);
 
 $('#p-play').addEventListener('click', togglePlay);
 $('#p-prev').addEventListener('click', prevTrack);
@@ -4335,6 +4410,8 @@ exitBtn.addEventListener('contextmenu', e => e.preventDefault());
 
 function closePlayer() {
   ttsSig++;
+  wantPlay = false;
+  stopAlive();
   try { speechSynthesis.cancel(); } catch (e) {}
   releaseAwake();
   stu.pause();
