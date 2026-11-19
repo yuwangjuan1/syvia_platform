@@ -200,6 +200,35 @@
   .tip{font-size:11.5px;color:var(--ink3);line-height:1.8;margin-top:12px;padding-top:12px;border-top:1.5px dashed var(--line)}
   .foot{font-size:11px;color:var(--ink3);text-align:center;margin-top:20px;line-height:1.8}
 
+  /* 最近收听 / 收藏 / 本周 */
+  .hsec{margin-top:18px}
+  .hsec[hidden]{display:none}
+  .rc-list{display:flex;flex-direction:column;gap:8px}
+  .rc{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 11px;border-radius:16px;
+    background:#fff;box-shadow:var(--shadow-sm),var(--hair);transition:transform .16s ease}
+  .rc:active{transform:scale(.985)}
+  .rc .ra{width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:17px;background:linear-gradient(158deg,#f3effc,#fff)}
+  .rc .rt{flex:1;min-width:0}
+  .rc .rt b{display:block;font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rc .rt span{display:block;font-size:10.5px;color:var(--ink3);margin-top:2px}
+  .rc .rp{flex:none;font-size:10.5px;font-weight:750;color:#4a7dff;background:#eef4ff;border-radius:10px;padding:4px 8px}
+  .fav-wrap{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;-webkit-overflow-scrolling:touch}
+  .fav-wrap::-webkit-scrollbar{display:none}
+  .fv-chip{flex:none;display:flex;align-items:center;gap:6px;padding:7px 11px;border-radius:14px;background:#fff;
+    box-shadow:var(--shadow-sm),var(--hair);font-size:11.5px;font-weight:700;color:var(--ink2);transition:transform .16s ease}
+  .fv-chip:active{transform:scale(.97)}
+  .fv-chip em{font-style:normal;font-size:14px}
+  .week{display:flex;align-items:center;gap:12px;margin-top:14px;padding:13px 15px;border-radius:18px;
+    background:linear-gradient(135deg,#f4f1ff,#eef7ff);box-shadow:var(--hair)}
+  .week .wa{font-size:22px;flex:none}
+  .week .wt{min-width:0}
+  .week .wt b{font-size:13px;font-weight:850;letter-spacing:-.2px}
+  .week .wt span{display:block;font-size:11px;color:var(--ink3);margin-top:2px}
+  .week .wn{margin-left:auto;text-align:right;flex:none}
+  .week .wn b{font-size:17px;font-weight:900;color:#4a7dff;letter-spacing:-.5px}
+  .week .wn span{display:block;font-size:10px;color:var(--ink3);font-weight:650}
+
   /* 故事网格 */
   .sg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .sc{border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm),var(--hair);
@@ -212,6 +241,10 @@
   .sc .sc-tag.ser{background:linear-gradient(120deg,#ffb02e,#ff7a5c);color:#fff;
     box-shadow:0 4px 10px -2px rgba(255,122,92,.45)}
   .sc .sc-tx{padding:9px 11px 11px}
+  .sc .fv{position:absolute;right:7px;top:7px;width:28px;height:28px;border-radius:50%;display:flex;
+    align-items:center;justify-content:center;font-size:14px;color:#c9c4da;background:rgba(255,255,255,.92);
+    box-shadow:0 2px 8px rgba(30,26,55,.16);z-index:2;line-height:1}
+  .sc .fv.on{color:#ffb02e;background:#fff6e0}
   .sc .sc-tx b{display:block;font-size:13.5px;font-weight:800;letter-spacing:-.3px}
   .sc .sc-tx span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px}
   .sc.playing{box-shadow:0 0 0 3px rgba(74,125,255,.35),var(--shadow-sm)}
@@ -374,6 +407,15 @@
   .p-note{display:none;flex:none;margin-top:10px;font-size:11.5px;line-height:1.75;color:#8c8cb2;
     text-align:center;padding:0 2px}
   .p-note.on{display:block}
+  .p-top-r{display:flex;align-items:center;gap:10px}
+  .p-share{border:0;background:rgba(255,255,255,.1);color:#cfcbea;width:26px;height:26px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center}
+  .p-share svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .p-off{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:10px;font-size:10.5px;color:#8f8fb4;flex:none}
+  .p-off[hidden]{display:none}
+  .p-off button{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#cfcbea;
+    border-radius:14px;padding:6px 11px;font-size:10.5px;font-weight:700}
+  .p-off button.on{background:#8fd3ff;border-color:#8fd3ff;color:#141430}
   .p-ctrl{display:flex;align-items:center;justify-content:center;gap:30px;margin-top:14px;flex:none}
   .p-ctrl button{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     transition:transform .16s ease}
@@ -475,6 +517,16 @@
       <div class="go"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div>
     </button>
 
+    <div class="hsec" id="recent-box" hidden>
+      <div class="sec-h"><i>🕘</i><b>最近收听</b><em>接着上次的位置</em></div>
+      <div class="rc-list" id="rc-list"></div>
+    </div>
+
+    <div class="hsec" id="fav-box" hidden>
+      <div class="sec-h"><i>⭐</i><b>我的收藏</b><em>点一点就开讲</em></div>
+      <div class="fav-wrap" id="fav-wrap"></div>
+    </div>
+
     <div class="today">
       <div class="td-hd"><span>今天的小耳朵</span><em id="td-date"></em></div>
       <div class="chips">
@@ -482,6 +534,12 @@
         <div class="chip" id="bd-en"><div class="dot">🎧</div><div><b>英语</b><em>还没读</em></div></div>
       </div>
       <p class="tip">故事放睡前，定时 15–30 分钟；英语放早上或饭后，家长陪着听、跟着念一遍最管用。</p>
+    </div>
+
+    <div class="week" id="week">
+      <div class="wa">🌛</div>
+      <div class="wt"><b>本周睡前时光</b><span id="wk-tx">今晚听一段，就会记下来</span></div>
+      <div class="wn"><b id="wk-min">0</b><span>分钟</span></div>
     </div>
 
     <p class="foot">故事与学习记录只存在这台设备里<br>断网也能用，不上传任何内容</p>
@@ -637,7 +695,12 @@
 <div class="player" id="player">
   <div class="p-top">
     <button class="p-exit" id="p-exit">按住退出</button>
-    <span id="p-kind">故事</span>
+    <div class="p-top-r">
+      <button class="p-share" id="p-share" aria-label="分享">
+        <svg viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>
+      </button>
+      <span id="p-kind">故事</span>
+    </div>
   </div>
   <div class="p-cover"><div class="ph" id="p-cover">
     <span class="glow"></span><span class="hl a"></span><span class="hl b"></span>
@@ -662,6 +725,10 @@
     <button data-min="15">15</button>
     <button data-min="30">30</button>
     <button data-end="1">听完这集</button>
+  </div>
+  <div class="p-off" id="p-off" hidden>
+    <button id="p-off-btn">⬇ 缓存本集</button>
+    <span id="p-off-tx">离线断网也能听</span>
   </div>
 </div>
 
@@ -3766,7 +3833,12 @@ const DEF = () => ({
   last: '',
   lastStory: '',
   en: { words: {}, log: {}, read: {} },
-  days: {}         // 'YYYY-MM-DD' -> {story:1,en:1}
+  days: {},         // 'YYYY-MM-DD' -> {story:1,en:1}
+  recent: [],       // 最近收听 [{i,p,t,ts}]
+  fav: {},          // 收藏的故事 id
+  listen: {},       // 'YYYY-MM-DD' -> 听故事秒数
+  eps: {},          // 'YYYY-MM-DD' -> 听完集数
+  sleepPref: ''     // '' | '15' | '30' | 'end'
 });
 
 function norm(d) {
@@ -3774,6 +3846,8 @@ function norm(d) {
   d.items = d.items || []; d.prog = d.prog || {}; d.last = d.last || ''; d.lastStory = d.lastStory || '';
   d.en = d.en || {}; d.en.words = d.en.words || {}; d.en.log = d.en.log || {}; d.en.read = d.en.read || {};
   d.days = d.days || {};
+  d.recent = d.recent || []; d.fav = d.fav || {}; d.listen = d.listen || {}; d.eps = d.eps || {};
+  d.sleepPref = d.sleepPref || '';
   return d;
 }
 
@@ -3837,6 +3911,10 @@ function go(name) {
   if (name === 'enlesson') renderEnLesson();
 }
 
+function countEpisode() {
+  const d = today();
+  db.eps[d] = (db.eps[d] || 0) + 1;
+}
 function markDay(kind) {
   const t = today();
   db.days[t] = db.days[t] || {};
@@ -3881,6 +3959,63 @@ function renderHome() {
   } else {
     tn.hidden = true;
   }
+
+  /* 最近收听：最近 3 条，一键按上次位置续播 */
+  const recent = db.recent.filter(r => STORIES[r.i]).slice(0, 3);
+  $('#recent-box').hidden = !recent.length;
+  if (recent.length) {
+    $('#rc-list').innerHTML = recent.map(r => {
+      const st = STORIES[r.i];
+      const segs = st.ps.length + 1;
+      const pg = (r.p > 0 || r.t > 2) ? '听到 ' + (r.p + 1) + '/' + segs : '从头听';
+      return '<button class="rc" data-recent="' + r.i + '">' +
+        '<span class="ra">' + (st.em || '📖') + '</span>' +
+        '<span class="rt"><b>' + esc(st.t) + '</b><span>' +
+          (st.ser ? st.ser + ' · 第 ' + st.ep + ' 集' : st.tag) + '</span></span>' +
+        '<span class="rp">' + pg + '</span></button>';
+    }).join('');
+  }
+
+  /* 我的收藏 */
+  const favs = STORIES.map((s, i) => ({ s, i })).filter(x => db.fav[x.s.id]);
+  $('#fav-box').hidden = !favs.length;
+  if (favs.length) {
+    $('#fav-wrap').innerHTML = favs.slice(0, 10).map(({ s, i }) =>
+      '<button class="fv-chip" data-recent="' + i + '"><em>' + (s.em || '📖') + '</em>' + esc(s.t) + '</button>'
+    ).join('');
+  }
+
+  /* 本周睡前时光 */
+  let sec = 0, eps = 0;
+  for (let k = 0; k < 7; k++) {
+    const d = addDays(-k);
+    sec += db.listen[d] || 0;
+    eps += db.eps[d] || 0;
+  }
+  $('#wk-min').textContent = Math.round(sec / 60);
+  $('#wk-tx').textContent = eps
+    ? '本周听了 ' + eps + ' 集故事 · 每天一点就好'
+    : (sec > 30 ? '已经听了几分钟，继续慢慢来' : '今晚听一段，就会记下来');
+}
+
+/* 最近收听 / 收藏：续播位置 */
+const resumeOf = i => {
+  const r = db.recent.find(x => x.i === i);
+  return r ? { p: r.p, t: r.t } : null;
+};
+function touchRecent(i, p, at) {
+  db.recent = db.recent.filter(r => r.i !== i);
+  db.recent.unshift({ i, p: p || 0, t: at > 2 ? at : 0, ts: Date.now() });
+  db.recent = db.recent.slice(0, 6);
+}
+function toggleFav(i) {
+  const st = STORIES[i];
+  if (!st) return;
+  if (db.fav[st.id]) { delete db.fav[st.id]; toast('已取消收藏'); }
+  else { db.fav[st.id] = 1; toast('已收藏，在首页就能快速找到'); }
+  save();
+  if (curView === 'story') renderStories(false);
+  renderHome();
 }
 
 function tonightPick() {
@@ -3927,6 +4062,7 @@ function renderStories(reset) {
       : s.tag;
     return '<button class="sc" data-story="' + i + '">' +
       ph(p[0], p[1], s.em) +
+      '<span class="fv' + (db.fav[s.id] ? ' on' : '') + '" data-fav="' + i + '">★</span>' +
       '<span class="sc-tag' + (s.ser ? ' ser' : '') + '">' + badge + '</span>' +
       '<div class="sc-tx"><b>' + esc(s.t) + '</b><span>' + (s.ser ? '第 ' + s.ep + ' 集 · ' : '') + s.ps.length + ' 段 · 约 ' + min + ' 分钟</span></div>' +
     '</button>';
@@ -3988,6 +4124,7 @@ let mode = 'audio';           // audio 导入音频 | story 预生成故事音�
 let queue = [], qi = 0, curURL = '', curId = '', lastSaveAt = 0;
 let sleepTimer = null, fadeTimer = null, fadeIv = null, sleepMin = 0, sleepEnd = false;
 let lastStorySaveAt = 0;      // 故事进度落盘节流
+let lastListenAt = 0;         // 听故事时长累计基准
 let wantPlay = false;         // 用户是否希望继续播放（息屏后被系统打断时据此自动恢复）
 let wxHinted = false;         // 微信内置浏览器不支持息屏播放，提示过一次就够
 
@@ -4061,20 +4198,30 @@ function stopBySleep(msg) {
   setPlayIcon();
 }
 
-function setSleep(min, end) {
+function setSleep(min, end, silent) {
   clearTimeout(sleepTimer); clearTimeout(fadeTimer); clearInterval(fadeIv);
   setVolume(1);
   sleepMin = min || 0;
   sleepEnd = !!end;
+  db.sleepPref = sleepEnd ? 'end' : (sleepMin ? String(sleepMin) : '');
+  save();
   document.querySelectorAll('.p-timer button').forEach(b => {
     b.classList.toggle('on', b.dataset.end ? sleepEnd : (!sleepEnd && +b.dataset.min === sleepMin));
   });
-  if (sleepEnd) { toast('这一集听完就停，晚安'); return; }
+  if (sleepEnd) { if (!silent) toast('这一集听完就停，晚安'); return; }
   if (!sleepMin) return;
   const total = sleepMin * 60000;
   fadeTimer = setTimeout(fadeOut, Math.max(0, total - 15000));   // 最后 15 秒渐弱
   sleepTimer = setTimeout(() => stopBySleep(sleepMin + ' 分钟到啦，晚安'), total);
-  toast(sleepMin + ' 分钟后自动停止');
+  if (!silent) toast(sleepMin + ' 分钟后自动停止');
+}
+
+/* 进播放页时带出上次的定时选择 */
+function restoreSleep() {
+  const p = db.sleepPref;
+  if (p === 'end') setSleep(0, true, true);
+  else if (p === '15' || p === '30') setSleep(+p, false, true);
+  else setSleep(0);
 }
 
 /* ═════════ 播放器：导入的音频 ═════════ */
@@ -4088,7 +4235,9 @@ async function openPlayer(list, index) {
   qi = Math.max(0, Math.min(index < 0 ? 0 : index, queue.length - 1));
   $('#p-text').style.display = 'none';
   $('#p-time').style.display = 'flex';
+  $('#p-off').hidden = true;        // 导入的音频已在本机
   $('#player').classList.add('on');
+  restoreSleep();
   await loadCurrent();
 }
 
@@ -4282,6 +4431,9 @@ function applyStoryMeta(st, i) {
   pn.textContent = st.pn || '';
   pn.classList.toggle('on', !!st.pn);
   $('#p-fill').style.width = '0%';
+  $('#p-off').hidden = false;
+  $('#p-off-btn').classList.remove('on');
+  $('#p-off-tx').textContent = '离线断网也能听';
 }
 
 async function playStory(i, resume) {
@@ -4298,6 +4450,8 @@ async function playStory(i, resume) {
   const fromP = resume && resume.p > 0 ? Math.min(resume.p, st.ps.length) : 0;
   const fromT = resume && resume.t > 2 ? resume.t : 0;
   preloadQueue.length = 0;        // 换故事时丢掉上一集的预取队列
+  lastListenAt = 0;
+  touchRecent(i, fromP, fromT);
   $('#player').classList.add('on');
   if (!wxHinted && /MicroMessenger/i.test(navigator.userAgent)) {
     wxHinted = true;
@@ -4307,6 +4461,7 @@ async function playStory(i, resume) {
   db.lastStory = st.id;
   markDay('story');
   save();
+  restoreSleep();
   mediaMeta({ name: st.t, kind: 'story', artist: st.ser ? st.ser + ' · 第 ' + st.ep + ' 集' : '睡前故事' });
 
   const map = await ensureAudioMap();
@@ -4345,6 +4500,7 @@ function playStoryPart(sig, p, at) {
   startAlive();                 // 息屏后保持“正在放音”，段落切换不被系统冻结
   stu.play().catch(() => {});
   db.storyPos = { i: storyIdx, p: p, t: at > 2 ? at : 0 };
+  touchRecent(storyIdx, p, at);
   save();
   const total = st.ps.length + 1;
   for (let k = p + 1; k < total; k++) prefetchPart(st, k);
@@ -4380,6 +4536,13 @@ stu.addEventListener('timeupdate', () => {
   /* 记住听到哪儿：首页「今晚的故事」靠它续播 */
   if (Date.now() - lastStorySaveAt > 4000) {
     lastStorySaveAt = Date.now();
+    /* 睡前统计：按实际播放时间累计到当天 */
+    const nowMs = Date.now();
+    if (lastListenAt && !stu.paused) {
+      const dt = Math.min(6000, nowMs - lastListenAt);
+      if (dt > 0) { const d = today(); db.listen[d] = Math.round((db.listen[d] || 0) + dt / 1000); }
+    }
+    lastListenAt = nowMs;
     db.storyPos = { i: storyIdx, p: paraIdx, t: stu.currentTime };
     save();
   }
@@ -4392,6 +4555,7 @@ stu.addEventListener('ended', () => {
   if (paraIdx + 1 < total) { playStoryPart(ttsSig, paraIdx + 1); return; }
   $('#p-fill').style.width = '100%';
   delete db.storyPos;
+  countEpisode();
   save();
   if (sleepEnd) { stopBySleep('这一集听完啦，晚安'); return; }
   if (storyIdx < STORIES.length - 1) { playStory(storyIdx + 1); return; }
@@ -4417,6 +4581,8 @@ async function readStory(sig, from) {
     from = 0;
     if (ttsSig !== sig) return;
     $('#p-fill').style.width = '100%';
+    countEpisode();
+    save();
     await wait(700);
     if (ttsSig !== sig) return;
     if (storyIdx < STORIES.length - 1) {
@@ -4499,6 +4665,8 @@ setInterval(() => {
 $('#p-play').addEventListener('click', togglePlay);
 $('#p-prev').addEventListener('click', prevTrack);
 $('#p-next').addEventListener('click', nextTrack);
+$('#p-share').addEventListener('click', shareNow);
+$('#p-off-btn').addEventListener('click', cacheCurrentStory);
 
 document.querySelectorAll('.p-timer button').forEach(b => {
   b.addEventListener('click', () => b.dataset.end ? setSleep(0, true) : setSleep(+b.dataset.min));
@@ -4529,6 +4697,67 @@ exitBtn.addEventListener('contextmenu', e => e.preventDefault());
 ['pointerup', 'pointercancel', 'mouseup', 'touchend', 'touchcancel'].forEach(ev =>
   window.addEventListener(ev, cancelHold, true)
 );
+
+/* 分享：系统分享优先，不支持就复制链接 */
+async function shareNow() {
+  let title = '小耳朵 · 睡前故事机', text = '今晚一起听个故事吧';
+  if (mode === 'story') {
+    const st = STORIES[storyIdx];
+    if (st) { title = st.t; text = '小耳朵 · ' + (st.ser ? st.ser + ' 第 ' + st.ep + ' 集' : st.tag); }
+  } else if (mode === 'audio' && queue[qi]) {
+    title = queue[qi].name;
+    text = '小耳朵 · ' + (queue[qi].kind === 'en' ? '英语磨耳朵' : '睡前故事');
+  }
+  const url = location.href;
+  if (navigator.share) {
+    try { await navigator.share({ title, text, url }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  try {
+    await navigator.clipboard.writeText(title + ' — ' + text + ' ' + url);
+    toast('链接已复制，发给家人吧');
+  } catch (e) {
+    prompt('复制这个链接分享', url);
+  }
+}
+
+/* 离线缓存：把当前这一集的全部分段存进本地缓存，断网也能听 */
+async function cacheCurrentStory() {
+  if (mode !== 'story') { toast('导入的音频本来就在本机'); return; }
+  const st = STORIES[storyIdx];
+  if (!st) return;
+  const map = await ensureAudioMap();
+  if (!map[st.id]) { toast('这一集还没有预生成音频'); return; }
+  let cache;
+  try { cache = await caches.open('story-offline-v1'); }
+  catch (e) { toast('这个浏览器不支持离线缓存'); return; }
+  const btn = $('#p-off-btn'), tx = $('#p-off-tx');
+  const total = st.ps.length + 1;
+  let done = 0, idx = 0, failed = false;
+  btn.disabled = true;
+  btn.classList.remove('on');
+  tx.textContent = '准备缓存…';
+  const worker = async () => {
+    while (idx < total && !failed) {
+      const src = storySrcOf(st, idx++);
+      try {
+        if (!(await cache.match(src))) {
+          const r = await fetch(src);
+          if (!r.ok) throw new Error('fail');
+          await cache.put(src, r.clone());
+        }
+      } catch (e) { failed = true; return; }
+      done++;
+      tx.textContent = '缓存中 ' + done + '/' + total;
+    }
+  };
+  await Promise.all([worker(), worker()]);
+  btn.disabled = false;
+  if (failed) { tx.textContent = '缓存中断，检查网络后重试'; toast('缓存失败，检查网络后重试'); return; }
+  btn.classList.add('on');
+  tx.textContent = '已缓存 · 断网也能听';
+  toast('这一集已缓存好，断网也能听');
+}
 
 function closePlayer() {
   ttsSig++;
@@ -5028,6 +5257,12 @@ document.addEventListener('click', e => {
     playWordFile(w, sig).then(ok => { if (!ok && sig === ttsSig) speakEn(w, sig); });
     return;
   }
+
+  const fv = e.target.closest('[data-fav]');
+  if (fv) { toggleFav(+fv.dataset.fav); return; }
+
+  const rcb = e.target.closest('[data-recent]');
+  if (rcb) { const ri = +rcb.dataset.recent; playStory(ri, resumeOf(ri)); return; }
 
   const st = e.target.closest('[data-story]');
   if (st) { playStory(+st.dataset.story); return; }
