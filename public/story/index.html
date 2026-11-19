@@ -3885,10 +3885,17 @@ function renderHome() {
 
 function tonightPick() {
   if (!STORIES.length) return null;
-  let i = db.lastStory ? STORIES.findIndex(s => s.id === db.lastStory) : -1;
-  if (i < 0) i = STORIES.findIndex(s => s.ser);
-  if (i < 0) i = 0;
   const pos = db.storyPos;
+  const hasPos = pos && STORIES[pos.i] && (pos.p > 0 || pos.t > 2);
+  let i = -1;
+  if (hasPos) {
+    i = pos.i;                                     // 1. 有没听完的进度，直接续播
+  } else if (db.lastStory) {
+    const li = STORIES.findIndex(s => s.id === db.lastStory);
+    if (li >= 0 && STORIES[li].ser) i = li;        // 2. 上次听的是连载，接着推这一部
+  }
+  if (i < 0) i = STORIES.findIndex(s => s.ser);     // 3. 兜底：第一部连载
+  if (i < 0) i = 0;
   const resume = (pos && pos.i === i && (pos.p > 0 || pos.t > 2)) ? pos : null;
   return { i, st: STORIES[i], resume };
 }
