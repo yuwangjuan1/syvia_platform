@@ -258,9 +258,12 @@
   .field-label b{font-size:11px;letter-spacing:.16em;color:var(--ink);font-weight:600}
   .field-label i{flex:1;height:1px;background:var(--line);font-style:normal}
   .acc{border-bottom:1px solid var(--line-soft)}
-  .acc>button{width:100%;display:flex;gap:12px;align-items:center;justify-content:space-between;text-align:left;padding:13px 0;font-size:12.5px;font-weight:500;line-height:1.5}
-  .acc>button s{text-decoration:none;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3);flex:none;transition:.25s}
-  .acc.open>button s{transform:rotate(45deg);background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .acc-head{display:flex;align-items:center;gap:8px}
+  .acc-toggle{flex:1;display:flex;gap:12px;align-items:center;justify-content:space-between;text-align:left;padding:13px 0;font-size:12.5px;font-weight:500;line-height:1.5}
+  .acc-toggle s{text-decoration:none;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3);flex:none;transition:.25s}
+  .acc.open .acc-toggle s{transform:rotate(45deg);background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .acc-tts{width:26px;height:26px;padding:0;justify-content:center;border-radius:50%;flex:none}
+  .acc-tts svg{width:13px;height:13px}
   .acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
   .acc.open .acc-body{grid-template-rows:1fr}
   .acc-body>div{overflow:hidden}
@@ -894,7 +897,10 @@ function openSheet(i){
       '<div class="field-label"><b>三个为什么</b><i></i></div>' +
       c.whys.map(function(w, k){
         return '<div class="acc' + (k === 0 ? ' open' : '') + '">' +
-          '<button><span>' + w[0] + '</span><s>+</s></button>' +
+          '<div class="acc-head">' +
+            '<button class="acc-toggle"><span>' + w[0] + '</span><s>+</s></button>' +
+            '<button class="tts acc-tts" data-why="' + k + '" aria-label="朗读这一条">' + SPK + '</button>' +
+          '</div>' +
           '<div class="acc-body"><div><p>' + w[1] + '</p></div></div>' +
         '</div>';
       }).join('') +
@@ -913,8 +919,17 @@ function openSheet(i){
   el('#sheet-card').scrollTop = 0;
   el('#close').addEventListener('click', closeSheet);
   el('#say-card').addEventListener('click', function(){ say(cardSpeech(c), this); });
-  document.querySelectorAll('#sheet-card .acc>button').forEach(function(b){
-    b.addEventListener('click', function(){ b.parentElement.classList.toggle('open'); });
+  document.querySelectorAll('#sheet-card .acc-toggle').forEach(function(b){
+    b.addEventListener('click', function(){ b.parentElement.parentElement.classList.toggle('open'); });
+  });
+  document.querySelectorAll('#sheet-card .acc-tts').forEach(function(b){
+    b.addEventListener('click', function(){
+      const k = Number(b.dataset.why);
+      const w = c.whys[k];
+      if (!w) return;
+      b.closest('.acc').classList.add('open');
+      say(w[0] + '。' + w[1], b);
+    });
   });
 }
 
