@@ -23,6 +23,12 @@ const PRODUCTS = [
     tags: ["PWA", "离线可用", "睡前故事"],
     href: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/story/`,
   },
+  {
+    name: "小眼睛",
+    desc: "每张卡只讲一个“为什么”，最后留一条能带走的规律。十张动物卡起家，配每日一题和图鉴，断网也能翻。",
+    tags: ["PWA", "离线可用", "亲子共学"],
+    href: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/eyes/`,
+  },
 ];
 
 export default function Page() {

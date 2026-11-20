@@ -1,0 +1,46 @@
+{
+  "name": "小眼睛 · 给孩子的世界认知卡",
+  "short_name": "小眼睛",
+  "description": "每张卡讲一个“为什么”，最后留一条能带走的规律。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3EFE6",
+  "theme_color": "#F3EFE6",
+  "categories": ["education", "kids"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "今日一卡",
+      "short_name": "今日",
+      "url": "./?v=today"
+    },
+    {
+      "name": "图鉴",
+      "short_name": "图鉴",
+      "url": "./?v=atlas"
+    }
+  ]
+}

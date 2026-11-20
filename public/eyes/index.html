@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="每张卡讲一个“为什么”，最后留一条能带走的规律。给孩子的世界认知卡。">
+<meta name="theme-color" content="#F3EFE6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="小眼睛">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<title>小眼睛 · 给孩子的世界认知卡</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{
+    --paper:#F3EFE6;
+    --surface:#FCFAF4;
+    --ink:#15150F;
+    --ink2:#5F5A4D;
+    --ink3:#948E7E;
+    --line:rgba(21,21,15,.10);
+    --line-soft:rgba(21,21,15,.06);
+    --moss:#1D5A42;
+    --moss-2:#2E7A5B;
+    --wash:#E3EBE2;
+    --lime:#D9F26B;
+    --terra:#BF5330;
+    --serif:"Songti SC","Source Han Serif SC","Noto Serif SC",Georgia,SimSun,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    --shadow:0 30px 70px -34px rgba(21,21,15,.55);
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{
+    min-height:100vh;min-height:100dvh;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    justify-content:center;
+  }
+  body:after{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:80;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  img{display:block}
+
+  .mark{width:34px;height:34px;flex:none}
+  .micro{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+
+  /* ---------- 应用容器 ---------- */
+  .device{
+    width:100%;max-width:430px;height:100vh;height:100dvh;
+    position:relative;background:var(--paper);display:flex;
+  }
+  .app{
+    position:relative;width:100%;height:100%;overflow:hidden;
+    background:var(--paper);display:flex;flex-direction:column;
+  }
+  @media (min-width:600px){
+    body{align-items:center;padding:28px}
+    .device{
+      height:calc(100vh - 56px);height:calc(100dvh - 56px);
+      border-radius:30px;overflow:hidden;
+      box-shadow:0 40px 90px -44px rgba(21,21,15,.55),0 0 0 1px rgba(21,21,15,.08);
+    }
+  }
+  .app-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:calc(18px + env(safe-area-inset-top)) 20px 8px;flex:none;
+  }
+  .logo-row{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:.06em}
+  .logo-row .mark{width:22px;height:22px}
+  .app-date{font-size:10px;letter-spacing:.14em;color:var(--ink3)}
+
+  .views{flex:1;position:relative;overflow:hidden}
+  .view{
+    position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;
+    padding:6px 20px 118px;scrollbar-width:none;
+  }
+  .view::-webkit-scrollbar{display:none}
+  .view{display:none}
+  .view.on{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- 今日 ---------- */
+  .figure{
+    position:relative;aspect-ratio:4/3;border-radius:24px;overflow:hidden;
+    background:linear-gradient(150deg,var(--c1,#E7E1D2) 0%,var(--c2,#D9E4DA) 100%);
+    isolation:isolate;
+  }
+  .figure .art{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+  .tag{
+    position:absolute;left:12px;top:12px;z-index:2;
+    background:rgba(252,250,244,.82);backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.6);
+    font-size:10px;letter-spacing:.08em;color:var(--ink2);
+    padding:6px 10px;border-radius:99px;
+  }
+  .num{
+    position:absolute;right:14px;top:10px;z-index:2;
+    font-family:var(--serif);font-size:13px;letter-spacing:.1em;color:rgba(255,255,255,.92);
+    text-shadow:0 1px 8px rgba(0,0,0,.28);
+  }
+  .hero-body{padding:18px 2px 0}
+  .eyebrow{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);font-weight:600;display:flex;gap:10px;align-items:center}
+  .eyebrow i{width:18px;height:1px;background:var(--ink3);font-style:normal}
+  h2.hero-title{
+    font-size:36px;line-height:1.12;letter-spacing:-.02em;font-weight:700;margin:10px 0 10px;
+  }
+  .one-liner{font-size:14px;line-height:1.8;color:var(--ink2)}
+  .cta{
+    margin-top:18px;display:inline-flex;align-items:center;gap:10px;
+    background:var(--ink);color:var(--paper);font-size:12.5px;font-weight:500;
+    padding:12px 18px;border-radius:99px;transition:.25s;
+  }
+  .cta span{transition:.25s}
+  .cta:hover{background:var(--moss)}
+  .cta:hover span{transform:translateX(4px)}
+
+  /* ---------- 答题 ---------- */
+  .quiz{
+    margin-top:26px;background:var(--surface);border:1px solid var(--line-soft);
+    border-radius:24px;padding:20px 18px 18px;
+  }
+  .q-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .q-index{font-size:9px;letter-spacing:.14em;color:var(--ink3)}
+  .quiz h3{font-size:17px;line-height:1.6;font-weight:600;letter-spacing:-.01em;margin-bottom:14px}
+  .opt{
+    width:100%;display:flex;align-items:center;gap:12px;text-align:left;
+    border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;
+    font-size:13.5px;color:var(--ink);background:transparent;transition:.2s;
+  }
+  .opt:last-child{margin-bottom:0}
+  .opt em{
+    width:20px;height:20px;border-radius:50%;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    font-size:9.5px;font-style:normal;color:var(--ink3);
+    border:1px solid var(--line);transition:.2s;
+  }
+  .opt:hover:not(.done){border-color:rgba(21,21,15,.24);transform:translateY(-1px)}
+  .opt.right{border-color:var(--moss);background:var(--wash)}
+  .opt.right em{background:var(--moss);border-color:var(--moss);color:var(--lime)}
+  .opt.wrong{border-color:rgba(191,83,48,.45);background:#FAEBE5}
+  .opt.wrong em{background:var(--terra);border-color:var(--terra);color:#fff}
+  .opt.done{cursor:default}
+  .why{
+    margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
+    font-size:12px;line-height:1.8;color:var(--ink2);
+    animation:fade .25s ease;
+  }
+  .why b{color:var(--moss);font-weight:600}
+
+  /* ---------- 横向卡片 ---------- */
+  .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin:30px 0 14px}
+  .section-head h2{font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .section-head span{font-size:9px;letter-spacing:.16em;color:var(--ink3)}
+  .rail{display:flex;gap:12px;overflow-x:auto;margin:0 -20px;padding:0 20px 4px;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .mini{width:132px;flex:none;text-align:left}
+  .mini .figure{aspect-ratio:1/1;border-radius:16px}
+  .mini h4{font-size:13px;font-weight:600;margin:9px 0 3px}
+  .mini p{font-size:10.5px;line-height:1.6;color:var(--ink3);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* ---------- 图鉴 ---------- */
+  .atlas-head{padding:8px 0 20px}
+  .atlas-head h2{font-size:30px;letter-spacing:-.02em;margin:8px 0 8px}
+  .atlas-head p{font-size:12.5px;color:var(--ink2);line-height:1.8}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 14px}
+  .cell{text-align:left}
+  .cell .figure{aspect-ratio:1/1;border-radius:18px}
+  .cell .idx{position:absolute;right:10px;top:10px;z-index:2;font-family:var(--serif);font-size:11px;color:rgba(255,255,255,.9);text-shadow:0 1px 6px rgba(0,0,0,.3)}
+  .cell h4{font-size:14px;font-weight:600;margin:9px 0 3px;display:flex;align-items:baseline;gap:6px}
+  .cell h4 i{font-style:normal;font-size:8px;letter-spacing:.12em;color:var(--ink3);font-weight:400;text-transform:uppercase}
+  .cell p{font-size:10.5px;line-height:1.6;color:var(--ink3);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* ---------- 我的 ---------- */
+  .me-title{font-size:30px;letter-spacing:-.02em;margin:10px 0 20px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line-soft);border-radius:22px;overflow:hidden}
+  .stat{padding:16px 10px;text-align:center;border-right:1px solid var(--line-soft)}
+  .stat:last-child{border-right:0}
+  .stat b{display:block;font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.2}
+  .stat span{font-size:9.5px;color:var(--ink3);letter-spacing:.06em}
+  .me-card{background:var(--surface);border:1px solid var(--line-soft);border-radius:22px;padding:18px;margin-top:14px}
+  .me-card>.micro{display:flex;justify-content:space-between;margin-bottom:14px}
+  .me-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+  .me-row:last-child{border-bottom:0;padding-bottom:0}
+  .me-row span{color:var(--ink3);font-size:11px}
+  .me-act{
+    font-size:11px;font-weight:600;color:var(--moss);
+    background:var(--wash);padding:5px 12px;border-radius:20px;
+  }
+  .me-act[disabled]{opacity:.5}
+  .wrong-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line-soft)}
+  .wrong-item:last-child{border-bottom:0;padding-bottom:0}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--terra);margin-top:6px;flex:none}
+  .wrong-item p{font-size:12px;line-height:1.6;color:var(--ink2)}
+  .wrong-item p b{display:block;color:var(--ink);font-size:12.5px;font-weight:600;margin-bottom:2px}
+
+  /* ---------- 底部导航 ---------- */
+  .tabbar{
+    position:absolute;left:0;right:0;bottom:0;z-index:30;
+    display:grid;grid-template-columns:repeat(3,1fr);
+    padding:9px 0 22px;
+    background:linear-gradient(to top,rgba(243,239,230,.98) 55%,rgba(243,239,230,0));
+    backdrop-filter:blur(10px);
+  }
+  .tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9.5px;letter-spacing:.06em;color:var(--ink3);transition:.2s}
+  .tab svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .tab.on{color:var(--ink)}
+  .tab.on .dotmark{opacity:1}
+  .dotmark{width:3px;height:3px;border-radius:50%;background:var(--moss);opacity:0;transition:.2s}
+
+  /* ---------- 详情抽屉 ---------- */
+  .sheet{position:absolute;inset:0;z-index:50;background:rgba(21,21,15,.32);opacity:0;pointer-events:none;transition:opacity .28s}
+  .sheet.on{opacity:1;pointer-events:auto}
+  .sheet-card{
+    position:absolute;left:0;right:0;bottom:0;max-height:92%;
+    background:var(--surface);border-radius:28px 28px 38px 38px;overflow-y:auto;
+    transform:translateY(102%);transition:transform .34s cubic-bezier(.2,.8,.2,1);
+    scrollbar-width:none;
+  }
+  .sheet-card::-webkit-scrollbar{display:none}
+  .sheet.on .sheet-card{transform:none}
+  .sheet-figure{position:relative;height:216px;background:linear-gradient(150deg,var(--c1,#E7E1D2),var(--c2,#D9E4DA))}
+  .sheet-figure .art{position:absolute;inset:0;width:100%;height:100%}
+  .close{
+    position:absolute;right:14px;top:14px;z-index:3;
+    width:32px;height:32px;border-radius:50%;background:rgba(252,250,244,.86);
+    backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;
+    font-size:15px;color:var(--ink)
+  }
+  .sheet-body{padding:22px 22px 44px}
+  .sheet-body .eyebrow{margin-bottom:8px}
+  .sheet-body h2{font-size:28px;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+  .sheet-one{font-size:13px;line-height:1.8;color:var(--ink2)}
+  .divide{height:1px;background:var(--line);margin:20px 0}
+  .field-label{display:flex;align-items:center;gap:8px;margin:22px 0 10px}
+  .field-label b{font-size:11px;letter-spacing:.16em;color:var(--ink);font-weight:600}
+  .field-label i{flex:1;height:1px;background:var(--line);font-style:normal}
+  .acc{border-bottom:1px solid var(--line-soft)}
+  .acc>button{width:100%;display:flex;gap:12px;align-items:center;justify-content:space-between;text-align:left;padding:13px 0;font-size:12.5px;font-weight:500;line-height:1.5}
+  .acc>button s{text-decoration:none;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3);flex:none;transition:.25s}
+  .acc.open>button s{transform:rotate(45deg);background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+  .acc.open .acc-body{grid-template-rows:1fr}
+  .acc-body>div{overflow:hidden}
+  .acc-body p{font-size:12px;line-height:1.9;color:var(--ink2);padding:0 22px 14px 0}
+  .counter{
+    margin-top:22px;background:var(--ink);color:#EDE9DC;border-radius:20px;padding:18px;
+    position:relative;overflow:hidden;
+  }
+  .counter:after{content:'!';position:absolute;right:12px;bottom:-24px;font-family:var(--serif);font-size:92px;color:rgba(217,242,107,.14)}
+  .counter em{font-style:normal;font-size:9px;letter-spacing:.2em;color:var(--lime);display:block;margin-bottom:8px}
+  .counter p{font-size:12.5px;line-height:1.9;position:relative;z-index:1}
+  .chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .chain span{font-size:11px;padding:6px 9px;border-radius:8px;background:var(--wash);color:var(--moss)}
+  .chain i{font-style:normal;color:var(--ink3);font-size:10px}
+  .law{background:linear-gradient(135deg,#E7EFE5,#DDE9DF);border-radius:18px;padding:16px 16px 16px 18px;position:relative}
+  .law:before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:0 3px 3px 0;background:var(--moss)}
+  .law b{display:block;font-size:9px;letter-spacing:.2em;color:var(--moss);margin-bottom:7px}
+  .law p{font-size:13px;line-height:1.8;font-weight:500}
+  .ext{font-size:12px;line-height:1.8;color:var(--ink2);display:flex;gap:8px}
+  .ext:before{content:'↗';color:var(--moss);font-size:12px}
+</style>
+</head>
+<body>
+
+<main class="device">
+  <div class="app">
+    <header class="app-head">
+      <div class="logo-row">
+        <svg class="mark" viewBox="0 0 40 40" fill="none">
+          <path d="M3 20c5-7 11-10.5 17-10.5S32 13 37 20c-5 7-11 10.5-17 10.5S8 27 3 20Z" stroke="#15150F" stroke-width="2"/>
+          <circle cx="20" cy="20" r="6.4" fill="#1D5A42"/>
+          <circle cx="22.4" cy="17.6" r="1.6" fill="#F3EFE6"/>
+        </svg>
+        小眼睛
+      </div>
+      <div class="app-date">11.19 周三</div>
+    </header>
+
+    <div class="views">
+      <section class="view on" id="view-today">
+        <article class="hero" id="hero"></article>
+        <section class="quiz" id="quiz"></section>
+
+        <div class="section-head">
+          <h2>继续看</h2>
+          <span>10 张 · 已看 3</span>
+        </div>
+        <div class="rail" id="rail"></div>
+      </section>
+
+      <section class="view" id="view-atlas">
+        <div class="atlas-head">
+          <p class="micro">Atlas · 动物</p>
+          <h2>图鉴</h2>
+          <p>10 张卡，先看动物。每张只讲一件事：它为什么长成这样。</p>
+        </div>
+        <div class="grid" id="grid"></div>
+      </section>
+
+      <section class="view" id="view-me">
+        <p class="micro">Parent view</p>
+        <h2 class="me-title">这一周</h2>
+
+        <div class="stats">
+          <div class="stat"><b>7</b><span>看过卡片</span></div>
+          <div class="stat"><b>12</b><span>答对题目</span></div>
+          <div class="stat"><b>3</b><span>待复习</span></div>
+        </div>
+
+        <div class="me-card">
+          <p class="micro"><span>错题本</span><span>3</span></p>
+          <div class="wrong-item"><i class="dot"></i><p><b>企鹅的翅膀主要用来？</b>选了“飞行”，正确是“游泳”。</p></div>
+          <div class="wrong-item"><i class="dot"></i><p><b>章鱼有几颗心脏？</b>选了“1 颗”，正确是“3 颗”。</p></div>
+          <div class="wrong-item"><i class="dot"></i><p><b>考拉为什么睡那么久？</b>选了“懒”，正确是“食物能量低”。</p></div>
+        </div>
+
+        <div class="me-card">
+          <p class="micro"><span>家长报告</span><span>自动生成</span></p>
+          <div class="me-row">本周主题<span>生存策略 · 已完成</span></div>
+          <div class="me-row">下周主题<span>极端环境 · 6 张</span></div>
+          <div class="me-row">建议<span>重看“企鹅”这一张</span></div>
+        </div>
+
+        <div class="me-card">
+          <p class="micro"><span>设置</span><span></span></p>
+          <div class="me-row">字号<span>标准</span></div>
+          <div class="me-row">每日提醒<span>19:30</span></div>
+          <div class="me-row">离线缓存<span id="offline-state">检查中</span></div>
+          <div class="me-row" id="install-row" hidden>安装到桌面<button class="me-act" id="install">添加</button></div>
+          <div class="me-row">版本<span>v1.0.0 · 10 张</span></div>
+        </div>
+      </section>
+    </div>
+
+    <nav class="tabbar">
+      <button class="tab on" data-view="today">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+        今日
+        <i class="dotmark"></i>
+      </button>
+      <button class="tab" data-view="atlas">
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>
+        图鉴
+        <i class="dotmark"></i>
+      </button>
+      <button class="tab" data-view="me">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8.4" r="3.6"/><path d="M4.8 20.2c1.2-3.6 3.9-5.4 7.2-5.4s6 1.8 7.2 5.4"/></svg>
+        我的
+        <i class="dotmark"></i>
+      </button>
+    </nav>
+
+    <div class="sheet" id="sheet">
+      <div class="sheet-card" id="sheet-card"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const INK = '#1B1B14', PAPER = '#F3EFE6', CREAM = '#EFE8D8', MOSS = '#1D5A42', LIME = '#D9F26B', CLAY = '#BF5330', GREY = '#6F6E60';
+
+const FRAME =
+  '<circle cx="150" cy="150" r="108" fill="none" stroke="' + INK + '" stroke-opacity=".11"/>' +
+  '<path d="M150 28v12M150 260v12M28 150h12M260 150h12" stroke="' + INK + '" stroke-opacity=".16" stroke-width="2"/>';
+
+const ART = {
+  '01': `
+    <g stroke="${INK}" stroke-width="11" stroke-linecap="round" fill="none">
+      <path d="M132 190 v50"/>
+      <path d="M154 194 v46"/>
+      <path d="M180 194 v46"/>
+      <path d="M202 188 v52"/>
+    </g>
+    <g fill="${INK}" stroke="none">
+      <ellipse cx="166" cy="170" rx="51" ry="29"/>
+      <path d="M196 160 L226 92 L247 98 L216 172 Z"/>
+      <ellipse cx="240" cy="84" rx="19" ry="12" transform="rotate(-14 240 84)"/>
+      <path d="M254 80 q10 3 11 10 -8 4 -15 -2"/>
+      <path d="M229 74 l-2 -10 M239 70 l1 -10" stroke="${INK}" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <circle cx="228" cy="62" r="4"/><circle cx="240" cy="58" r="4"/>
+      <path d="M224 78 q-11 -3 -15 4 7 7 15 4"/>
+      <path d="M102 168 q-20 10 -18 34" stroke="${INK}" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M84 200 l-5 15" stroke="${INK}" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </g>
+    <g fill="${CREAM}" opacity=".92">
+      <circle cx="236" cy="108" r="5"/><circle cx="229" cy="126" r="5"/><circle cx="222" cy="144" r="5"/>
+      <circle cx="216" cy="160" r="4.4"/>
+      <circle cx="148" cy="160" r="7"/><circle cx="172" cy="172" r="7.5"/><circle cx="192" cy="158" r="6"/>
+      <circle cx="134" cy="178" r="5"/><circle cx="182" cy="184" r="4.6"/>
+    </g>
+    <circle cx="249" cy="81" r="2.6" fill="${CREAM}"/>`,
+
+  '02': `
+    <path d="M40 82 L260 70" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>
+    <g stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round">
+      <path d="M120 88 C118 112 132 126 146 132"/>
+      <path d="M152 86 C154 110 160 122 166 128"/>
+      <path d="M184 86 C182 110 176 122 172 128"/>
+      <path d="M214 88 C216 112 200 126 188 132"/>
+    </g>
+    <ellipse cx="167" cy="172" rx="52" ry="42" fill="${INK}"/>
+    <circle cx="167" cy="124" r="31" fill="${INK}"/>
+    <ellipse cx="167" cy="130" rx="22" ry="17" fill="${CREAM}"/>
+    <circle cx="159" cy="124" r="2.8" fill="${INK}"/>
+    <circle cx="176" cy="124" r="2.8" fill="${INK}"/>
+    <ellipse cx="167" cy="135" rx="4.5" ry="3.2" fill="${INK}"/>
+    <path d="M118 92 l-7 -9 M216 92 l7 -9" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`,
+
+  '03': `
+    <ellipse cx="150" cy="176" rx="54" ry="76" fill="${INK}"/>
+    <circle cx="150" cy="108" r="38" fill="${INK}"/>
+    <ellipse cx="150" cy="188" rx="33" ry="56" fill="${CREAM}"/>
+    <ellipse cx="139" cy="106" rx="5" ry="6" fill="${CREAM}"/>
+    <ellipse cx="161" cy="106" rx="5" ry="6" fill="${CREAM}"/>
+    <circle cx="139" cy="107" r="2" fill="${INK}"/><circle cx="161" cy="107" r="2" fill="${INK}"/>
+    <path d="M150 116 l28 8 -28 11 z" fill="${CLAY}"/>
+    <ellipse cx="97" cy="178" rx="13" ry="42" transform="rotate(12 97 178)" fill="${INK}"/>
+    <ellipse cx="203" cy="178" rx="13" ry="42" transform="rotate(-12 203 178)" fill="${INK}"/>
+    <path d="M124 248 l-16 12 h30 z" fill="${CLAY}"/>
+    <path d="M176 248 l16 12 h-30 z" fill="${CLAY}"/>`,
+
+  '04': `
+    <path d="M96 156 Q96 82 150 82 Q204 82 204 156 L204 172 L96 172 Z" fill="${INK}"/>
+    <circle cx="132" cy="130" r="7" fill="${CREAM}"/><circle cx="168" cy="130" r="7" fill="${CREAM}"/>
+    <circle cx="132" cy="131" r="3" fill="${INK}"/><circle cx="168" cy="131" r="3" fill="${INK}"/>
+    <g stroke="${INK}" stroke-width="13" fill="none" stroke-linecap="round">
+      <path d="M110 166 C100 202 78 212 72 238"/>
+      <path d="M128 172 C126 208 110 226 110 250"/>
+      <path d="M146 174 C148 212 138 234 140 254"/>
+      <path d="M164 174 C162 212 172 234 170 254"/>
+      <path d="M182 172 C184 208 200 226 200 250"/>
+      <path d="M198 166 C208 202 230 212 236 238"/>
+    </g>`,
+
+  '05': `
+    <g stroke="${INK}" stroke-width="4.5" stroke-linecap="round" fill="none">
+      <path d="M136 186 l-14 10 -2 14"/>
+      <path d="M160 192 l-4 13 6 12"/>
+      <path d="M182 186 l12 12 2 14"/>
+    </g>
+    <ellipse cx="132" cy="130" rx="34" ry="17" transform="rotate(-36 132 130)" fill="${CREAM}" stroke="${INK}" stroke-width="2.4" opacity=".96"/>
+    <ellipse cx="162" cy="122" rx="36" ry="18" transform="rotate(-14 162 122)" fill="${CREAM}" stroke="${INK}" stroke-width="2.4" opacity=".96"/>
+    <path d="M104 158 q-14 12 -4 24 10 8 22 2" fill="${INK}"/>
+    <ellipse cx="152" cy="170" rx="50" ry="31" transform="rotate(-7 152 170)" fill="${INK}"/>
+    <g fill="${LIME}">
+      <rect x="118" y="150" width="13" height="44" rx="6.5" transform="rotate(-7 124 172)"/>
+      <rect x="144" y="147" width="13" height="48" rx="6.5" transform="rotate(-7 150 171)"/>
+    </g>
+    <circle cx="196" cy="156" r="21" fill="${INK}"/>
+    <circle cx="202" cy="150" r="3" fill="${CREAM}"/>
+    <path d="M200 136 q4 -14 18 -18 M206 140 q10 -8 20 -8" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+    <path d="M216 170 q6 4 10 2" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+
+  '06': `
+    <g stroke="${INK}" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M118 168 l-26 -6 -11 10"/>
+      <path d="M114 186 l-28 6 -10 13"/>
+      <path d="M121 202 l-22 15 -3 12"/>
+      <path d="M182 168 l26 -6 11 10"/>
+      <path d="M186 186 l28 6 10 13"/>
+      <path d="M179 202 l22 15 3 12"/>
+      <path d="M140 118 l-9 -12 M160 118 l9 -12"/>
+    </g>
+    <ellipse cx="150" cy="196" rx="41" ry="43" fill="${INK}"/>
+    <path d="M150 154 v84" stroke="${CREAM}" stroke-width="2.2" opacity=".3"/>
+    <path d="M118 178 q12 -24 32 -27" stroke="${CREAM}" stroke-width="2" opacity=".18" fill="none"/>
+    <ellipse cx="150" cy="148" rx="25" ry="16" fill="${INK}"/>
+    <circle cx="150" cy="126" r="13" fill="${INK}"/>
+    <path d="M143 114 q-6 -8 -14 -8 M157 114 q6 -8 14 -8" stroke="${INK}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <circle cx="144" cy="124" r="2.2" fill="${CREAM}"/><circle cx="156" cy="124" r="2.2" fill="${CREAM}"/>
+    <g fill="${LIME}">
+      <circle cx="136" cy="186" r="4.6"/><circle cx="163" cy="180" r="3.8"/>
+      <circle cx="147" cy="205" r="4.2"/><circle cx="170" cy="204" r="3.4"/>
+      <circle cx="128" cy="206" r="3.2"/><circle cx="156" cy="226" r="3"/>
+      <circle cx="140" cy="148" r="3.2"/><circle cx="161" cy="146" r="2.6"/>
+    </g>`,
+
+  '07': `
+    <path d="M238 58 L238 246" stroke="${MOSS}" stroke-width="7" stroke-linecap="round"/>
+    <g fill="${MOSS}">
+      <ellipse cx="222" cy="96" rx="16" ry="7" transform="rotate(-30 222 96)"/>
+      <ellipse cx="254" cy="120" rx="16" ry="7" transform="rotate(30 254 120)"/>
+      <ellipse cx="220" cy="170" rx="15" ry="6" transform="rotate(-24 220 170)"/>
+    </g>
+    <ellipse cx="138" cy="210" rx="54" ry="44" fill="#FBF8EF" stroke="${INK}" stroke-width="4"/>
+    <ellipse cx="104" cy="232" rx="17" ry="12" fill="${INK}"/>
+    <ellipse cx="172" cy="232" rx="17" ry="12" fill="${INK}"/>
+    <circle cx="112" cy="98" r="16" fill="${INK}"/>
+    <circle cx="178" cy="98" r="16" fill="${INK}"/>
+    <circle cx="145" cy="130" r="43" fill="#FBF8EF" stroke="${INK}" stroke-width="4"/>
+    <ellipse cx="129" cy="126" rx="11" ry="14" transform="rotate(24 129 126)" fill="${INK}"/>
+    <ellipse cx="161" cy="126" rx="11" ry="14" transform="rotate(-24 161 126)" fill="${INK}"/>
+    <circle cx="130" cy="125" r="3.4" fill="#FBF8EF"/><circle cx="160" cy="125" r="3.4" fill="#FBF8EF"/>
+    <ellipse cx="145" cy="149" rx="6" ry="4.5" fill="${INK}"/>`,
+
+  '08': `
+    <path d="M34 232 L266 226" stroke="${CLAY}" stroke-width="9" stroke-linecap="round"/>
+    <g fill="${MOSS}">
+      <ellipse cx="232" cy="208" rx="19" ry="8" transform="rotate(-30 232 208)"/>
+      <ellipse cx="252" cy="218" rx="15" ry="7" transform="rotate(16 252 218)"/>
+      <ellipse cx="84" cy="210" rx="15" ry="6.5" transform="rotate(-20 84 210)"/>
+    </g>
+    <circle cx="110" cy="96" r="24" fill="${GREY}"/>
+    <circle cx="190" cy="96" r="24" fill="${GREY}"/>
+    <circle cx="110" cy="96" r="13" fill="#D8D4C4"/>
+    <circle cx="190" cy="96" r="13" fill="#D8D4C4"/>
+    <ellipse cx="150" cy="188" rx="45" ry="46" fill="${GREY}"/>
+    <circle cx="150" cy="128" r="41" fill="${GREY}"/>
+    <circle cx="134" cy="118" r="3.4" fill="${PAPER}"/><circle cx="166" cy="118" r="3.4" fill="${PAPER}"/>
+    <ellipse cx="150" cy="141" rx="11" ry="14" fill="${INK}"/>
+    <ellipse cx="150" cy="136" rx="3.6" ry="4.4" fill="${PAPER}" opacity=".5"/>
+    <path d="M150 156 q-7 6 -13 2 M150 156 q7 6 13 2" stroke="${INK}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M116 192 q-12 26 0 40" stroke="#5F5E51" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M184 192 q12 26 0 40" stroke="#5F5E51" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <ellipse cx="116" cy="230" rx="11" ry="8" fill="#5F5E51"/>
+    <ellipse cx="184" cy="230" rx="11" ry="8" fill="#5F5E51"/>`,
+
+  '09': `
+    <path d="M42 236 L258 224" stroke="${CLAY}" stroke-width="8" stroke-linecap="round"/>
+    <path d="M104 186 C72 194 66 218 86 226 C102 232 112 218 100 210 C92 204 84 212 90 218" fill="none" stroke="${INK}" stroke-width="11" stroke-linecap="round"/>
+    <ellipse cx="152" cy="168" rx="56" ry="30" transform="rotate(-12 152 168)" fill="${INK}"/>
+    <circle cx="209" cy="144" r="23" fill="${INK}"/>
+    <path d="M202 124 l8 -18 l12 14 z" fill="${INK}"/>
+    <circle cx="210" cy="140" r="9" fill="${CREAM}"/><circle cx="210" cy="140" r="3.4" fill="${INK}"/>
+    <path d="M130 190 l-6 30 M170 192 l8 30" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>
+    <g fill="${LIME}" opacity=".9">
+      <circle cx="146" cy="158" r="3.4"/><circle cx="162" cy="152" r="3"/><circle cx="176" cy="160" r="3.2"/>
+      <circle cx="152" cy="174" r="2.8"/><circle cx="170" cy="172" r="3"/>
+    </g>`,
+
+  '10': `
+    <path d="M32 252 q40 -10 78 0 t78 0 t78 0" stroke="${CLAY}" stroke-width="4.5" fill="none" opacity=".45" stroke-linecap="round"/>
+    <path d="M60 200 C92 130 128 236 168 172 C198 124 220 128 244 152" fill="none" stroke="${INK}" stroke-width="27" stroke-linecap="round"/>
+    <ellipse cx="247" cy="156" rx="22" ry="16" transform="rotate(16 247 156)" fill="${INK}"/>
+    <path d="M238 138 q-7 11 -2 21" stroke="${CREAM}" stroke-width="2" opacity=".3" fill="none" stroke-linecap="round"/>
+    <circle cx="252" cy="150" r="5.4" fill="${PAPER}"/>
+    <circle cx="253" cy="150" r="2.4" fill="${INK}"/>
+    <path d="M52 204 q-14 -12 -20 -2 8 12 22 8 z" fill="${INK}"/>
+    <path d="M100 168 q8 -14 16 0 M120 148 q8 -12 15 2" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <g stroke="${LIME}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M206 96 l-9 15 12 4 -9 15"/>
+      <path d="M234 84 l-6 10 9 3 -6 10"/>
+      <path d="M262 104 l-5 9 8 3 -5 9"/>
+    </g>
+    <circle cx="196" cy="86" r="3" fill="${LIME}"/>
+    <circle cx="248" cy="72" r="2.4" fill="${LIME}"/>`,
+};
+
+const BG = {
+  '01':['#EAE3D1','#DAE5D9'], '02':['#E7E3D4','#D8E2DA'],
+  '03':['#DEE7E8','#E9E4D4'], '04':['#E4DFD3','#D8E1DF'],
+  '05':['#F0E7D3','#E6EAD8'], '06':['#E9E0CE','#D9E0D2'],
+  '07':['#E8E7DC','#DFE6DE'], '08':['#E5E2D5','#D9E3DD'],
+  '09':['#E4E8D9','#DCE4D6'], '10':['#DEE6E6','#E8E4D6']
+};
+
+function bgStyle(card){
+  const b = BG[card.no] || ['#E7E1D2','#D9E4DA'];
+  return '--c1:' + b[0] + ';--c2:' + b[1];
+}
+
+function art(card){
+  return '<svg class="art" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+    FRAME + (ART[card.no] || '') + '</svg>';
+}
+
+const CARDS = [
+  {
+    no:'01', name:'长颈鹿', en:'Giraffe', group:'哺乳动物', img:'a tall giraffe standing in profile',
+    one:'地球上最高的动物，脖子却有和人一样多的 7 块颈椎。',
+    whys:[
+      ['脖子那么长，颈椎为什么没变多？','哺乳动物的颈椎数量几乎是固定的，长颈鹿没有“加块数”，而是把每一块拉得很长。'],
+      ['长脖子只是为了吃高处的叶子吗？','不只是。雄性会用脖子互相甩击来争夺地位，脖子也是竞争的武器。'],
+      ['脖子长，会不会头晕？','会。头离心脏太远，血压必须很高；低头喝水时，特化的血管网帮忙缓冲，避免大脑瞬间充血。']
+    ],
+    counter:'长颈鹿头上那对角，其实是软骨包着的骨突，不是真正的角。',
+    chain:['高处食物','脖子变长','血压升高','心血管特化'],
+    law:'结构变长，配套系统必须同步升级，否则整台机器会崩。',
+    ext:'下次去动物园，看它低头喝水要花多久。',
+    quiz:{q:'长颈鹿的颈椎有几块？', opts:['7 块','14 块','20 块'], a:0, why:'几乎所有哺乳动物都是 7 块，长颈鹿只是把每一块拉长了。'}
+  },
+  {
+    no:'02', name:'树懒', en:'Sloth', group:'哺乳动物', img:'a sloth hanging upside down from a branch',
+    one:'一天移动不到 40 米，却没被自然淘汰。',
+    whys:[
+      ['这么慢，为什么没被吃掉？','它住在树冠高处，动作慢反而少惊动天敌；毛上还长着藻类，和树皮几乎一个颜色。'],
+      ['吃树叶能吃饱吗？','吃不饱，但树叶到处都有。它用极低的代谢率把“低能量”过成了稳定日子。'],
+      ['它为什么一周才下树一次？','下树几乎只为一件事：排便。地面危险，所以尽量少去。']
+    ],
+    counter:'树懒的毛里真的长着绿藻，等于自带伪装，还能补充一点营养。',
+    chain:['低能量食物','低代谢','慢动作','低被发现率'],
+    law:'资源贫瘠时，“省”往往比“快”更有效。',
+    ext:'观察一只树懒，十分钟内它可能一动不动。',
+    quiz:{q:'树懒大约多久下树一次？', opts:['每天一次','一周一次','从不下树'], a:1, why:'下树风险高，它把排便频率压到了每周大约一次。'}
+  },
+  {
+    no:'03', name:'企鹅', en:'Penguin', group:'鸟类', img:'a penguin standing on ice, side view',
+    one:'会游泳的鸟，为什么放弃了飞行。',
+    whys:[
+      ['翅膀不用来飞，用来干什么？','变成了鳍状肢。在水下，这种“桨”比翅膀推进效率高得多。'],
+      ['放弃飞行，不亏吗？','它的食物在海里，飞行又费能又够不着；放弃飞行，换来的是潜水专精。'],
+      ['企鹅都住在冰天雪地吗？','不是。加拉帕戈斯企鹅就生活在赤道附近，靠冷洋流降温。']
+    ],
+    counter:'企鹅不是“不会飞的失败者”，而是把飞行能力换成了水下速度。',
+    chain:['食物在海上','翅膀改桨','放弃飞行','潜水专精'],
+    law:'放弃一种能力，常常是为了把另一种能力做到极致。',
+    ext:'看企鹅下水的那一秒，翅膀变成了桨。',
+    quiz:{q:'企鹅的翅膀主要用来做什么？', opts:['飞行','游泳','攀爬'], a:1, why:'鳍状肢在水下的推进效率远高于飞行。'}
+  },
+  {
+    no:'04', name:'章鱼', en:'Octopus', group:'海洋', img:'an octopus with curled tentacles, studio portrait',
+    one:'三个心脏、蓝色血液，游泳反而让它更累。',
+    whys:[
+      ['为什么要三个心脏？','两个负责把血送过鳃，一个负责送往全身。游泳时主心脏会停跳，所以它更爱爬。'],
+      ['血为什么是蓝的？','它用血蓝蛋白运氧，在低温和缺氧的水里更有效率。'],
+      ['八条腕为什么像自己会动？','腕上分布着大量神经元，能半自主行动，等于一套分布式控制系统。']
+    ],
+    counter:'章鱼会临时编辑自己的 RNA，现场改写蛋白质，这在动物里非常罕见。',
+    chain:['没有外壳','需要灵活与伪装','分布式神经','瞬间变色变形'],
+    law:'没有盔甲，就把“感知”和“变形”练到极致。',
+    ext:'看它穿过一个比自己身体小很多的洞。',
+    quiz:{q:'章鱼有几颗心脏？', opts:['1 颗','2 颗','3 颗'], a:2, why:'两颗鳃心加一颗体心，共三颗。'}
+  },
+  {
+    no:'05', name:'蜜蜂', en:'Honeybee', group:'昆虫', img:'a honeybee on a small white flower',
+    one:'用一支舞，把几公里外的花的位置告诉同伴。',
+    whys:[
+      ['一支舞怎么装下位置？','摇摆的角度对应太阳方位，摇摆的时长对应距离。'],
+      ['蜂巢里那么黑，怎么看得见？','不靠看，靠震动和触觉，同伴贴着它“听”舞蹈。'],
+      ['为什么要费劲传递信息？','花分散又短暂，共享位置能让整群少走冤枉路。']
+    ],
+    counter:'阴天看不见太阳，蜜蜂还能靠偏振光判断太阳在哪。',
+    chain:['花源分散','需要远距定位','编码成舞蹈','群体高效采集'],
+    law:'信息编码的能力，决定了一个群体能协作多远。',
+    ext:'在花园里找一只蜜蜂，看它腿上的花粉篮。',
+    quiz:{q:'蜜蜂用什么告诉同伴花的方向？', opts:['气味','舞蹈','叫声'], a:1, why:'摇摆舞用角度表示方向、用时长表示距离。'}
+  },
+  {
+    no:'06', name:'沙漠甲虫', en:'Desert beetle', group:'昆虫', img:'a dark desert beetle standing on sand dunes',
+    one:'在几乎不下雨的地方，靠背上的凸起喝雾水。',
+    whys:[
+      ['水从哪里来？','晨雾从海上飘来，它迎风低头站着，雾滴落在背上。'],
+      ['背上有什么机关？','鞘翅上有亲水的凸起和疏水的沟槽，小水珠聚起来后顺着沟槽流进嘴里。'],
+      ['人类学到了什么？','工程师模仿它的背，做集水材料，在干旱地区收集雾水。']
+    ],
+    counter:'它不是“找到水”，而是把空气里的水“造”出来。',
+    chain:['极端干旱','海雾来袭','表面结构集水','流入嘴里'],
+    law:'环境越极端，越会逼出精巧的结构解。',
+    ext:'想象一下，你的后背能拧出水来。',
+    quiz:{q:'沙漠甲虫的水主要来自哪里？', opts:['地下水','雾','植物'], a:1, why:'它靠背上的亲水凸起收集晨雾。'}
+  },
+  {
+    no:'07', name:'熊猫', en:'Giant panda', group:'哺乳动物', img:'a giant panda sitting and eating bamboo',
+    one:'熊科的胃，却几乎只吃竹子。',
+    whys:[
+      ['它消化得了竹子吗？','消化率很低。肠道还是食肉动物的结构，并不擅长分解植物纤维。'],
+      ['那怎么活下来的？','靠“吃得多、动得少”补偿，一天要吃掉十几到三十几公斤竹子。'],
+      ['它怎么抓住竹竿？','腕骨上多出一块突起，像一根“伪拇指”，能帮忙握住竹子。']
+    ],
+    counter:'熊猫偶尔也吃肉，“伪拇指”也不是真正的手指。',
+    chain:['竹子充足','取食特化','消化低效','大量进食加低活动'],
+    law:'身体跟不上行为改变时，只能用“数量”来补偿。',
+    ext:'看它剥竹子，动作其实很像人用手。',
+    quiz:{q:'熊猫的“拇指”其实是什么？', opts:['真正的手指','腕骨突起','一片爪子'], a:1, why:'那是腕骨延长形成的“伪拇指”。'}
+  },
+  {
+    no:'08', name:'考拉', en:'Koala', group:'哺乳动物', img:'a koala sleeping while hugging a eucalyptus branch',
+    one:'一天睡 18 到 22 小时，因为桉树叶几乎没营养还有毒。',
+    whys:[
+      ['为什么睡这么久？','食物能量太低，解毒又要耗能，只能靠长时间休息省下来。'],
+      ['它怎么消化叶子？','盲肠很长，靠里面的微生物慢慢发酵分解。'],
+      ['为什么只吃桉树？','它挑食，只吃少数几种桉树，食物来源很单一。']
+    ],
+    counter:'考拉幼崽会吃妈妈的“软粪”，为了获得能消化桉树的肠道菌群。',
+    chain:['低质食物','慢消化','长时间睡眠','低活动'],
+    law:'能量预算，决定了一个生物的行为节奏。',
+    ext:'看它抱着树枝睡，那是省力的姿势。',
+    quiz:{q:'考拉为什么睡那么久？', opts:['天生懒','食物能量低','怕光'], a:1, why:'桉树叶能量低还有毒，睡眠是省能量的策略。'}
+  },
+  {
+    no:'09', name:'变色龙', en:'Chameleon', group:'爬行动物', img:'a chameleon on a thin branch, side view',
+    one:'变色主要不是为了伪装，而是为了情绪和体温。',
+    whys:[
+      ['颜色是怎么变的？','皮肤里的虹色素细胞能主动调节反射的光，像一层可调的滤镜。'],
+      ['什么时候会变？','求偶、宣誓领地、紧张时变化最明显，颜色是一种信号。'],
+      ['那伪装呢？','深色吸热、浅色反光，变色也用来调温；很多变色龙本来就住在和体色相近的环境里。']
+    ],
+    counter:'变色不等于隐身，更多时候它是在“说话”。',
+    chain:['行动缓慢','需要交流与调温','主动变色','一色多用'],
+    law:'同一个功能，可能同时服务好几个目标。',
+    ext:'观察它眼睛：两只眼可以各看一个方向。',
+    quiz:{q:'变色龙变色最主要的原因？', opts:['伪装','情绪与体温','年龄'], a:1, why:'伪装只是附带效果，主要用途是信号和调温。'}
+  },
+  {
+    no:'10', name:'电鳗', en:'Electric eel', group:'鱼类', img:'an electric eel swimming in dark river water',
+    one:'名字里有“鳗”，其实和鲶鱼更亲近。',
+    whys:[
+      ['它不是鳗鱼吗？','分类上属于电鳗目，和真正的鳗鲡目并不是一家。'],
+      ['电从哪里来？','由改造过的肌肉细胞堆成电器官，能放出几百伏的电压。'],
+      ['放电用来做什么？','捕猎、探测周围、防御，相当于一套“电感官”。']
+    ],
+    counter:'它必须浮到水面吞空气，否则会淹死。',
+    chain:['浑浊缺氧水域','视觉受限','电感知与电击','全新感官通道'],
+    law:'当一种感官被环境限制，进化会开出另一条通道。',
+    ext:'想想：如果看不见，你会怎么“看”世界？',
+    quiz:{q:'电鳗主要靠什么呼吸？', opts:['鳃','皮肤','吞空气'], a:2, why:'它是必须呼吸空气的鱼，要浮到水面吞气。'}
+  }
+];
+
+const el = (s, r) => (r || document).querySelector(s);
+
+function figureHTML(card){
+  return '<div class="figure" style="' + bgStyle(card) + '">' +
+    art(card) +
+    '<span class="tag">' + card.group + '</span>' +
+    '<span class="num">NO.' + card.no + '</span>' +
+  '</div>';
+}
+
+function renderHero(){
+  const c = CARDS[0];
+  el('#hero').innerHTML =
+    figureHTML(c) +
+    '<div class="hero-body">' +
+      '<p class="eyebrow"><i></i>今日一卡 · 3 分钟</p>' +
+      '<h2 class="hero-title">' + c.name + '</h2>' +
+      '<p class="one-liner">' + c.one + '</p>' +
+      '<button class="cta" data-open="0">打开这张卡 <span>→</span></button>' +
+    '</div>';
+}
+
+function renderQuiz(){
+  const c = CARDS[0];
+  el('#quiz').innerHTML =
+    '<div class="q-head"><span class="micro">今日一题</span><span class="q-index">01 / 01</span></div>' +
+    '<h3>' + c.quiz.q + '</h3>' +
+    '<div id="opts">' + c.quiz.opts.map(function(o, i){
+      return '<button class="opt" data-i="' + i + '"><em>' + 'ABC'[i] + '</em>' + o + '</button>';
+    }).join('') + '</div>' +
+    '<div class="why" id="why" hidden><b>答案：' + c.quiz.opts[c.quiz.a] + '</b><br>' + c.quiz.why + '</div>';
+
+  document.querySelectorAll('#quiz .opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if (document.querySelector('#quiz .opt.done')) return;
+      const i = Number(btn.dataset.i);
+      document.querySelectorAll('#quiz .opt').forEach(function(b){
+        b.classList.add('done');
+        if (Number(b.dataset.i) === c.quiz.a) b.classList.add('right');
+      });
+      if (i !== c.quiz.a) btn.classList.add('wrong');
+      el('#why').hidden = false;
+    });
+  });
+}
+
+function miniHTML(c, i){
+  return '<button class="mini" data-open="' + i + '">' +
+    '<div class="figure" style="' + bgStyle(c) + '">' + art(c) + '</div>' +
+    '<h4>' + c.name + '</h4><p>' + c.one + '</p>' +
+  '</button>';
+}
+
+function cellHTML(c, i){
+  return '<button class="cell" data-open="' + i + '">' +
+    '<div class="figure" style="' + bgStyle(c) + '">' + art(c) +
+      '<span class="idx">' + c.no + '</span>' +
+    '</div>' +
+    '<h4>' + c.name + '<i>' + c.en + '</i></h4>' +
+    '<p>' + c.one + '</p>' +
+  '</button>';
+}
+
+function renderLists(){
+  el('#rail').innerHTML = CARDS.slice(1, 5).map(function(c, k){ return miniHTML(c, k + 1); }).join('');
+  el('#grid').innerHTML = CARDS.map(function(c, i){ return cellHTML(c, i); }).join('');
+}
+
+function openSheet(i){
+  const c = CARDS[i];
+  el('#sheet-card').innerHTML =
+    '<div class="sheet-figure" style="' + bgStyle(c) + '">' +
+      art(c) +
+      '<button class="close" id="close">✕</button>' +
+    '</div>' +
+    '<div class="sheet-body">' +
+      '<p class="eyebrow"><i></i>NO.' + c.no + ' · ' + c.group + ' · ' + c.en + '</p>' +
+      '<h2>' + c.name + '</h2>' +
+      '<p class="sheet-one">' + c.one + '</p>' +
+      '<div class="divide"></div>' +
+      '<div class="field-label"><b>三个为什么</b><i></i></div>' +
+      c.whys.map(function(w, k){
+        return '<div class="acc' + (k === 0 ? ' open' : '') + '">' +
+          '<button><span>' + w[0] + '</span><s>+</s></button>' +
+          '<div class="acc-body"><div><p>' + w[1] + '</p></div></div>' +
+        '</div>';
+      }).join('') +
+      '<div class="counter"><em>反常识</em><p>' + c.counter + '</p></div>' +
+      '<div class="field-label"><b>因果链</b><i></i></div>' +
+      '<div class="chain">' + c.chain.map(function(x, k){
+        return (k ? '<i>→</i>' : '') + '<span>' + x + '</span>';
+      }).join('') + '</div>' +
+      '<div class="field-label"><b>能带走的规律</b><i></i></div>' +
+      '<div class="law"><b>ONE RULE</b><p>' + c.law + '</p></div>' +
+      '<div class="field-label"><b>去看一眼</b><i></i></div>' +
+      '<p class="ext">' + c.ext + '</p>' +
+    '</div>';
+
+  el('#sheet').classList.add('on');
+  el('#sheet-card').scrollTop = 0;
+  el('#close').addEventListener('click', closeSheet);
+  document.querySelectorAll('#sheet-card .acc>button').forEach(function(b){
+    b.addEventListener('click', function(){ b.parentElement.classList.toggle('open'); });
+  });
+}
+
+function closeSheet(){ el('#sheet').classList.remove('on'); }
+
+document.addEventListener('click', function(e){
+  const open = e.target.closest('[data-open]');
+  if (open) { openSheet(Number(open.dataset.open)); return; }
+  if (e.target.id === 'sheet') closeSheet();
+  const tab = e.target.closest('.tab');
+  if (tab){
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t === tab); });
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('on'); });
+    el('#view-' + tab.dataset.view).classList.add('on');
+  }
+});
+
+renderHero();
+renderQuiz();
+renderLists();
+
+/* ---------- 日期 ---------- */
+(function(){
+  var d = new Date();
+  var w = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
+  var el = document.querySelector('.app-date');
+  if (el) el.textContent = (d.getMonth() + 1) + '.' + d.getDate() + ' ' + w;
+})();
+
+/* ---------- 快捷入口 ?v=today|atlas|me ---------- */
+(function(){
+  var v = new URLSearchParams(location.search).get('v');
+  if (!v) return;
+  var tab = document.querySelector('.tab[data-view="' + v + '"]');
+  if (tab) tab.click();
+})();
+
+/* ---------- 安装到桌面 ---------- */
+var installPrompt = null;
+var installRow = document.getElementById('install-row');
+var installBtn = document.getElementById('install');
+
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  installPrompt = e;
+  if (installRow) installRow.hidden = false;
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', function(){
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    installPrompt.userChoice.then(function(){
+      installPrompt = null;
+      if (installRow) installRow.hidden = true;
+    });
+  });
+}
+
+window.addEventListener('appinstalled', function(){
+  if (installRow) installRow.hidden = true;
+});
+
+/* ---------- 离线状态 / Service Worker ---------- */
+var offState = document.getElementById('offline-state');
+var hadController = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      if (offState) offState.textContent = '已缓存';
+      reg.addEventListener('updatefound', function(){
+        var sw = reg.installing;
+        if (!sw) return;
+        sw.addEventListener('statechange', function(){
+          if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+            sw.postMessage({type: 'SKIP_WAITING'});
+          }
+        });
+      });
+    }).catch(function(){
+      if (offState) offState.textContent = '未启用';
+    });
+  });
+
+  var refreshed = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if (!hadController || refreshed) return;
+    refreshed = true;
+    location.reload();
+  });
+} else if (offState) {
+  offState.textContent = '本地预览';
+}
+</script>
+</body>
+</html>
