@@ -1,4 +1,4 @@
-const CACHE = 'xiaoyanjing-v3';
+const CACHE = 'xiaoyanjing-v4';
 const ASSETS = [
   './',
   './index.html',
