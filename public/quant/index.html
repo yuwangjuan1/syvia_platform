@@ -283,20 +283,20 @@
   /* 卡片可读性：内距放宽 + 字号上浮一档 */
   body{font-size:15.5px;line-height:1.8}
   header{padding:34px 0 0}
-  h1{font-size:42px;font-weight:600;margin-top:10px;letter-spacing:.005em}
+  h1{font-size:36px;font-weight:600;margin-top:10px}
   .sub{font-size:15px;line-height:1.8;margin-top:10px}
   .stamp{font-size:13px;margin-top:15px}
-  .card{padding:32px 34px;margin-top:22px;border-radius:24px}
-  .card h2{font-size:22px;gap:12px;padding-bottom:15px;border-bottom:1px solid var(--line-soft)}
+  .card{padding:28px 30px;margin-top:22px;border-radius:10px}
+  .card h2{font-size:20px;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
   .card h2 i{font-size:13px}
   .col-main .card{margin-top:0;margin-bottom:22px}
   .layout{gap:22px;margin-top:22px}
   .rail{gap:22px}
   .rail .card{padding:24px}
-  .rail .card h2{font-size:19px}
+  .rail .card h2{font-size:17px}
   .dates{gap:36px;margin-top:20px}
   .dates .d span{font-size:12.5px;letter-spacing:.14em}
-  .dates .d b{font-size:32px}
+  .dates .d b{font-size:28px}
   .hint{font-size:14.5px;margin-top:16px;padding:13px 17px;line-height:1.8;border-radius:14px}
   .picks{gap:14px;margin-top:22px}
   .pick{padding:17px 16px 16px;border-radius:18px}
@@ -406,6 +406,95 @@
     .topbar .links a{font-size:13px;padding:0 12px;height:46px}
     .topbar .links a.ext{padding-left:14px;margin-left:4px}
   }
+
+  /* 克制版外观：去掉发光与渐变，边角收小 */
+  body::before{display:none}
+  .topbar .brand svg{filter:none}
+  .topbar .links a.on{background:none}
+  .topbar .links a.on::after{height:2px;box-shadow:none}
+  .topbar .right .login,.topbar .right .signup{border-radius:6px}
+  .card{border-radius:10px;box-shadow:none}
+  .signal{background:none}
+  .chip,.pulse-stats .s{border-radius:6px}
+  .pick,.mcard,.jitem{border-radius:10px}
+  .pi,.watch .wi,.calc-out .cell,.btn,input,textarea,.toast{border-radius:8px}
+  .hint,.corr,.split-note,.warn,.stale,.empty{border-radius:6px}
+  .kicker{letter-spacing:.06em}
+  .dates .d span{letter-spacing:.06em}
+
+  /* 快讯：与今日看盘一致的时间轴排法 */
+  .news{max-height:600px;margin-top:8px;padding-right:4px;overscroll-behavior:contain}
+  .nitem{padding:13px 0 13px 58px;border-bottom:none;position:relative;cursor:default}
+  .nitem::before{content:"";position:absolute;left:41px;top:0;bottom:0;width:1px;background:var(--line-soft)}
+  .nitem:first-child::before{top:19px}
+  .nitem:last-child::before{bottom:calc(100% - 19px)}
+  .nitem::after{content:"";position:absolute;left:38px;top:16px;width:7px;height:7px;
+    border-radius:50%;background:var(--ink3);box-shadow:0 0 0 3px var(--surface)}
+  .nitem:first-child::after{background:var(--moss)}
+  .ntop{display:block}
+  .ntime{position:absolute;left:0;top:11px;font-size:11.5px;line-height:1;
+    color:var(--ink3);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+  .ntitle{font-size:13.5px;font-weight:600;line-height:1.6;color:var(--ink)}
+  .ntitle a{color:inherit}
+  .ndigest{font-size:12.5px;line-height:1.7;color:var(--ink2);margin-top:5px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .nitem:hover .ntitle{color:var(--moss)}
+
+  /* 本周信号：结论优先，细节折叠 */
+  .hint{background:none;border-left:2px solid rgba(255,255,255,.28);border-radius:0;
+    padding:3px 0 3px 12px;margin-top:14px;display:block;font-size:14.5px;color:var(--ink2)}
+  .hint[hidden]{display:none}
+
+  /* 标题与右栏同排：市场脉搏上提 */
+  .layout{margin-top:32px}
+  header{padding:0}
+  .news{scrollbar-width:none;-ms-overflow-style:none}
+  .news::-webkit-scrollbar{display:none}
+  .dates .d b.moss{color:var(--ink2)}
+  .picks.solo{display:block;margin-top:16px}
+  .verdict{position:relative;padding:16px 20px;border:1px solid rgba(34,197,94,.38);
+    border-left:3px solid var(--moss);border-radius:8px;
+    background:linear-gradient(100deg,rgba(34,197,94,.18),rgba(34,197,94,.05) 70%)}
+  .vstate{display:flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.1em;color:var(--ink2)}
+  .vstate b{font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#08120C;
+    background:var(--moss);padding:2px 8px;border-radius:5px}
+  .vline{display:flex;align-items:baseline;gap:10px;margin-top:5px}
+  .vcode{font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .vname{font-size:26px;font-weight:600;color:var(--ink);line-height:1.25;letter-spacing:.01em}
+  .vwt{margin-left:auto;font-size:24px;font-weight:600;color:#3DDC77;
+    font-variant-numeric:tabular-nums;line-height:1.2}
+  .vreason{margin-top:5px;font-size:13px;color:var(--ink2);line-height:1.7}
+
+  /* 日期：压成一行元信息，不跟结论抢位置 */
+  .dates{display:flex;align-items:baseline;gap:0;margin-top:14px;flex-wrap:wrap}
+  .dates .d{display:flex;align-items:baseline;gap:8px}
+  .dates .d+.d{margin-left:20px;padding-left:20px;border-left:1px solid var(--line-soft)}
+  .dates .d span{font-size:12px;letter-spacing:.08em;color:var(--ink3)}
+  .dates .d b{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--ink2);
+    font-variant-numeric:tabular-nums}
+
+  /* 次要信息：一个入口 + 箭头，收起态只占一行 */
+  .fold{margin-top:14px;border-top:1px solid var(--line-soft)}
+  .fold>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
+    padding:12px 0;font-size:12.5px;color:var(--ink3)}
+  .fold>summary::-webkit-details-marker{display:none}
+  .fold>summary:hover{color:var(--ink2)}
+  .fold>summary::after{content:"";width:6px;height:6px;flex:none;margin-left:auto;
+    border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+    transform:rotate(45deg) translateY(-2px);transition:transform .15s;opacity:.65}
+  .fold[open]>summary::after{transform:rotate(-135deg) translateY(-2px)}
+  .fold[open]>summary{color:var(--ink2)}
+  .fold .watch{margin-top:0;border-top:none;padding-top:0}
+  .fold .corr{margin-top:10px}
+  .watch .wrow{grid-template-columns:1fr 1fr;gap:0 30px}
+  .watch .wi{background:none;border:none;border-radius:0;padding:8px 0;
+    border-bottom:1px solid var(--line-soft);font-size:13px;color:var(--ink2)}
+  .watch .wi b{color:var(--ink);font-size:12.5px}
+  @media(max-width:760px){
+    .dates{flex-direction:column;align-items:flex-start;gap:6px}
+    .dates .d+.d{margin-left:0;padding-left:0;border-left:none}
+    .watch .wrow{grid-template-columns:1fr}
+    .vname{font-size:21px}.vwt{font-size:19px}}
 </style>
 <script>
   /* 本地跑 serve.mjs 时用实时接口；静态托管（GitHub Pages）改用同目录 api/*.json 快照 */
@@ -436,33 +525,35 @@
 </nav>
 <div class="ticker" id="ticker" hidden><div class="tk-track" id="tkTrack"></div></div>
 <div class="app">
+<div class="layout">
+<main class="col-main">
 <header>
-  <div class="kicker">量化罗盘 · ETF 因子轮动 · 规则固定 · 机械执行</div>
-  <h1>这周该持有什么</h1>
-  <p class="sub">六因子等权打分，每 5 个交易日调仓，取前 10 名、每名一成仓。510300 自身的 120 日动量转负时，整仓退到国债。工具不猜方向，只执行规则。</p>
+  <div class="kicker">ETF 因子轮动 · 收盘后更新</div>
+  <h1>本周持仓</h1>
+  <p class="sub">六因子等权打分，每 5 个交易日调仓，取前 10 名、每名一成仓。510300 自身的 120 日动量转负时，整仓退到国债。</p>
   <div class="stamp" id="stamp">数据加载中…</div>
 </header>
 
 <div class="stale" id="stale" hidden></div>
 
-<div class="layout">
-<main class="col-main">
-
 <section class="card signal" data-view="signal">
-  <h2>本周信号 <i>最重要的一栏：照做，别改</i></h2>
+  <h2>本周信号 <i>调仓日与当前持仓</i></h2>
   <div class="dates">
     <div class="d"><span>调仓日</span><b id="sigDate">—</b></div>
     <div class="d"><span>下一调仓日</span><b class="moss" id="nextDate">—</b></div>
   </div>
-  <p class="hint" id="sigHint">按此规则，下周持有下面这些标的，每只一成仓，不需要你自己判断。</p>
+  <p class="hint" id="sigHint">按规则，下周持有下面这些标的，每只一成仓。</p>
   <div class="picks" id="picks"></div>
-  <div class="watch" id="watchList" hidden></div>
-  <div class="corr" id="trendBox" hidden></div>
+  <details class="fold" id="moreFold" open hidden>
+    <summary id="moreSum">观察池与闸门规则</summary>
+    <div class="watch" id="watchList" hidden></div>
+    <div class="corr" id="trendBox" hidden></div>
+  </details>
   <div class="corr" id="corr" hidden></div>
 </section>
 
 <section class="card" data-view="health">
-  <h2>组合体检 <i>先看这份仓位是不是"假分散"</i></h2>
+  <h2>组合体检 <i>集中度与风险贡献</i></h2>
   <div class="vgrid" id="healthTop"></div>
   <div class="table-wrap">
     <table>
@@ -479,7 +570,7 @@
 </section>
 
 <section class="card" data-view="pick">
-  <h2>单只体检 <i>输入代码，看它够不够格</i></h2>
+  <h2>单只体检 <i>输入代码查询</i></h2>
   <div class="grid2" style="grid-template-columns:1fr auto;align-items:end">
     <div>
       <label for="checkCode">ETF 代码</label>
@@ -517,21 +608,21 @@
     <span><b style="background:#E4744E"></b>510300</span>
   </div>
   <div class="chart" id="chart"></div>
-  <div class="split-note">样本外才是真的，样本内只说明规则没写错。</div>
+  <div class="split-note">样本内只验证规则自洽，样本外才看得到稳定性。</div>
   <div class="metrics" id="metrics"></div>
   <p class="foot" id="btFoot">成本：单边 0.05%，按换手扣。</p>
   <div class="cost" id="costTable" hidden></div>
 </section>
 
 <section class="card" data-view="backtest">
-  <h2>可信度检验 <i>这里不出信号，只回答：9% 是本事还是运气</i></h2>
+  <h2>可信度检验 <i>样本外是否显著</i></h2>
   <div class="vgrid" id="vgrid"></div>
   <div class="vhist" id="vhist"></div>
   <p class="foot" id="vFoot"></p>
 </section>
 
 <section class="card" data-view="trade">
-  <h2>仓位计算器 <i>先算能亏多少，再算能买多少</i></h2>
+  <h2>仓位计算器 <i>按止损距离反推</i></h2>
   <div class="grid2">
     <label>总资金（元）<input id="cap" type="number" step="1" placeholder="100000"></label>
     <label>单笔风险（%）<input id="riskPct" type="number" step="0.1" value="1"></label>
@@ -547,7 +638,7 @@
 </section>
 
 <section class="card" data-view="trade">
-  <h2>交易闸门 <i>六项填完才放行</i></h2>
+  <h2>交易闸门 <i>六项检查</i></h2>
   <div class="grid2">
     <label>代码<input id="gCode" placeholder="510300"></label>
     <label>买入价<input id="gPrice" type="number" step="0.001" placeholder="4.002"></label>
@@ -569,7 +660,7 @@
 
 <aside class="rail">
   <section class="card">
-    <h2>市场脉搏 <i>只看，不改信号</i></h2>
+    <h2>市场脉搏 <i>指数与涨跌家数</i></h2>
     <div class="pulse-row" id="pulseRow"><div class="empty">加载中…</div></div>
     <div class="breadth-bar" id="breadthBar" style="display:none"></div>
     <div class="pulse-stats" id="pulseStats"></div>
@@ -584,10 +675,9 @@
 </div>
 
 <footer>
-  <b>规则：</b>每 5 个交易日调仓 · 调仓日收盘算分、次日收盘成交 · 综合分前 10 名、每名一成 · 510300 的 120 日动量转负 → 整仓国债 · 单边成本 0.05% · 六因子横截面 z-score 等权合成。<br>
-  <span id="ruleList"></span>
-  <b>已知局限：</b><span id="caveatList"></span><br>
-  本工具只做机械筛选与历史检验，不构成投资建议。回测不代表未来。
+  <b>规则</b>　每 5 个交易日调仓；T 收盘算分、T+1 收盘成交；综合分前 10 名各占一成；已持仓跌出前 12 名才换出；与已选标的 60 日相关性 &gt; 0.85 的跳过；510300 的 120 日动量转负 → 整仓国债；单边成本 0.05%。<br>
+  <b>局限</b>　ETF 池约 40 只，统计功效偏弱；回测不代表未来；未计冲击成本、停牌与折溢价；收益高度集中，多数年份在 0–8%；0.05% 成本偏乐观，实盘按 0.10% 看更接近真相。<br>
+  本工具只做机械筛选与历史检验，不构成投资建议。
 </footer>
 </div>
 
@@ -657,7 +747,7 @@
       + plainPct(sigDef.weight, 0) + ' 因 120 日动量为负转入 ' + sigDef.name + '。';
   } else {
     $('sigHint').textContent = '按此规则，下周持有下面 ' + sigTop.length + ' 只，每只 '
-      + plainPct(1 / slots, 0) + ' 仓，不需要你自己判断。';
+      + plainPct(1 / slots, 0) + ' 仓，按规则执行。';
   }
 
   var pickHtml = sigTop.map(function (p, i) {
@@ -681,19 +771,40 @@
       '<div class="w">建议权重 ' + plainPct(sigDef.weight, 2) + '</div>' +
       '</div>';
   }
-  $('picks').innerHTML = pickHtml;
-  if (!sigTop.length) $('picks').style.gridTemplateColumns = 'minmax(0,340px)';
+  var picksBox = $('picks');
+  picksBox.className = 'picks';
+  if (!sigTop.length && sigDef) {
+    /* 只剩防守标的时，把结论提到最前，避免和下面的细项抢重点 */
+    $('sigHint').hidden = true;
+    picksBox.className = 'picks solo';
+    picksBox.innerHTML = '<div class="verdict">'
+      + '<div class="vstate"><span>本周结论</span><b>' + (T && T.riskOff ? '全仓防御' : '防守') + '</b></div>'
+      + '<div class="vline">'
+      + '<span class="vcode">' + esc(sigDef.code) + '</span>'
+      + '<span class="vname">' + esc(sigDef.name) + '</span>'
+      + '<span class="vwt">' + plainPct(sigDef.weight, 0) + '</span>'
+      + '</div>'
+      + '<div class="vreason">' + (T && T.riskOff
+        ? '趋势闸门已触发，本周不持有任何股票类 ETF；国债当天无价则留现金。'
+        : '部分槽位 120 日动量为负，已转投 ' + esc(sigDef.name) + '。')
+      + '</div></div>';
+  } else {
+    picksBox.innerHTML = pickHtml;
+  }
 
   /* 闸门触发时，把候选池摆出来但不买，避免整块留白 */
+  var watchCount = 0;
   (function watchList() {
     var wl = $('watchList');
     var rank = Q.ranking || [];
     if (!(T && T.riskOff) || !rank.length) { wl.hidden = true; return; }
-    wl.innerHTML = '<div class="wh">观察池：闸门触发期间只记录，不买入（按综合分前 8）</div><div class="wrow">'
-      + rank.slice(0, 8).map(function (r, i) {
+    var list = rank.slice(0, 8);
+    watchCount = list.length;
+    wl.hidden = false;
+    wl.innerHTML = '<div class="wrow">'
+      + list.map(function (r, i) {
         return '<div class="wi"><span>' + (i + 1) + '. ' + esc(r.name) + '</span><b>' + num(r.composite, 2) + '</b></div>';
       }).join('') + '</div>';
-    wl.hidden = false;
   })();
 
   /* P1 趋势闸门状态 */
@@ -704,13 +815,23 @@
     tb.innerHTML = '<b>趋势闸门（P1）</b>：' + esc(T.rule.replace(/^P1 趋势闸门：/, ''))
       + '；国债当天无价则留现金。'
       + (T.riskOff
-        ? '<br>当前状态：<b>已触发，整仓防御</b>。这是规则给的结论，不是你判断的市场。'
+        ? '<br>当前状态：<b>已触发，整仓防御</b>。'
         : (dNow.length
           ? '<br>本次挡下 <b>' + dNow.length + '</b> 只：' + dNow.map(function (d) {
               return esc(d.code) + ' ' + esc(d.name) + '（' + pct(d.mom120, 1) + '）';
             }).join('、')
           : '<br>当前状态：未触发，全部按排名持有。'));
   }
+
+  /* 次要信息收进一个入口，避免两行折叠菜单抢戏 */
+  (function moreFold() {
+    var parts = [];
+    if (watchCount) parts.push('观察池 ' + watchCount + ' 只');
+    if (T && T.enabled) parts.push('闸门规则与本次判定');
+    if (!parts.length) { $('moreFold').hidden = true; return; }
+    $('moreSum').textContent = parts.join(' · ');
+    $('moreFold').hidden = false;
+  })();
 
   // 组合内相关性：只列出 0.7 以上的对，避免噪音
   var pairs = (Q.signal.pairs || []).filter(function (p) { return p.r >= 0.7; });
@@ -750,7 +871,7 @@
       return esc(t.name) + ' <b>' + plainPct(t.weight, 0) + '</b>';
     }).join(' · ') + '<br>组合 60 日年化波动 ' + plainPct(H.pvol, 1)
       + '。主题按名称标签归组，实际重叠只会更多、不会更少。'
-      + (H.effN < 3 ? '<br><b>⚠ 等效持仓不足 3 份：名义分散，实际不是。</b>' : '');
+      + (H.effN < 3 ? '<br><b>等效持仓不足 3 份：名义分散，实际集中。</b>' : '');
     var B = Q.buffer;
     if (B && B.compare) {
       var on = B.compare.on, off = B.compare.off;
@@ -834,13 +955,6 @@
     btn.addEventListener('click', run);
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') run(); });
   })();
-  if (Q.meta && Q.meta.rules) {
-    $('ruleList').innerHTML = Q.meta.rules.map(function (r) { return '· ' + esc(r); }).join(' ');
-  }
-  if (Q.meta && Q.meta.caveats) {
-    $('caveatList').innerHTML = Q.meta.caveats.map(function (c) { return '· ' + esc(c); }).join(' ');
-  }
-
   /* ---------- 2 因子图例与排名表 ---------- */
   var FACTORS = ['mom20', 'mom60', 'mom120', 'vol60', 'ma120gap', 'dd250'];
   var FDESC = {
@@ -990,7 +1104,7 @@
       ['年化优于多少随机组合', plainPct(rb.pctAnn, 1),
         rb.runs + ' 次随机选 ' + (Q.signal.slots || 10) + ' 只：中位年化 ' + pct(rb.medAnn) + '，本策略 ' + pct(rb.stratAnn) + ' · p = ' + num(rb.pAnn, 3)],
       ['Deflated Sharpe', num(d.value, 3),
-        '试过 ' + d.trials + ' 组配置后的真实夏普 &gt; 0 概率；不打折的夏普会被"挑过多少组"高估，期望最大夏普 ' + num(d.sr0, 3)],
+        '试过 ' + d.trials + ' 组配置后真实夏普 &gt; 0 的概率；未做多重检验校正的夏普会被高估，期望最大夏普 ' + num(d.sr0, 3)],
       ['滚动前推（样本外拼接）', pct(w.stitched.ann),
         w.folds + ' 折，每折用前 ' + w.train + ' 个净值点选配置、后 ' + w.test + ' 个点执行；同期固定配置 ' + pct(w.fixed.ann)],
       ['前推最大回撤', pct(w.stitched.mdd),
@@ -1065,7 +1179,7 @@
     if (ratio > 0.2) {
       warn.hidden = false;
       warn.textContent = '这笔占总资金 ' + plainPct(ratio, 2)
-        + '，超过 20% 上限。要么降仓位，要么把止损拉近——先想清楚哪个不是在自欺。';
+        + '，超过 20% 上限。可降低仓位或拉近止损。';
     } else {
       warn.hidden = true;
     }
@@ -1238,12 +1352,15 @@
       }).then(function (d) {
         var list = (d && d.list) || [];
         if (!list.length) { $('news').innerHTML = '<div class="empty">暂无快讯。</div>'; return; }
-        $('newsStamp').textContent = d.asOf ? d.asOf.slice(11, 16) + ' 更新' : '';
+        var hm = ((d.asOf || '') + '').slice(11, 16) || ((list[0] && list[0].time) || '').slice(11, 16);
+        $('newsStamp').textContent = hm ? hm + ' 更新' : '实时更新';
         $('news').innerHTML = list.slice(0, 30).map(function (n) {
+          var dig = String(n.digest || '').replace(/^\s*[【\[]([^】\]]*)[】\]]\s*/, '').trim();
+          if (dig === String(n.title || '').trim()) dig = '';
           return '<div class="nitem"><div class="ntop"><span class="ntime">' + esc((n.time || '').slice(11, 16)) + '</span>'
             + '<span class="ntitle"><a href="' + esc(n.url || '#') + '" target="_blank" rel="noopener">'
             + esc(n.title) + '</a></span></div>'
-            + (n.digest ? '<div class="ndigest">' + esc(n.digest) + '</div>' : '') + '</div>';
+            + (dig ? '<div class="ndigest">' + esc(dig) + '</div>' : '') + '</div>';
         }).join('');
       }).catch(function () {
         $('news').innerHTML = '<div class="empty">快讯取数失败（接口限流），稍后自动重试。</div>';

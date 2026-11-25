@@ -181,14 +181,14 @@
   /* 常规字体 + 字号放大一档 + 间距放宽 */
   body{font-size:15.5px;line-height:1.8}
   header{padding:34px 0 0}
-  h1{font-size:42px;font-weight:600}
+  h1{font-size:34px;font-weight:600}
   .sub{font-size:15px;line-height:1.8;margin-top:10px}
-  .card{padding:30px 32px;margin-top:22px;border-radius:24px}
-  .card h2{font-size:22px;gap:12px;padding-bottom:15px;border-bottom:1px solid var(--line-soft)}
+  .card{padding:28px 30px;margin-top:22px;border-radius:10px}
+  .card h2{font-size:20px;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
   .card h2 i{font-size:13px}
-  .rail .card{padding:24px}
-  .rail .card h2{font-size:19px}
-  .idx .i{padding:12px 13px;border-radius:13px}
+  .rail .card{padding:22px}
+  .rail .card h2{font-size:17px}
+  .idx .i{padding:12px 13px;border-radius:8px}
   .idx .i .n{font-size:12.5px}
   .idx .i .p{font-size:19px}
   .idx .i .c{font-size:13px}
@@ -252,6 +252,56 @@
   .lad-col{background:rgba(255,255,255,.035)}
   .lad{background:rgba(228,88,75,.10)}
   .err{background:rgba(228,116,78,.13);border-color:rgba(228,116,78,.4);color:#F0A88F}
+
+  /* 克制版外观：去掉发光与装饰性渐变，边角收小 */
+  body::before{display:none}
+  .topbar .brand svg{filter:none}
+  .topbar .links a.on{background:none}
+  .topbar .links a.on::after{height:2px;box-shadow:none}
+  .topbar .right .login,.topbar .right .signup{border-radius:6px}
+  .card{box-shadow:none;border-radius:10px}
+  .chip,.mini-btn{border-radius:6px}
+  .idx .i{border-radius:8px}
+  .kpi .k,.lad-col{border-radius:8px}
+  .bw-bar,.legend .bar,.rk .bar{border-radius:4px}
+  .kicker{letter-spacing:.06em}
+  .treemap{border-radius:6px}
+
+  /* 顶栏下方指数跑马灯 */
+  .ticker{position:static;overflow:hidden;background:rgba(14,16,18,.88);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+  .tk-track{display:flex;width:max-content;animation:tk 46s linear infinite}
+  .ticker:hover .tk-track{animation-play-state:paused}
+  .tk{display:flex;align-items:baseline;gap:8px;padding:8px 18px;font-size:13px;
+    border-right:1px solid var(--line-soft);white-space:nowrap}
+  .tk b{color:var(--ink3);font-weight:600;letter-spacing:.03em}
+  .tk em{font-style:normal;font-variant-numeric:tabular-nums;font-size:13.5px}
+  .tk i{font-style:normal;font-variant-numeric:tabular-nums;font-size:13px}
+  .tk .up{color:#E4584B}
+  .tk .dn,.tk .down{color:#22C55E}
+  .tk .flat{color:var(--ink3)}
+  @keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* 快讯：参考财联社 7×24 电报的时间轴排法 */
+  .news{max-height:600px;margin-top:8px;padding-right:4px;overscroll-behavior:contain;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .news::-webkit-scrollbar{display:none}
+  .nitem{position:relative;padding:13px 0 13px 60px;cursor:default}
+  .nitem::before{content:"";position:absolute;left:43px;top:0;bottom:0;width:1px;background:var(--line-soft)}
+  .nitem:first-child::before{top:19px}
+  .nitem:last-child::before{bottom:calc(100% - 19px)}
+  .nitem::after{content:"";position:absolute;left:40px;top:16px;width:7px;height:7px;
+    border-radius:50%;background:var(--ink3);box-shadow:0 0 0 3px var(--surface)}
+  .nitem:first-child::after{background:var(--moss)}
+  .ntime{position:absolute;left:0;top:11px;font-size:11.5px;line-height:1;
+    color:var(--ink3);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+  .nbody{min-width:0}
+  .ntitle{font-size:13.5px;font-weight:600;line-height:1.6;color:var(--ink);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .ntitle a{color:inherit}
+  .ndigest{font-size:12.5px;line-height:1.7;color:var(--ink2);margin-top:5px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .nitem:hover .ntitle{color:var(--moss)}
 </style>
 <script>
   /* 本地跑 serve.mjs 时用实时接口；静态托管（GitHub Pages）改用同目录 api/*.json 快照 */
@@ -280,10 +330,11 @@
     </div>
   </div>
 </nav>
+<div class="ticker" id="ticker" hidden><div class="tk-track" id="tkTrack"></div></div>
 <div class="app">
 <header>
-  <div class="kicker">今日看盘 · 大盘云图 · 红涨绿跌</div>
-  <h1>今天的钱往哪跑</h1>
+  <div class="kicker">今日看盘 · 红涨绿跌</div>
+  <h1>今日大盘</h1>
   <p class="sub">板块按市值铺面积、按当日涨跌幅着色；右侧是 7×24 快讯与板块强弱榜。数据取自东方财富公开行情，只做呈现，不构成买卖建议。</p>
   <div class="stamp">
     <span id="stamp">载入中…</span>
@@ -327,7 +378,7 @@
 
 <aside class="rail">
   <section class="card">
-    <h2>7×24 快讯 <i>东方财富</i></h2>
+    <h2>7×24 快讯 <i>东方财富 · 实时更新</i></h2>
     <div class="news" id="news"><div class="empty">载入中…</div></div>
   </section>
   <section class="card">
@@ -377,6 +428,17 @@
 
   /* ---------------- 顶栏与情绪 ---------------- */
   function renderOverview(o) {
+    var tk = (o.indices || []).slice(0, 8);
+    if (tk.length) {
+      var th = tk.map(function (x) {
+        var d = cls(x.pct);
+        return '<span class="tk"><b>' + esc(x.name) + '</b><em class="' + d + '">'
+          + (x.price == null ? '—' : x.price.toFixed(2)) + '</em><i class="' + d + '">' + pct(x.pct) + '</i></span>';
+      }).join('');
+      $('tkTrack').innerHTML = th + th;
+      $('ticker').hidden = false;
+    }
+
     $('idx').innerHTML = (o.indices || []).map(function (x) {
       return '<div class="i"><div class="n">' + esc(x.name) + '</div>'
         + '<div class="p ' + cls(x.pct) + '">' + (x.price == null ? '—' : x.price.toFixed(2)) + '</div>'
@@ -605,6 +667,11 @@
   }
 
   /* ---------------- 快讯 ---------------- */
+  function stripLead(d) {
+    if (!d) return '';
+    return d.replace(/^\s*[【\[]([^】\]]*)[】\]]\s*/, '').trim();
+  }
+
   function renderNews(n) {
     if (!n || !n.list || !n.list.length) { $('news').innerHTML = '<div class="empty">快讯取数失败，稍后刷新</div>'; return; }
     $('news').innerHTML = n.list.map(function (it) {
@@ -612,10 +679,12 @@
       var title = it.url
         ? '<a href="' + esc(it.url) + '" target="_blank" rel="noopener">' + esc(it.title) + '</a>'
         : esc(it.title);
-      return '<div class="nitem"><div class="ntop"><span class="ntime">' + t + '</span>'
-        + '<span class="ntitle">' + title + '</span></div>'
-        + (it.digest && it.digest !== it.title ? '<div class="ndigest">' + esc(it.digest) + '</div>' : '')
-        + '</div>';
+      var dig = stripLead(it.digest);
+      if (dig && dig === (it.title || '').trim()) dig = '';
+      return '<div class="nitem"><div class="ntime">' + t + '</div>'
+        + '<div class="nbody"><div class="ntitle">' + title + '</div>'
+        + (dig ? '<div class="ndigest">' + esc(dig) + '</div>' : '')
+        + '</div></div>';
     }).join('');
   }
 
