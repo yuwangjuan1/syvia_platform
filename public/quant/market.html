@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0E1012">
+<meta name="format-detection" content="telephone=no">
 <title>今日看盘 · 量化罗盘</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -105,6 +107,8 @@
   .tm-cell:hover{filter:brightness(1.12) saturate(1.15);outline:1px solid rgba(255,255,255,.65);outline-offset:-1px}
   .tm-cell .tn{font-size:11px;font-weight:700;line-height:1.2;max-width:100%;overflow:hidden;
     text-overflow:ellipsis;white-space:nowrap}
+  .tm-cell .tn.tn2{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;
+    -webkit-line-clamp:2;line-clamp:2;word-break:break-word}
   .tm-cell .tp{font-size:10.5px;font-variant-numeric:tabular-nums;opacity:.95;line-height:1.3}
   .tm-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     font-size:13px;color:var(--ink3);text-align:center;padding:24px;line-height:1.8}
@@ -302,6 +306,74 @@
   .ndigest{font-size:12.5px;line-height:1.7;color:var(--ink2);margin-top:5px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .nitem:hover .ntitle{color:var(--moss)}
+
+  /* ===== 移动端适配 ===== */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+  .app{padding-left:max(26px,env(safe-area-inset-left));
+    padding-right:max(26px,env(safe-area-inset-right))}
+  .toast{bottom:calc(26px + env(safe-area-inset-bottom))}
+  .tm-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .tm-hint{display:none;font-size:11.5px;color:var(--ink3);margin-top:8px;text-align:center}
+
+  @media(max-width:760px){
+    .card h2{flex-wrap:wrap;row-gap:3px}
+    .rail .card{padding:20px 18px}
+  }
+  @media(max-width:560px){
+    h1{font-size:26px}
+    .app{padding-left:max(14px,env(safe-area-inset-left));
+      padding-right:max(14px,env(safe-area-inset-right))}
+    .card{padding:18px 16px}
+    .card h2{font-size:17px}
+    /* 100 个板块挤在 400px 里不可读，改为横向滚动看完整云图 */
+    .treemap{min-width:680px;height:420px}
+    .tm-hint{display:block}
+    .topbar .links{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);
+      mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent)}
+    .tm-head{gap:10px}
+    .seg button{padding:8px 14px}
+    .legend .bar{width:96px}
+    .rank .rk{min-height:38px}
+    .topbar .links{overscroll-behavior-x:contain}
+  }
+  @media(max-width:390px){
+    .topbar .brand{font-size:14.5px;gap:6px}
+    .topbar .brand svg{width:20px;height:20px}
+    .topbar .links a{font-size:12.5px;padding:0 10px}
+    h1{font-size:24px}
+  }
+
+  /* ===== 移动端汉堡菜单 ===== */
+  .menu-btn{display:none;position:relative;flex:none;width:38px;height:38px;
+    flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    padding:0;background:none;border:none;cursor:pointer;
+    -webkit-tap-highlight-color:transparent}
+  .menu-btn span{display:block;width:19px;height:2px;border-radius:2px;background:var(--ink);
+    transition:transform .22s ease,opacity .16s ease}
+  @media(max-width:760px){
+    .menu-btn{display:flex;margin-left:10px}
+    .topbar .links{display:none;position:absolute;left:0;right:0;top:100%;
+      flex-direction:column;gap:0;margin:0;align-self:auto;
+      background:rgba(10,12,14,.985);border-bottom:1px solid var(--line);
+      box-shadow:0 26px 46px -30px rgba(0,0,0,1);z-index:70;
+      overflow:visible;scrollbar-width:none;
+      -webkit-mask-image:none;mask-image:none;
+      -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .topbar.open .links{display:flex}
+    .topbar .links a{height:auto;min-height:50px;padding:0 22px;width:100%;
+      justify-content:flex-start;font-size:15px}
+    .topbar .links a.on{background:rgba(255,97,85,.09)}
+    .topbar .links a.on::after{display:none}
+    .topbar .links a.ext{margin-left:0;padding-left:22px;border-left:none;
+      border-top:1px solid var(--line-soft)}
+    .topbar.open .menu-btn span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .topbar.open .menu-btn span:nth-child(2){opacity:0}
+    .topbar.open .menu-btn span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  }
+  @media(max-width:520px){
+    .menu-btn{margin-left:auto}
+  }
 </style>
 <script>
   /* 本地跑 serve.mjs 时用实时接口；静态托管（GitHub Pages）改用同目录 api/*.json 快照 */
@@ -313,10 +385,10 @@
 </script>
 </head>
 <body>
-<nav class="topbar">
+<nav class="topbar" id="topbar">
   <div class="inner">
     <a class="brand" href="index.html"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="12.5" stroke="currentColor" stroke-width="2"></circle><path d="M13.2 12.8c1.7-2.2 4.9-2.2 6.6 0-1.7 2.2-4.9 2.2-6.6 0Z" fill="currentColor"></path><path d="M13.2 12.8l-2.5-1.7v3.4Z" fill="currentColor"></path><circle cx="18.3" cy="12.3" r=".9" fill="#0E1012"></circle><path d="M7 19.2q3-2.8 6 0t6 0t6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>量化罗盘</a>
-    <div class="links">
+    <div class="links" id="navLinks">
       <a href="index.html#signal">本周信号</a>
       <a href="index.html#health">组合体检</a>
       <a href="index.html#pick">选股排名</a>
@@ -328,8 +400,36 @@
       <a href="#" class="login" data-auth="login">登录</a>
       <a href="#" class="signup" data-auth="signup">注册</a>
     </div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+<script>
+(function(){
+  var tb = document.getElementById('topbar');
+  var btn = document.getElementById('menuBtn');
+  if (!tb || !btn) return;
+  function close(){
+    tb.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+  }
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = tb.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  Array.prototype.forEach.call(tb.querySelectorAll('.links a'), function(a){
+    a.addEventListener('click', close);
+  });
+  document.addEventListener('click', function(e){
+    if (tb.classList.contains('open') && !tb.contains(e.target)) close();
+  });
+  window.addEventListener('resize', function(){
+    if (window.innerWidth > 760) close();
+  });
+})();
+</script>
 <div class="ticker" id="ticker" hidden><div class="tk-track" id="tkTrack"></div></div>
 <div class="app">
 <header>
@@ -365,7 +465,8 @@
       <span>-4%</span><span class="bar"></span><span>+4%</span>
     </div>
   </div>
-  <div class="treemap" id="treemap"><div class="tm-empty">载入中…</div></div>
+  <div class="tm-scroll"><div class="treemap" id="treemap"><div class="tm-empty">载入中…</div></div></div>
+  <div class="tm-hint">左右滑动查看完整云图</div>
   <div class="foot" id="tmFoot"></div>
 </section>
 
@@ -585,6 +686,21 @@
     return b.mcap || b.amount || 0;
   }
 
+  // 云图格子窄：先去掉通用尾缀再排版，完整名称仍保留在 tooltip 里
+  var NAME_SUFFIX = ['设备', '概念', '制造', '加工', '材料', '制品', '行业', '产业', '元器件', '开发'];
+  var NAME_KEEP = ['通用', '专用']; // 去掉尾缀后语义不清的，保留原名
+  function shortName(n) {
+    var s = String(n || '').trim();
+    for (var i = 0; i < NAME_SUFFIX.length; i++) {
+      var suf = NAME_SUFFIX[i];
+      if (s.length - suf.length >= 2 && s.slice(-suf.length) === suf) {
+        var cut = s.slice(0, -suf.length);
+        return NAME_KEEP.indexOf(cut) >= 0 ? s : cut;
+      }
+    }
+    return s;
+  }
+
   function renderTreemap() {
     var box = $('treemap');
     var list = state.boards[state.type];
@@ -604,6 +720,12 @@
       .sort(function (a, b) { return b.size - a.size; })
       .slice(0, 80);
     var rects = squarify(items, W, H);
+    // 短名撞车时（如「电力设备」「电力行业」都缩成「电力」）退回全名，避免同名不同数
+    var shortCount = {};
+    for (var k = 0; k < items.length; k++) {
+      var sk = shortName(items[k].b.name);
+      shortCount[sk] = (shortCount[sk] || 0) + 1;
+    }
     var html = '';
     for (var i = 0; i < rects.length; i++) {
       var r = rects[i], b = r.it.b;
@@ -611,10 +733,13 @@
       var showName = w > 34 && h > 17;
       var showPct = w > 44 && h > 33;
       var fs = Math.max(9, Math.min(15, Math.sqrt(w * h) / 9));
+      var label = shortName(b.name);
+      if (shortCount[label] > 1) label = b.name;
+      var tnCls = fs * 2.4 <= h - 4 ? 'tn tn2' : 'tn';
       html += '<div class="tm-cell" data-i="' + i + '" style="left:' + (r.x + 0.75).toFixed(1) + 'px;top:' + (r.y + 0.75).toFixed(1)
         + 'px;width:' + w.toFixed(1) + 'px;height:' + h.toFixed(1) + 'px;background:' + tone(b.pct)
         + ';color:' + inkFor(b.pct) + '">'
-        + (showName ? '<div class="tn" style="font-size:' + fs.toFixed(1) + 'px">' + esc(b.name) + '</div>' : '')
+        + (showName ? '<div class="' + tnCls + '" style="font-size:' + fs.toFixed(1) + 'px">' + esc(label) + '</div>' : '')
         + (showPct ? '<div class="tp">' + pct(b.pct) + '</div>' : '')
         + '</div>';
     }
@@ -630,38 +755,56 @@
     $('tmFoot').innerHTML = '共 ' + (list._total || list.length) + ' 个板块，图中展示前 ' + items.length + ' 个'
       + (list._stale ? '（接口限流，显示上次成功取数的快照）'
         : list._partial ? '（部分板块接口限流，数据可能不全）' : '')
-      + '。悬停看主力净流入、涨跌家数与领涨股。';
+      + '。悬停或点按格子看主力净流入、涨跌家数与领涨股。';
   }
 
   /* ---------------- tooltip ---------------- */
   var tip = $('tip');
+  function hideTip() { tip.style.opacity = '0'; }
+  function showTip(cell, box, x, y) {
+    var b = box._rects[+cell.getAttribute('data-i')].it.b;
+    var rows = [
+      ['涨跌幅', '<b class="' + cls(b.pct) + '">' + pct(b.pct) + '</b>'],
+      [state.type === 'concept' ? '成交额' : '总市值', yi(state.type === 'concept' ? b.amount : b.mcap, 1)],
+      ['主力净流入', '<span class="' + cls(b.inflow) + '">' + signedYi(b.inflow) + '</span>']
+    ];
+    if (b.up != null || b.down != null) rows.push(['涨 / 跌家数', (b.up == null ? '—' : b.up) + ' / ' + (b.down == null ? '—' : b.down)]);
+    if (b.leader) rows.push(['领涨股', esc(b.leader.name) + ' <b class="' + cls(b.leader.pct) + '">' + pct(b.leader.pct) + '</b>']);
+    tip.innerHTML = '<div style="font-weight:700;margin-bottom:4px">' + esc(b.name) + ' <span style="opacity:.6;font-weight:400">' + esc(b.code) + '</span></div>'
+      + rows.map(function (r) { return '<div class="tr"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>'; }).join('');
+    tip.style.opacity = '1';
+    placeTip(x, y);
+  }
   function bindTip() {
     var box = $('treemap');
-    box.addEventListener('mouseover', function (e) {
+    function want(e) {
       var cell = e.target.closest ? e.target.closest('.tm-cell') : null;
-      if (!cell || !box._rects) return;
-      var b = box._rects[+cell.getAttribute('data-i')].it.b;
-      var rows = [
-        ['涨跌幅', '<b class="' + cls(b.pct) + '">' + pct(b.pct) + '</b>'],
-        [state.type === 'concept' ? '成交额' : '总市值', yi(state.type === 'concept' ? b.amount : b.mcap, 1)],
-        ['主力净流入', '<span class="' + cls(b.inflow) + '">' + signedYi(b.inflow) + '</span>']
-      ];
-      if (b.up != null || b.down != null) rows.push(['涨 / 跌家数', (b.up == null ? '—' : b.up) + ' / ' + (b.down == null ? '—' : b.down)]);
-      if (b.leader) rows.push(['领涨股', esc(b.leader.name) + ' <b class="' + cls(b.leader.pct) + '">' + pct(b.leader.pct) + '</b>']);
-      tip.innerHTML = '<div style="font-weight:700;margin-bottom:4px">' + esc(b.name) + ' <span style="opacity:.6;font-weight:400">' + esc(b.code) + '</span></div>'
-        + rows.map(function (r) { return '<div class="tr"><span>' + r[0] + '</span><span>' + r[1] + '</span></div>'; }).join('');
-      tip.style.opacity = '1';
-      moveTip(e);
+      return cell && box._rects ? cell : null;
+    }
+    /* 桌面：悬停即看 */
+    box.addEventListener('pointerover', function (e) {
+      if (e.pointerType === 'touch') return;
+      var cell = want(e);
+      if (cell) showTip(cell, box, e.clientX, e.clientY);
     });
-    box.addEventListener('mousemove', moveTip);
-    box.addEventListener('mouseleave', function () { tip.style.opacity = '0'; });
+    box.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'touch' && tip.style.opacity === '1') placeTip(e.clientX, e.clientY);
+    });
+    box.addEventListener('pointerleave', hideTip);
+    /* 触屏：点格子置顶显示，点空白或滚动收起 */
+    box.addEventListener('click', function (e) {
+      var cell = want(e);
+      if (cell) showTip(cell, box, e.clientX, e.clientY); else hideTip();
+    });
+    window.addEventListener('scroll', hideTip, { passive: true });
   }
-  function moveTip(e) {
+  function placeTip(cx, cy) {
     var pad = 14;
-    var x = e.clientX + pad, y = e.clientY + pad;
+    var x = cx + pad, y = cy + pad;
     var w = tip.offsetWidth, h = tip.offsetHeight;
-    if (x + w > window.innerWidth - 8) x = e.clientX - w - pad;
-    if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+    if (x + w > window.innerWidth - 8) x = cx - w - pad;
+    if (x < 8) x = 8;
+    if (y + h > window.innerHeight - 8) y = cy - h - pad;
     tip.style.left = x + 'px';
     tip.style.top = Math.max(6, y) + 'px';
   }
